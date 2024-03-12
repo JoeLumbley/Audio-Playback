@@ -49,6 +49,150 @@ Public Class Form1
 
     End Sub
 
+    Private Function AddSound(ByVal SoundName As String, ByVal FilePath As String) As Boolean
+
+        Dim CommandOpen As String = "open " & Chr(34) & FilePath & Chr(34) & " alias " & SoundName
+
+        'Do we have a name and does the file exist?
+        If Not SoundName.Trim = String.Empty And IO.File.Exists(FilePath) Then
+            'Yes, we have a name and the file exists.
+
+            'Do we have sounds?
+            If Sounds IsNot Nothing Then
+                'Yes, we have sounds.
+
+                'Is the sound in the array already?
+                If Not Sounds.Contains(SoundName) Then
+                    'No, the sound is not in the array.
+
+                    'Did the sound file open?
+                    If mciSendStringW(CommandOpen, Nothing, 0, IntPtr.Zero) = 0 Then
+                        'Yes, the sound file did open.
+
+                        'Add the sound to the Sounds array.
+                        Array.Resize(Sounds, Sounds.Length + 1)
+                        Sounds(Sounds.Length - 1) = SoundName
+
+                        Return True
+
+                    End If
+
+                End If
+
+            Else
+                'No, we do not have sounds.
+
+                'Did the sound file open?
+                If mciSendStringW(CommandOpen, Nothing, 0, IntPtr.Zero) = 0 Then
+                    'Yes, the sound file did open.
+
+                    'Start the Sounds array with the sound.
+                    ReDim Sounds(0)
+                    Sounds(0) = SoundName
+
+                    Return True
+
+                End If
+
+            End If
+
+        End If
+
+        Return False
+
+    End Function
+
+    Public Function LoopSound(ByVal SoundName As String) As Boolean
+
+        If Sounds IsNot Nothing Then
+
+            If Not Sounds.Contains(SoundName) Then
+
+                Return False
+
+            End If
+
+            mciSendStringW("seek " & SoundName & " to start", Nothing, 0, IntPtr.Zero)
+
+            If mciSendStringW("play " & SoundName & " repeat", Nothing, 0, Me.Handle) <> 0 Then
+
+                Return False
+
+            End If
+
+        End If
+
+        Return True
+
+    End Function
+
+    Private Function PlaySound(ByVal SoundName As String) As Boolean
+
+        Dim CommandFromStart As String = "seek " & SoundName & " to start"
+
+        Dim CommandPlay As String = "play " & SoundName & " notify"
+
+        If Sounds IsNot Nothing Then
+
+            If Sounds.Contains(SoundName) Then
+
+                'Play sound file from the start.
+                mciSendStringW(CommandFromStart, Nothing, 0, IntPtr.Zero)
+
+                If mciSendStringW(CommandPlay, Nothing, 0, Me.Handle) = 0 Then
+
+                    Return True
+
+                End If
+
+            End If
+
+        End If
+
+        Return False
+
+    End Function
+
+    Private Function SetVolume(ByVal SoundName As String, ByVal Level As Integer) As Boolean
+
+        Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
+
+        'Do we have sounds?
+        If Sounds IsNot Nothing Then
+            'Yes, we have sounds.
+
+            'Is the sound in the sounds array?
+            If Sounds.Contains(SoundName) Then
+                'Yes, the sound is the sounds array.
+
+                'Is the level in the valid range?
+                If Level >= 0 And Level <= 1000 Then
+                    'Yes, the level is in range.
+
+                    'Was the volume set?
+                    If mciSendStringW(CommandVolume, Nothing, 0, IntPtr.Zero) = 0 Then
+                        'Yes, the volume was set.
+
+                        Return True
+
+                    End If
+
+                End If
+
+            End If
+
+        End If
+
+        Return False 'The volume was not set.
+
+    End Function
+
+    Private Function IsPlaying(ByVal SoundName As String) As Boolean
+
+        Return (GetStatus(SoundName, "mode") = "playing")
+
+    End Function
+
     Private Sub PlayOverlaping(ByVal SoundName As String)
 
         If IsPlaying(SoundName & "A") = False Then
@@ -107,149 +251,17 @@ Public Class Form1
 
     End Sub
 
-    Private Function AddSound(ByVal SoundName As String, ByVal FilePath As String) As Boolean
-
-        Dim CommandOpen As String = "open " & Chr(34) & FilePath & Chr(34) & " alias " & SoundName
-
-        'Do we have a name and does the file exist?
-        If Not SoundName.Trim = String.Empty And IO.File.Exists(FilePath) Then
-            'Yes, we have a name and the file exists.
-
-            'Do we have sounds?
-            If Sounds IsNot Nothing Then
-                'Yes, we have sounds.
-
-                'Is the sound in the array already?
-                If Not Sounds.Contains(SoundName) Then
-                    'No, the sound is not in the array.
-
-                    'Did the sound file open?
-                    If mciSendStringW(CommandOpen, Nothing, 0, IntPtr.Zero) = 0 Then
-                        'Yes, the sound file did open.
-
-                        'Add the sound to the Sounds array.
-                        Array.Resize(Sounds, Sounds.Length + 1)
-                        Sounds(Sounds.Length - 1) = SoundName
-
-                        Return True
-
-                    End If
-
-                End If
-
-            Else
-                'No, we do not have sounds.
-
-                'Did the sound file open?
-                If mciSendStringW(CommandOpen, Nothing, 0, IntPtr.Zero) = 0 Then
-                    'Yes, the sound file did open.
-
-                    'Start the Sounds array with the sound.
-                    ReDim Sounds(0)
-                    Sounds(0) = SoundName
-
-                    Return True
-
-                End If
-
-            End If
-
-        End If
-
-        Return False
-
-    End Function
-
-    Private Function PlaySound(ByVal SoundName As String) As Boolean
-
-        Dim CommandFromStart As String = "seek " & SoundName & " to start"
-
-        Dim CommandPlay As String = "play " & SoundName & " notify"
+    Private Sub CloseSounds()
 
         If Sounds IsNot Nothing Then
-
-            If Sounds.Contains(SoundName) Then
-
-                'Play sound file from the start.
-                mciSendStringW(CommandFromStart, Nothing, 0, IntPtr.Zero)
-
-                If mciSendStringW(CommandPlay, Nothing, 0, Me.Handle) = 0 Then
-
-                    Return True
-
-                End If
-
-            End If
-
+            For Each Sound In Sounds
+                mciSendStringW("close " & Sound, Nothing, 0, IntPtr.Zero)
+            Next
         End If
 
-        Return False
+        Sounds = Nothing
 
-    End Function
-
-    Public Function LoopSound(ByVal SoundName As String) As Boolean
-
-        If Sounds IsNot Nothing Then
-
-            If Not Sounds.Contains(SoundName) Then
-
-                Return False
-
-            End If
-
-            mciSendStringW("seek " & SoundName & " to start", Nothing, 0, IntPtr.Zero)
-
-            If mciSendStringW("play " & SoundName & " repeat", Nothing, 0, Me.Handle) <> 0 Then
-
-                Return False
-
-            End If
-
-        End If
-
-        Return True
-
-    End Function
-
-    Private Function SetVolume(ByVal SoundName As String, ByVal Level As Integer) As Boolean
-
-        Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
-
-        'Do we have sounds?
-        If Sounds IsNot Nothing Then
-            'Yes, we have sounds.
-
-            'Is the sound in the sounds array?
-            If Sounds.Contains(SoundName) Then
-                'Yes, the sound is the sounds array.
-
-                'Is the level in the valid range?
-                If Level >= 0 And Level <= 1000 Then
-                    'Yes, the level is in range.
-
-                    'Was the volume set?
-                    If mciSendStringW(CommandVolume, Nothing, 0, IntPtr.Zero) = 0 Then
-                        'Yes, the volume was set.
-
-                        Return True
-
-                    End If
-
-                End If
-
-            End If
-
-        End If
-
-        Return False 'The volume was not set.
-
-    End Function
-
-    Private Function IsPlaying(ByVal SoundName As String) As Boolean
-
-        Return (GetStatus(SoundName, "mode") = "playing")
-
-    End Function
+    End Sub
 
     Private Function GetStatus(ByVal SoundName As String, ByVal StatusType As String) As String
 
@@ -272,18 +284,6 @@ Public Class Form1
         Return String.Empty
 
     End Function
-
-    Private Sub CloseSounds()
-
-        If Sounds IsNot Nothing Then
-            For Each Sound In Sounds
-                mciSendStringW("close " & Sound, Nothing, 0, IntPtr.Zero)
-            Next
-        End If
-
-        Sounds = Nothing
-
-    End Sub
 
     Private Sub CreateSoundFileFromResource()
 
