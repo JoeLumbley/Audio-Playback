@@ -63,29 +63,10 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Byte[].
         '''</summary>
-        Friend ReadOnly Property Cash_Collected() As Byte()
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Cash Collected", resourceCulture)
-                Return CType(obj,Byte())
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Byte[].
-        '''</summary>
         Friend ReadOnly Property CashCollected() As Byte()
             Get
                 Dim obj As Object = ResourceManager.GetObject("CashCollected", resourceCulture)
                 Return CType(obj,Byte())
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property foo() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("foo", resourceCulture)
             End Get
         End Property
         
@@ -95,26 +76,6 @@ Namespace My.Resources
         Friend ReadOnly Property level() As Byte()
             Get
                 Dim obj As Object = ResourceManager.GetObject("level", resourceCulture)
-                Return CType(obj,Byte())
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Byte[].
-        '''</summary>
-        Friend ReadOnly Property potion_pickup() As Byte()
-            Get
-                Dim obj As Object = ResourceManager.GetObject("potion_pickup", resourceCulture)
-                Return CType(obj,Byte())
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Byte[].
-        '''</summary>
-        Friend ReadOnly Property Wood_Golf_Club_Hit_Ball() As Byte()
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Wood Golf Club Hit Ball", resourceCulture)
                 Return CType(obj,Byte())
             End Get
         End Property
