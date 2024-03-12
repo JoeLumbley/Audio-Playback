@@ -254,9 +254,13 @@ Public Class Form1
     Private Sub CloseSounds()
 
         If Sounds IsNot Nothing Then
+
             For Each Sound In Sounds
+
                 mciSendStringW("close " & Sound, Nothing, 0, IntPtr.Zero)
+
             Next
+
         End If
 
         Sounds = Nothing
@@ -288,13 +292,19 @@ Public Class Form1
     Private Sub CreateSoundFileFromResource()
 
         Dim file As String = Path.Combine(Application.StartupPath, "level.mp3")
+
         If Not IO.File.Exists(file) Then
+
             IO.File.WriteAllBytes(file, My.Resources.level)
+
         End If
 
         file = Path.Combine(Application.StartupPath, "CashCollected.mp3")
+
         If Not IO.File.Exists(file) Then
+
             IO.File.WriteAllBytes(file, My.Resources.CashCollected)
+
         End If
 
     End Sub
