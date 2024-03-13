@@ -11,12 +11,18 @@ Public Class Form1
         FAILURE = &H8
     End Enum
 
-    'Import MM for playback of multiple audio files simultaneously
+    'Import Windows Multimedia API for playback of multiple audio files simultaneously.
     <DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
     Private Shared Function mciSendStringW(<MarshalAs(UnmanagedType.LPTStr)> ByVal lpszCommand As String,
                                            <MarshalAs(UnmanagedType.LPWStr)> ByVal lpszReturnString As StringBuilder,
                                            ByVal cchReturn As UInteger, ByVal hwndCallback As IntPtr) As Integer
     End Function
+    'mciSendStringW is a function in the Windows Multimedia API that is used to send a command string to an
+    'MCI (Media Control Interface) device. The "W" at the end of the function name indicates that it is the
+    'wide-character version of the function, which means it accepts Unicode strings.
+    'This function allows applications to control multimedia devices and perform operations such as playing
+    'audio or video, recording sound, and managing multimedia resources by sending commands in the form of
+    'strings to MCI devices.
 
     'Create array for sounds.
     Private Sounds() As String
@@ -310,3 +316,30 @@ Public Class Form1
     End Sub
 
 End Class
+
+'Windows Multimedia
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/windows-multimedia-start-page
+
+'MCI
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/mci
+
+'mciSendString function
+'https://learn.microsoft.com/en-us/previous-versions//dd757161(v=vs.85)
+
+'open command
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/open
+
+'setaudio command
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/setaudio
+
+'seek command
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/seek
+
+'play command
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/play
+
+'status command
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/status
+
+'close command
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/close
