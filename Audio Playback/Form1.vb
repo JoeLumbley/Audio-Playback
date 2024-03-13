@@ -401,8 +401,8 @@ End Class
 
 'open Command
 
-'The mciSendStringW function with the "open" command is used in the Windows Multimedia API to open or
-'initialize an MCI device for playback, recording, or other multimedia operations.
+'The "open" command is used in the Windows Multimedia API to open or initialize an MCI device for
+'playback, recording, or other multimedia operations.
 '
 'By sending an MCI command string with the "open" command using mciSendStringW, applications can specify
 'the type of multimedia device to open (such as a CD-ROM drive, sound card, or video device), the file or
