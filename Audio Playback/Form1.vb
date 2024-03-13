@@ -356,8 +356,8 @@ End Class
 'Windows Multimedia
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/windows-multimedia-start-page
 'Windows Multimedia refers to the collection of technologies and APIs (Application Programming Interfaces)
-'provided by Microsoft Windows for handling multimedia tasks on the Windows operating system. It includes
-'components for playing audio and video, recording sound, working with MIDI
+'provided by Microsoft Windows for handling multimedia tasks on the Windows operating system.
+'It includes components for playing audio and video, recording sound, working with MIDI
 '(Musical Instrument Digital Interface) devices, managing multimedia resources, and controlling multimedia
 'hardware. Windows Multimedia APIs like DirectShow, DirectX, MCI (Media Control Interface), and others
 'enable developers to create multimedia applications that can interact with various multimedia devices and
