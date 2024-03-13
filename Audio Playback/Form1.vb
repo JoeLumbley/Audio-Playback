@@ -1,4 +1,5 @@
 ﻿'Audio Playback
+
 'Uses Windows Multimedia API for playback of multiple audio files simultaneously.
 
 'MIT License
@@ -332,19 +333,19 @@ Public Class Form1
 
     Private Sub CreateSoundFileFromResource()
 
-        Dim file As String = Path.Combine(AppPath, "level.mp3")
+        FilePath = Path.Combine(AppPath, "level.mp3")
 
-        If Not IO.File.Exists(file) Then
+        If Not IO.File.Exists(FilePath) Then
 
-            IO.File.WriteAllBytes(file, My.Resources.level)
+            IO.File.WriteAllBytes(FilePath, My.Resources.level)
 
         End If
 
-        file = Path.Combine(AppPath, "CashCollected.mp3")
+        FilePath = Path.Combine(AppPath, "CashCollected.mp3")
 
-        If Not IO.File.Exists(file) Then
+        If Not IO.File.Exists(FilePath) Then
 
-            IO.File.WriteAllBytes(file, My.Resources.CashCollected)
+            IO.File.WriteAllBytes(FilePath, My.Resources.CashCollected)
 
         End If
 
