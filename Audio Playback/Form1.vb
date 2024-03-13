@@ -361,7 +361,7 @@ End Class
 
 'It includes components for playing audio and video, recording sound, working with MIDI devices, managing
 'multimedia resources, and controlling multimedia hardware.
-'
+
 'Windows Multimedia APIs like DirectShow, DirectX, Media Control Interface, and others enable developers to
 'create multimedia applications that can interact with various multimedia devices and perform tasks related
 'to multimedia playback, recording, and processing.
@@ -374,7 +374,7 @@ End Class
 'The Media Control Interface (MCI) is a high-level programming interface provided by Microsoft Windows
 'for controlling multimedia devices such as CD-ROM drives, audio and video devices, and other multimedia
 'hardware.
-'
+
 'MCI provides a standard way for applications to interact with multimedia devices without
 'needing to know the specific details of each device's hardware or communication protocols.
 
@@ -388,7 +388,7 @@ End Class
 
 'mciSendStringW is a function in the Windows Multimedia API that is used to send a command string to an
 'MCI device.
-'
+
 'The "W" at the end of the function name indicates that it is the wide-character version of
 'the function, which means it accepts Unicode strings.
 
@@ -403,7 +403,7 @@ End Class
 
 'The "open" command is used in the Windows Multimedia API to open or initialize an MCI device for
 'playback, recording, or other multimedia operations.
-'
+
 'By sending an MCI command string with the "open" command using mciSendStringW, applications can specify
 'the type of multimedia device to open (such as a CD-ROM drive, sound card, or video device), the file or
 'resource to be accessed, and any additional parameters required for the operation.
@@ -417,9 +417,12 @@ End Class
 'setaudio Command
 
 'The "setaudio" command is used to set the audio parameters for a multimedia device.
+
 'When sending an MCI command string with the "setaudio" command using the mciSendStringW function,
 'applications can adjust settings such as volume, balance, speed, and other audio-related properties of the
-'specified multimedia device. This command allows developers to control and customize the audio playback
+'specified multimedia device.
+
+'This command allows developers to control and customize the audio playback
 'characteristics of the device to meet specific requirements or user preferences.
 
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/setaudio
