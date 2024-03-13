@@ -1,4 +1,36 @@
-﻿Imports System.Runtime.InteropServices 'For DllImport of winmm.dll
+﻿'Audio Playback
+'Uses Windows Multimedia API for playback of multiple audio files simultaneously.
+
+'MIT License
+'Copyright(c) 2022 Joseph W. Lumbley
+
+'Permission Is hereby granted, free Of charge, to any person obtaining a copy
+'of this software And associated documentation files (the "Software"), to deal
+'in the Software without restriction, including without limitation the rights
+'to use, copy, modify, merge, publish, distribute, sublicense, And/Or sell
+'copies of the Software, And to permit persons to whom the Software Is
+'furnished to do so, subject to the following conditions:
+
+'The above copyright notice And this permission notice shall be included In all
+'copies Or substantial portions of the Software.
+
+'THE SOFTWARE Is PROVIDED "AS IS", WITHOUT WARRANTY Of ANY KIND, EXPRESS Or
+'IMPLIED, INCLUDING BUT Not LIMITED To THE WARRANTIES Of MERCHANTABILITY,
+'FITNESS FOR A PARTICULAR PURPOSE And NONINFRINGEMENT. IN NO EVENT SHALL THE
+'AUTHORS Or COPYRIGHT HOLDERS BE LIABLE For ANY CLAIM, DAMAGES Or OTHER
+'LIABILITY, WHETHER In AN ACTION Of CONTRACT, TORT Or OTHERWISE, ARISING FROM,
+'OUT OF Or IN CONNECTION WITH THE SOFTWARE Or THE USE Or OTHER DEALINGS IN THE
+'SOFTWARE.
+
+'Level music by Joseph Lumbley Jr.
+
+'Monica is our an AI assistant.
+'https://monica.im/
+
+'I'm making a video to explain the code on my YouTube channel.
+'https://www.youtube.com/@codewithjoe6074
+
+Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.IO
 
@@ -11,31 +43,34 @@ Public Class Form1
         FAILURE = &H8
     End Enum
 
-    'Import Windows Multimedia API for playback of multiple audio files simultaneously.
     <DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
     Private Shared Function mciSendStringW(<MarshalAs(UnmanagedType.LPTStr)> ByVal lpszCommand As String,
                                            <MarshalAs(UnmanagedType.LPWStr)> ByVal lpszReturnString As StringBuilder,
                                            ByVal cchReturn As UInteger, ByVal hwndCallback As IntPtr) As Integer
     End Function
-    'mciSendStringW is a function in the Windows Multimedia API that is used to send a command string to an
-    'MCI (Media Control Interface) device. The "W" at the end of the function name indicates that it is the
-    'wide-character version of the function, which means it accepts Unicode strings.
-    'This function allows applications to control multimedia devices and perform operations such as playing
-    'audio or video, recording sound, and managing multimedia resources by sending commands in the form of
-    'strings to MCI devices.
 
-    'Create array for sounds.
+
     Private Sounds() As String
+
+    Private AppPath As String
+
+    Private FilePath As String
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        AppPath = Application.StartupPath
+
         CreateSoundFileFromResource()
 
-        AddSound("Music", Application.StartupPath & "level.mp3")
+        FilePath = Path.Combine(AppPath, "level.mp3")
+
+        AddSound("Music", FilePath)
 
         SetVolume("Music", 50)
 
-        AddOverlaping("CashCollected", Application.StartupPath & "CashCollected.mp3")
+        FilePath = Path.Combine(AppPath, "CashCollected.mp3")
+
+        AddOverlaping("CashCollected", FilePath)
 
         SetVolumeOverlaping("CashCollected", 500)
 
@@ -108,6 +143,40 @@ Public Class Form1
 
     End Function
 
+    Private Function SetVolume(ByVal SoundName As String, ByVal Level As Integer) As Boolean
+
+        Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
+
+        'Do we have sounds?
+        If Sounds IsNot Nothing Then
+            'Yes, we have sounds.
+
+            'Is the sound in the sounds array?
+            If Sounds.Contains(SoundName) Then
+                'Yes, the sound is the sounds array.
+
+                'Is the level in the valid range?
+                If Level >= 0 And Level <= 1000 Then
+                    'Yes, the level is in range.
+
+                    'Was the volume set?
+                    If mciSendStringW(CommandVolume, Nothing, 0, IntPtr.Zero) = 0 Then
+                        'Yes, the volume was set.
+
+                        Return True
+
+                    End If
+
+                End If
+
+            End If
+
+        End If
+
+        Return False 'The volume was not set.
+
+    End Function
+
     Private Function LoopSound(ByVal SoundName As String) As Boolean
 
         If Sounds IsNot Nothing Then
@@ -159,45 +228,35 @@ Public Class Form1
 
     End Function
 
-    Private Function SetVolume(ByVal SoundName As String, ByVal Level As Integer) As Boolean
-
-        Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
-
-        'Do we have sounds?
-        If Sounds IsNot Nothing Then
-            'Yes, we have sounds.
-
-            'Is the sound in the sounds array?
-            If Sounds.Contains(SoundName) Then
-                'Yes, the sound is the sounds array.
-
-                'Is the level in the valid range?
-                If Level >= 0 And Level <= 1000 Then
-                    'Yes, the level is in range.
-
-                    'Was the volume set?
-                    If mciSendStringW(CommandVolume, Nothing, 0, IntPtr.Zero) = 0 Then
-                        'Yes, the volume was set.
-
-                        Return True
-
-                    End If
-
-                End If
-
-            End If
-
-        End If
-
-        Return False 'The volume was not set.
-
-    End Function
-
     Private Function IsPlaying(ByVal SoundName As String) As Boolean
 
         Return (GetStatus(SoundName, "mode") = "playing")
 
     End Function
+
+    Private Sub AddOverlaping(ByVal SoundName As String, ByVal FilePath As String)
+
+        AddSound(SoundName & "A", FilePath)
+
+        AddSound(SoundName & "B", FilePath)
+
+        AddSound(SoundName & "C", FilePath)
+
+        AddSound(SoundName & "D", FilePath)
+
+    End Sub
+
+    Private Sub SetVolumeOverlaping(ByVal SoundName As String, ByVal Level As Integer)
+
+        SetVolume(SoundName & "A", Level)
+
+        SetVolume(SoundName & "B", Level)
+
+        SetVolume(SoundName & "C", Level)
+
+        SetVolume(SoundName & "D", Level)
+
+    End Sub
 
     Private Sub PlayOverlaping(ByVal SoundName As String)
 
@@ -233,46 +292,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub AddOverlaping(ByVal SoundName As String, ByVal FilePath As String)
-
-        AddSound(SoundName & "A", FilePath)
-
-        AddSound(SoundName & "B", FilePath)
-
-        AddSound(SoundName & "C", FilePath)
-
-        AddSound(SoundName & "D", FilePath)
-
-    End Sub
-
-    Private Sub SetVolumeOverlaping(ByVal SoundName As String, ByVal Level As Integer)
-
-        SetVolume(SoundName & "A", Level)
-
-        SetVolume(SoundName & "B", Level)
-
-        SetVolume(SoundName & "C", Level)
-
-        SetVolume(SoundName & "D", Level)
-
-    End Sub
-
-    Private Sub CloseSounds()
-
-        If Sounds IsNot Nothing Then
-
-            For Each Sound In Sounds
-
-                mciSendStringW("close " & Sound, Nothing, 0, IntPtr.Zero)
-
-            Next
-
-        End If
-
-        Sounds = Nothing
-
-    End Sub
-
     Private Function GetStatus(ByVal SoundName As String, ByVal StatusType As String) As String
 
         Dim CommandStatus As String = "status " & SoundName & " " & StatusType
@@ -295,9 +314,25 @@ Public Class Form1
 
     End Function
 
+    Private Sub CloseSounds()
+
+        If Sounds IsNot Nothing Then
+
+            For Each Sound In Sounds
+
+                mciSendStringW("close " & Sound, Nothing, 0, IntPtr.Zero)
+
+            Next
+
+        End If
+
+        Sounds = Nothing
+
+    End Sub
+
     Private Sub CreateSoundFileFromResource()
 
-        Dim file As String = Path.Combine(Application.StartupPath, "level.mp3")
+        Dim file As String = Path.Combine(AppPath, "level.mp3")
 
         If Not IO.File.Exists(file) Then
 
@@ -305,7 +340,7 @@ Public Class Form1
 
         End If
 
-        file = Path.Combine(Application.StartupPath, "CashCollected.mp3")
+        file = Path.Combine(AppPath, "CashCollected.mp3")
 
         If Not IO.File.Exists(file) Then
 
@@ -319,15 +354,41 @@ End Class
 
 'Windows Multimedia
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/windows-multimedia-start-page
+'Windows Multimedia refers to the collection of technologies and APIs (Application Programming Interfaces)
+'provided by Microsoft Windows for handling multimedia tasks on the Windows operating system. It includes
+'components for playing audio and video, recording sound, working with MIDI
+'(Musical Instrument Digital Interface) devices, managing multimedia resources, and controlling multimedia
+'hardware. Windows Multimedia APIs like DirectShow, DirectX, MCI (Media Control Interface), and others
+'enable developers to create multimedia applications that can interact with various multimedia devices and
+'perform tasks related to multimedia playback, recording, and processing.
 
 'MCI
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/mci
+'The Media Control Interface (MCI) is a high-level programming interface provided by Microsoft Windows
+'for controlling multimedia devices such as CD-ROM drives, audio and video devices, and other multimedia
+'hardware. MCI provides a standard way for applications to interact with multimedia devices without
+'needing to know the specific details of each device's hardware or communication protocols.
+'By using MCI commands and functions, applications can play, record, pause, stop, and otherwise control
+'multimedia playback and recording devices in a consistent and platform-independent manner.
 
-'mciSendString function
+'mciSendStringW function
 'https://learn.microsoft.com/en-us/previous-versions//dd757161(v=vs.85)
+'mciSendStringW is a function in the Windows Multimedia API that is used to send a command string to an
+'MCI (Media Control Interface) device. The "W" at the end of the function name indicates that it is the
+'wide-character version of the function, which means it accepts Unicode strings.
+'This function allows applications to control multimedia devices and perform operations such as playing
+'audio or video, recording sound, and managing multimedia resources by sending commands in the form of
+'strings to MCI devices.
 
 'open command
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/open
+'The mciSendStringW function with the "open" command is used in the Windows Multimedia API to open or
+'initialize an MCI (Media Control Interface) device for playback, recording, or other multimedia
+'operations. By sending an MCI command string with the "open" command using mciSendStringW, applications
+'can specify the type of multimedia device to open (such as a CD-ROM drive, sound card, or video device),
+'the file or resource to be accessed, and any additional parameters required for the operation.
+'This command is essential for preparing a multimedia device for use before performing playback, recording,
+'or other actions on it.
 
 'setaudio command
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/setaudio
