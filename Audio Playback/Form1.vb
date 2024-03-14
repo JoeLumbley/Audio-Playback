@@ -227,6 +227,28 @@ Public Class Form1
 
     End Function
 
+    Private Function PauseSound(ByVal SoundName As String) As Boolean
+
+        Dim CommandPause As String = "pause " & SoundName & " notify"
+
+        If Sounds IsNot Nothing Then
+
+            If Sounds.Contains(SoundName) Then
+
+                If mciSendStringW(CommandPause, Nothing, 0, Me.Handle) = 0 Then
+
+                    Return True
+
+                End If
+
+            End If
+
+        End If
+
+        Return False
+
+    End Function
+
     Private Function IsPlaying(ByVal SoundName As String) As Boolean
 
         Return (GetStatus(SoundName, "mode") = "playing")
@@ -344,6 +366,20 @@ Public Class Form1
         If Not IO.File.Exists(FilePath) Then
 
             IO.File.WriteAllBytes(FilePath, My.Resources.CashCollected)
+
+        End If
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+
+        If IsPlaying("Music") = True Then
+
+            PauseSound("Music")
+
+        Else
+
+            LoopSound("Music")
 
         End If
 
