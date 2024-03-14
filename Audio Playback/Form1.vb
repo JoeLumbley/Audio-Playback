@@ -377,9 +377,13 @@ Public Class Form1
 
             PauseSound("Music")
 
+            Button2.Text = "Play Loop"
+
         Else
 
             LoopSound("Music")
+
+            Button2.Text = "Pause Loop"
 
         End If
 
