@@ -373,8 +373,8 @@ End Class
 'for controlling multimedia devices such as CD-ROM drives, audio and video devices, and other multimedia
 'hardware.
 
-'MCI provides a standard way for applications to interact with multimedia devices without
-'needing to know the specific details of each device's hardware or communication protocols.
+'MCI provides a standard way for applications to interact with multimedia devices without needing to know
+'the specific details of each device's hardware or communication protocols.
 
 'By using MCI commands and functions, applications can play, record, pause, stop, and otherwise control
 'multimedia playback and recording devices in a consistent and platform-independent manner.
@@ -451,7 +451,7 @@ End Class
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/play
 
 
-'status command
+'status Command
 
 'The "status" command is used to retrieve information about the current status of a multimedia device or resource.
 
@@ -465,7 +465,7 @@ End Class
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/status
 
 
-'close command
+'close Command
 
 'The "close" command is used to close or release a multimedia device that was previously opened for playback,
 'recording, or other operations.
