@@ -513,3 +513,11 @@ End Class
 'resources are properly released and the device is no longer in use by the application.
 
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/close
+
+
+'pause Command
+
+'The pause command is used to temporarily halt the playback of media content, allowing the user to resume playback
+'from the paused position at a later time.
+
+'https://learn.microsoft.com/en-us/windows/win32/multimedia/pause
