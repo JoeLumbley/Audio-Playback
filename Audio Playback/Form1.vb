@@ -50,7 +50,6 @@ Public Class Form1
                                            ByVal cchReturn As UInteger, ByVal hwndCallback As IntPtr) As Integer
     End Function
 
-
     Private Sounds() As String
 
     Private AppPath As String
@@ -115,7 +114,7 @@ Public Class Form1
                         Array.Resize(Sounds, Sounds.Length + 1)
                         Sounds(Sounds.Length - 1) = SoundName
 
-                        Return True
+                        Return True 'The sound was added.
 
                     End If
 
@@ -132,7 +131,7 @@ Public Class Form1
                     ReDim Sounds(0)
                     Sounds(0) = SoundName
 
-                    Return True
+                    Return True 'The sound was added.
 
                 End If
 
@@ -140,7 +139,7 @@ Public Class Form1
 
         End If
 
-        Return False
+        Return False 'The sound was not added.
 
     End Function
 
@@ -162,9 +161,8 @@ Public Class Form1
 
                     'Was the volume set?
                     If mciSendStringW(CommandVolume, Nothing, 0, IntPtr.Zero) = 0 Then
-                        'Yes, the volume was set.
 
-                        Return True
+                        Return True 'The volume was set.
 
                     End If
 
@@ -386,8 +384,7 @@ End Class
 
 'mciSendStringW Function
 
-'mciSendStringW is a function in the Windows Multimedia API that is used to send a command string to an
-'MCI device.
+'mciSendStringW is a function that is used to send a command string to an MCI device.
 
 'The "W" at the end of the function name indicates that it is the wide-character version of
 'the function, which means it accepts Unicode strings.
@@ -428,17 +425,55 @@ End Class
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/setaudio
 
 
-'seek command
+'seek Command
+
+'The "seek" command is used to move the current position of playback or recording to a specified location within
+'a multimedia resource.
+
+'When sending an MCI command string with the "seek" command using the mciSendStringW function, applications can
+'specify the position or time where playback should start or resume within the multimedia content. This command
+'allows developers to navigate to a specific point in audio or video playback, facilitating precise control over
+'multimedia playback operations.
+
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/seek
 
 
-'play command
+'play Command
+
+'The "play" command is used to start or resume playback of a multimedia resource.
+
+'When sending an MCI command string with the "play" command using the mciSendStringW function, applications can
+'instruct the multimedia device to begin playing the specified audio or video content from the current position.
+
+'This command is essential for initiating playback of multimedia files, allowing developers to control the start
+'and continuation of audio or video playback operations using MCI commands.
+
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/play
 
 
 'status command
+
+'The "status" command is used to retrieve information about the current status of a multimedia device or resource.
+
+'When sending an MCI command string with the "status" command using the mciSendStringW function, applications can
+'query various properties and states of the specified multimedia device, such as playback position, volume level,
+'mode (playing, paused, stopped), and other relevant information.
+
+'This command allows developers to monitor and obtain real-time feedback on the status of multimedia playback or
+'recording operations, enabling them to make informed decisions based on the device's current state.
+
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/status
 
 
 'close command
+
+'The "close" command is used to close or release a multimedia device that was previously opened for playback,
+'recording, or other operations.
+
+'When sending an MCI command string with the "close" command using the mciSendStringW function, applications can
+'instruct the multimedia device to release any resources associated with the device and prepare it for shutdown.
+
+'This command is essential for properly closing and cleaning up after using a multimedia device, ensuring that
+'resources are properly released and the device is no longer in use by the application.
+
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/close
