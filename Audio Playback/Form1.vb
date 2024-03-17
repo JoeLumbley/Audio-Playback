@@ -66,13 +66,13 @@ Public Class Form1
 
         AddSound("Music", FilePath)
 
-        SetVolume("Music", 50)
+        SetVolume("Music", 200)
 
         FilePath = Path.Combine(AppPath, "CashCollected.mp3")
 
         AddOverlaping("CashCollected", FilePath)
 
-        SetVolumeOverlaping("CashCollected", 500)
+        SetVolumeOverlaping("CashCollected", 800)
 
         LoopSound("Music")
 
@@ -81,6 +81,24 @@ Public Class Form1
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
         PlayOverlaping("CashCollected")
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+
+        If IsPlaying("Music") = True Then
+
+            PauseSound("Music")
+
+            Button2.Text = "Play Loop"
+
+        Else
+
+            LoopSound("Music")
+
+            Button2.Text = "Pause Loop"
+
+        End If
 
     End Sub
 
@@ -371,23 +389,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-
-        If IsPlaying("Music") = True Then
-
-            PauseSound("Music")
-
-            Button2.Text = "Play Loop"
-
-        Else
-
-            LoopSound("Music")
-
-            Button2.Text = "Pause Loop"
-
-        End If
-
-    End Sub
 
 End Class
 
