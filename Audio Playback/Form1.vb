@@ -199,11 +199,15 @@ Public Class Form1
 
         Dim CommandPlayRepete As String = "play " & SoundName & " repeat"
 
+        'Do we have sounds?
         If Sounds IsNot Nothing Then
+            'Yes, we have sounds.
 
+            'Is the sound in the array?
             If Not Sounds.Contains(SoundName) Then
+                'No, the sound is not in the array.
 
-                Return False
+                Return False 'The sound is not playing.
 
             End If
 
@@ -211,32 +215,35 @@ Public Class Form1
 
             If mciSendStringW(CommandPlayRepete, Nothing, 0, Me.Handle) <> 0 Then
 
-                Return False
+                Return False 'The sound is not playing.
 
             End If
 
         End If
 
-        Return True
+        Return True 'The sound is playing.
 
     End Function
 
     Private Function PlaySound(ByVal SoundName As String) As Boolean
 
-        Dim CommandFromStart As String = "seek " & SoundName & " to start"
+        Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
 
         Dim CommandPlay As String = "play " & SoundName & " notify"
 
+        'Do we have sounds?
         If Sounds IsNot Nothing Then
+            'Yes, we have sounds.
 
+            'Is the sound in the array?
             If Sounds.Contains(SoundName) Then
+                'Yes, the sound is in the array.
 
-                'Play sound file from the start.
-                mciSendStringW(CommandFromStart, Nothing, 0, IntPtr.Zero)
+                mciSendStringW(CommandSeekToStart, Nothing, 0, IntPtr.Zero)
 
                 If mciSendStringW(CommandPlay, Nothing, 0, Me.Handle) = 0 Then
 
-                    Return True
+                    Return True 'The sound is playing.
 
                 End If
 
@@ -244,7 +251,7 @@ Public Class Form1
 
         End If
 
-        Return False
+        Return False 'The sound is not playing.
 
     End Function
 
@@ -252,13 +259,18 @@ Public Class Form1
 
         Dim CommandPause As String = "pause " & SoundName & " notify"
 
-        If Sounds IsNot Nothing Then
 
+        'Do we have sounds?
+        If Sounds IsNot Nothing Then
+            'Yes, we have sounds.
+
+            'Is the sound in the array?
             If Sounds.Contains(SoundName) Then
+                'Yes, the sound is in the array.
 
                 If mciSendStringW(CommandPause, Nothing, 0, Me.Handle) = 0 Then
 
-                    Return True
+                    Return True 'The sound is playing.
 
                 End If
 
@@ -266,7 +278,7 @@ Public Class Form1
 
         End If
 
-        Return False
+        Return False 'The sound is not playing.
 
     End Function
 
