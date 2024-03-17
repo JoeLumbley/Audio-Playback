@@ -64,13 +64,13 @@ Public Class Form1
 
         AddSound("Music", FilePath)
 
-        SetVolume("Music", 200)
+        SetVolume("Music", 600)
 
         FilePath = Path.Combine(AppPath, "CashCollected.mp3")
 
         AddOverlaping("CashCollected", FilePath)
 
-        SetVolumeOverlaping("CashCollected", 800)
+        SetVolumeOverlaping("CashCollected", 900)
 
         LoopSound("Music")
 
