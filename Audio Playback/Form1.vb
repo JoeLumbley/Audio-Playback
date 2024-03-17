@@ -34,6 +34,7 @@
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.IO
+Imports System.Reflection.Emit
 
 Public Class Form1
 
@@ -194,6 +195,10 @@ Public Class Form1
 
     Private Function LoopSound(ByVal SoundName As String) As Boolean
 
+        Dim CommandFromStart As String = "seek " & SoundName & " to start"
+
+        Dim CommandPlayRepete As String = "play " & SoundName & " repeat"
+
         If Sounds IsNot Nothing Then
 
             If Not Sounds.Contains(SoundName) Then
@@ -202,9 +207,9 @@ Public Class Form1
 
             End If
 
-            mciSendStringW("seek " & SoundName & " to start", Nothing, 0, IntPtr.Zero)
+            mciSendStringW(CommandFromStart, Nothing, 0, IntPtr.Zero)
 
-            If mciSendStringW("play " & SoundName & " repeat", Nothing, 0, Me.Handle) <> 0 Then
+            If mciSendStringW(CommandPlayRepete, Nothing, 0, Me.Handle) <> 0 Then
 
                 Return False
 
@@ -267,7 +272,7 @@ Public Class Form1
 
     Private Function IsPlaying(ByVal SoundName As String) As Boolean
 
-        Return (GetStatus(SoundName, "mode") = "playing")
+        Return GetStatus(SoundName, "mode") = "playing"
 
     End Function
 
