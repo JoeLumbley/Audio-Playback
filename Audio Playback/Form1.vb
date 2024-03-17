@@ -358,11 +358,15 @@ Public Class Form1
 
     Private Sub CloseSounds()
 
+        Dim CommandClose As String
+
         If Sounds IsNot Nothing Then
 
             For Each Sound In Sounds
 
-                mciSendStringW("close " & Sound, Nothing, 0, IntPtr.Zero)
+                CommandClose = "close " & Sound
+
+                mciSendStringW(CommandClose, Nothing, 0, IntPtr.Zero)
 
             Next
 
