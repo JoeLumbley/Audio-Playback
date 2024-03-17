@@ -54,7 +54,7 @@ Public Class Form1
 
     Private AppPath As String
 
-    Private FilePath As String
+    'Private FilePath As String
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -62,7 +62,7 @@ Public Class Form1
 
         CreateSoundFileFromResource()
 
-        FilePath = Path.Combine(AppPath, "level.mp3")
+        Dim FilePath As String = Path.Combine(AppPath, "level.mp3")
 
         AddSound("Music", FilePath)
 
@@ -371,7 +371,7 @@ Public Class Form1
 
     Private Sub CreateSoundFileFromResource()
 
-        FilePath = Path.Combine(AppPath, "level.mp3")
+        Dim FilePath As String = Path.Combine(AppPath, "level.mp3")
 
         If Not IO.File.Exists(FilePath) Then
 
@@ -388,7 +388,6 @@ Public Class Form1
         End If
 
     End Sub
-
 
 End Class
 
