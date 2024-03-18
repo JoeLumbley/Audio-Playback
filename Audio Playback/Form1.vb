@@ -259,7 +259,6 @@ Public Class Form1
 
         Dim CommandPause As String = "pause " & SoundName & " notify"
 
-
         'Do we have sounds?
         If Sounds IsNot Nothing Then
             'Yes, we have sounds.
