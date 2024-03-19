@@ -25,12 +25,6 @@
 
 'Level music by Joseph Lumbley Jr.
 
-'Monica is our an AI assistant.
-'https://monica.im/
-
-'I'm making a video to explain the code on my YouTube channel.
-'https://www.youtube.com/@codewithjoe6074
-
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.IO
@@ -552,3 +546,11 @@ End Class
 'playback from the paused position at a later time.
 
 'https://learn.microsoft.com/en-us/windows/win32/multimedia/pause
+
+
+'Monica is our an AI assistant.
+'https://monica.im/
+
+
+'I also make coding videos on my YouTube channel.
+'https://www.youtube.com/@codewithjoe6074
