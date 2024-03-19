@@ -34,7 +34,6 @@
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.IO
-Imports System.Reflection.Emit
 
 Public Class Form1
 
