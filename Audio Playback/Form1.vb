@@ -130,6 +130,7 @@ Public Class Form1
 
                         'Add the sound to the Sounds array.
                         Array.Resize(Sounds, Sounds.Length + 1)
+
                         Sounds(Sounds.Length - 1) = SoundName
 
                         Return True 'The sound was added.
@@ -147,6 +148,7 @@ Public Class Form1
 
                     'Start the Sounds array with the sound.
                     ReDim Sounds(0)
+
                     Sounds(0) = SoundName
 
                     Return True 'The sound was added.
