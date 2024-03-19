@@ -31,13 +31,6 @@ Imports System.IO
 
 Public Class Form1
 
-    Private Enum MCI_NOTIFY As Integer
-        SUCCESSFUL = &H1
-        SUPERSEDED = &H2
-        ABORTED = &H4
-        FAILURE = &H8
-    End Enum
-
     <DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
     Private Shared Function mciSendStringW(<MarshalAs(UnmanagedType.LPTStr)> ByVal lpszCommand As String,
                                            <MarshalAs(UnmanagedType.LPWStr)> ByVal lpszReturnString As StringBuilder,
