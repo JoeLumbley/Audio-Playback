@@ -57,9 +57,9 @@ Public Class Form1
 
         FilePath = Path.Combine(AppPath, "CashCollected.mp3")
 
-        AddOverlaping("CashCollected", FilePath)
+        AddOverlapping("CashCollected", FilePath)
 
-        SetVolumeOverlaping("CashCollected", 900)
+        SetVolumeOverlapping("CashCollected", 900)
 
         LoopSound("Music")
 
@@ -67,7 +67,7 @@ Public Class Form1
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        PlayOverlaping("CashCollected")
+        PlayOverlapping("CashCollected")
 
     End Sub
 
@@ -277,63 +277,99 @@ Public Class Form1
 
     End Function
 
-    Private Sub AddOverlaping(ByVal SoundName As String, ByVal FilePath As String)
+    Private Sub AddOverlapping(ByVal SoundName As String, ByVal FilePath As String)
 
-        AddSound(SoundName & "A", FilePath)
+        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
 
-        AddSound(SoundName & "B", FilePath)
+            AddSound(SoundName & Suffix, FilePath)
 
-        AddSound(SoundName & "C", FilePath)
-
-        AddSound(SoundName & "D", FilePath)
+        Next
 
     End Sub
 
-    Private Sub SetVolumeOverlaping(ByVal SoundName As String, ByVal Level As Integer)
+    Private Sub PlayOverlapping(ByVal SoundName As String)
 
-        SetVolume(SoundName & "A", Level)
+        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
 
-        SetVolume(SoundName & "B", Level)
+            If Not IsPlaying(SoundName & Suffix) Then
 
-        SetVolume(SoundName & "C", Level)
+                PlaySound(SoundName & Suffix)
 
-        SetVolume(SoundName & "D", Level)
-
-    End Sub
-
-    Private Sub PlayOverlaping(ByVal SoundName As String)
-
-        If IsPlaying(SoundName & "A") = False Then
-
-            PlaySound(SoundName & "A")
-
-        Else
-
-            If IsPlaying(SoundName & "B") = False Then
-
-                PlaySound(SoundName & "B")
-
-            Else
-
-                If IsPlaying(SoundName & "C") = False Then
-
-                    PlaySound(SoundName & "C")
-
-                Else
-
-                    If IsPlaying(SoundName & "D") = False Then
-
-                        PlaySound(SoundName & "D")
-
-                    End If
-
-                End If
+                Exit Sub
 
             End If
 
-        End If
+        Next
 
     End Sub
+
+    Private Sub SetVolumeOverlapping(ByVal SoundName As String, ByVal Level As Integer)
+
+        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
+
+            SetVolume(SoundName & Suffix, Level)
+
+        Next
+
+    End Sub
+
+    'Private Sub AddOverlaping(ByVal SoundName As String, ByVal FilePath As String)
+
+    '    AddSound(SoundName & "A", FilePath)
+
+    '    AddSound(SoundName & "B", FilePath)
+
+    '    AddSound(SoundName & "C", FilePath)
+
+    '    AddSound(SoundName & "D", FilePath)
+
+    'End Sub
+
+    'Private Sub SetVolumeOverlaping(ByVal SoundName As String, ByVal Level As Integer)
+
+    '    SetVolume(SoundName & "A", Level)
+
+    '    SetVolume(SoundName & "B", Level)
+
+    '    SetVolume(SoundName & "C", Level)
+
+    '    SetVolume(SoundName & "D", Level)
+
+    'End Sub
+
+    'Private Sub PlayOverlaping(ByVal SoundName As String)
+
+    '    If IsPlaying(SoundName & "A") = False Then
+
+    '        PlaySound(SoundName & "A")
+
+    '    Else
+
+    '        If IsPlaying(SoundName & "B") = False Then
+
+    '            PlaySound(SoundName & "B")
+
+    '        Else
+
+    '            If IsPlaying(SoundName & "C") = False Then
+
+    '                PlaySound(SoundName & "C")
+
+    '            Else
+
+    '                If IsPlaying(SoundName & "D") = False Then
+
+    '                    PlaySound(SoundName & "D")
+
+    '                End If
+
+    '            End If
+
+    '        End If
+
+    '    End If
+
+    'End Sub
 
     Private Function GetStatus(ByVal SoundName As String, ByVal StatusType As String) As String
 
