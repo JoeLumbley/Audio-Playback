@@ -95,7 +95,7 @@ Public Class Form1
 
     End Sub
 
-    Private Function AddSound(ByVal SoundName As String, ByVal FilePath As String) As Boolean
+    Private Function AddSound(SoundName As String, FilePath As String) As Boolean
 
         Dim CommandOpen As String = "open " & Chr(34) & FilePath & Chr(34) & " alias " & SoundName
 
@@ -150,7 +150,7 @@ Public Class Form1
 
     End Function
 
-    Private Function SetVolume(ByVal SoundName As String, ByVal Level As Integer) As Boolean
+    Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
 
         Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
 
@@ -183,7 +183,7 @@ Public Class Form1
 
     End Function
 
-    Private Function LoopSound(ByVal SoundName As String) As Boolean
+    Private Function LoopSound(SoundName As String) As Boolean
 
         Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
 
@@ -215,7 +215,7 @@ Public Class Form1
 
     End Function
 
-    Private Function PlaySound(ByVal SoundName As String) As Boolean
+    Private Function PlaySound(SoundName As String) As Boolean
 
         Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
 
@@ -245,7 +245,7 @@ Public Class Form1
 
     End Function
 
-    Private Function PauseSound(ByVal SoundName As String) As Boolean
+    Private Function PauseSound(SoundName As String) As Boolean
 
         Dim CommandPause As String = "pause " & SoundName & " notify"
 
@@ -271,13 +271,13 @@ Public Class Form1
 
     End Function
 
-    Private Function IsPlaying(ByVal SoundName As String) As Boolean
+    Private Function IsPlaying(SoundName As String) As Boolean
 
         Return GetStatus(SoundName, "mode") = "playing"
 
     End Function
 
-    Private Sub AddOverlapping(ByVal SoundName As String, ByVal FilePath As String)
+    Private Sub AddOverlapping(SoundName As String, FilePath As String)
 
         For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
 
@@ -287,7 +287,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub PlayOverlapping(ByVal SoundName As String)
+    Private Sub PlayOverlapping(SoundName As String)
 
         For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
 
@@ -303,7 +303,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub SetVolumeOverlapping(ByVal SoundName As String, ByVal Level As Integer)
+    Private Sub SetVolumeOverlapping(SoundName As String, Level As Integer)
 
         For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
 
@@ -313,65 +313,7 @@ Public Class Form1
 
     End Sub
 
-    'Private Sub AddOverlaping(ByVal SoundName As String, ByVal FilePath As String)
-
-    '    AddSound(SoundName & "A", FilePath)
-
-    '    AddSound(SoundName & "B", FilePath)
-
-    '    AddSound(SoundName & "C", FilePath)
-
-    '    AddSound(SoundName & "D", FilePath)
-
-    'End Sub
-
-    'Private Sub SetVolumeOverlaping(ByVal SoundName As String, ByVal Level As Integer)
-
-    '    SetVolume(SoundName & "A", Level)
-
-    '    SetVolume(SoundName & "B", Level)
-
-    '    SetVolume(SoundName & "C", Level)
-
-    '    SetVolume(SoundName & "D", Level)
-
-    'End Sub
-
-    'Private Sub PlayOverlaping(ByVal SoundName As String)
-
-    '    If IsPlaying(SoundName & "A") = False Then
-
-    '        PlaySound(SoundName & "A")
-
-    '    Else
-
-    '        If IsPlaying(SoundName & "B") = False Then
-
-    '            PlaySound(SoundName & "B")
-
-    '        Else
-
-    '            If IsPlaying(SoundName & "C") = False Then
-
-    '                PlaySound(SoundName & "C")
-
-    '            Else
-
-    '                If IsPlaying(SoundName & "D") = False Then
-
-    '                    PlaySound(SoundName & "D")
-
-    '                End If
-
-    '            End If
-
-    '        End If
-
-    '    End If
-
-    'End Sub
-
-    Private Function GetStatus(ByVal SoundName As String, ByVal StatusType As String) As String
+    Private Function GetStatus(SoundName As String, StatusType As String) As String
 
         Dim CommandStatus As String = "status " & SoundName & " " & StatusType
 
