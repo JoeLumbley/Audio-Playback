@@ -12,7 +12,7 @@ Key Features:
 - MCI Integration: Leverage the power of the Media Control Interface (MCI) to interact with multimedia devices, providing a standardized and platform-independent approach to controlling multimedia hardware.
 - User-Friendly Interface: Enjoy a user-friendly and intuitive interface, designed to streamline the process of managing and controlling audio playback operations.
 
-With its robust functionality and seamless integration with the Windows Multimedia API, this application empowers users to create engaging multimedia applications with ease. Whether you are a seasoned developer or an aspiring enthusiast, the Windows Multimedia Audio Playback Application is your gateway to unlocking the full potential of audio playback on the Windows platform.
+With its robust functionality and seamless integration with the Windows Multimedia API, this application empowers users to create engaging multimedia applications with ease. Whether you are a seasoned developer or an aspiring enthusiast, the Audio Playback Application is your gateway to unlocking the full potential of audio playback on the Windows platform.
 
 Clone the repository now and embark on a transformative audio playback experience!
 
