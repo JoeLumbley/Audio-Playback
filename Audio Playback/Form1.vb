@@ -225,6 +225,8 @@ Public Class Form1
 
         Dim CommandPlay As String = "play " & SoundName & " notify"
 
+        Dim returnString As New System.Text.StringBuilder(128)
+
         'Do we have sounds?
         If Sounds IsNot Nothing Then
             'Yes, we have sounds.
@@ -253,6 +255,8 @@ Public Class Form1
 
         Dim CommandPause As String = "pause " & SoundName & " notify"
 
+        Dim returnString As New System.Text.StringBuilder(128)
+
         'Do we have sounds?
         If Sounds IsNot Nothing Then
             'Yes, we have sounds.
@@ -261,7 +265,7 @@ Public Class Form1
             If Sounds.Contains(SoundName) Then
                 'Yes, the sound is in the array.
 
-                If mciSendStringW(CommandPause, Nothing, 0, Me.Handle) = 0 Then
+                If mciSendStringW(CommandPause, returnString, 0, Me.Handle) = 0 Then
 
                     Return True 'The sound is playing.
 
