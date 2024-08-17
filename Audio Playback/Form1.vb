@@ -267,7 +267,7 @@ Public Class Form1
 
                 If mciSendStringW(CommandPause, returnString, 0, Me.Handle) = 0 Then
 
-                    Return True 'The sound is playing.
+                    Return True 'The sound is paused.
 
                 End If
 
@@ -275,7 +275,7 @@ Public Class Form1
 
         End If
 
-        Return False 'The sound is not playing.
+        Return False 'The sound is not paused.
 
     End Function
 

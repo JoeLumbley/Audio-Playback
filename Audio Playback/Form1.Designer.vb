@@ -37,6 +37,9 @@ Partial Class Form1
         Button1.Text = "Play Cash"
         Button1.UseVisualStyleBackColor = True
         ' 
+        ' MusicLoopTimer
+        ' 
+        ' 
         ' Button2
         ' 
         Button2.Location = New Point(12, 63)
