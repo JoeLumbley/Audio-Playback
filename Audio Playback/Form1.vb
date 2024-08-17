@@ -29,6 +29,7 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.IO
 
+
 Public Class Form1
 
     <DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
@@ -37,25 +38,22 @@ Public Class Form1
                                            ByVal cchReturn As UInteger, ByVal hwndCallback As IntPtr) As Integer
     End Function
 
-    Private Sounds() As String
 
-    Private AppPath As String
+    Private Sounds() As String
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Text = "Audio Playback - Code with Joe"
 
-        AppPath = Application.StartupPath
-
         CreateSoundFileFromResource()
 
-        Dim FilePath As String = Path.Combine(AppPath, "level.mp3")
+        Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
 
         AddSound("Music", FilePath)
 
         SetVolume("Music", 600)
 
-        FilePath = Path.Combine(AppPath, "CashCollected.mp3")
+        FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
 
         AddOverlapping("CashCollected", FilePath)
 
@@ -99,6 +97,8 @@ Public Class Form1
 
         Dim CommandOpen As String = "open " & Chr(34) & FilePath & Chr(34) & " alias " & SoundName
 
+        Dim returnString As New System.Text.StringBuilder(128)
+
         'Do we have a name and does the file exist?
         If Not SoundName.Trim = String.Empty And IO.File.Exists(FilePath) Then
             'Yes, we have a name and the file exists.
@@ -112,7 +112,7 @@ Public Class Form1
                     'No, the sound is not in the array.
 
                     'Did the sound file open?
-                    If mciSendStringW(CommandOpen, Nothing, 0, IntPtr.Zero) = 0 Then
+                    If mciSendStringW(CommandOpen, returnString, 0, IntPtr.Zero) = 0 Then
                         'Yes, the sound file did open.
 
                         'Add the sound to the Sounds array.
@@ -130,7 +130,7 @@ Public Class Form1
                 'No, we do not have sounds.
 
                 'Did the sound file open?
-                If mciSendStringW(CommandOpen, Nothing, 0, IntPtr.Zero) = 0 Then
+                If mciSendStringW(CommandOpen, returnString, 0, IntPtr.Zero) = 0 Then
                     'Yes, the sound file did open.
 
                     'Start the Sounds array with the sound.
@@ -357,7 +357,7 @@ Public Class Form1
 
     Private Sub CreateSoundFileFromResource()
 
-        Dim FilePath As String = Path.Combine(AppPath, "level.mp3")
+        Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
 
         If Not IO.File.Exists(FilePath) Then
 
@@ -365,7 +365,7 @@ Public Class Form1
 
         End If
 
-        FilePath = Path.Combine(AppPath, "CashCollected.mp3")
+        FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
 
         If Not IO.File.Exists(FilePath) Then
 
