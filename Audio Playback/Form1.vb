@@ -203,11 +203,11 @@ Public Class Form1
 
             Dim CommandPlayRepete As String = $"play {SoundName} repeat"
 
-            Dim returnString As New StringBuilder(128)
+            Dim ReturnString As New StringBuilder(128)
 
-            mciSendStringW(CommandSeekToStart, returnString, 0, IntPtr.Zero)
+            mciSendStringW(CommandSeekToStart, ReturnString, 0, IntPtr.Zero)
 
-            If mciSendStringW(CommandPlayRepete, returnString, 0, Me.Handle) <> 0 Then
+            If mciSendStringW(CommandPlayRepete, ReturnString, 0, Me.Handle) <> 0 Then
 
                 Return False ' The sound is not playing.
 
@@ -231,13 +231,13 @@ Public Class Form1
 
                 Dim CommandSeekToStart As String = $"seek {SoundName} to start"
 
-                Dim returnString As New StringBuilder(128)
+                Dim ReturnString As New StringBuilder(128)
 
-                mciSendStringW(CommandSeekToStart, returnString, 0, IntPtr.Zero)
+                mciSendStringW(CommandSeekToStart, ReturnString, 0, IntPtr.Zero)
 
                 Dim CommandPlay As String = $"play {SoundName} notify"
 
-                If mciSendStringW(CommandPlay, returnString, 0, Me.Handle) = 0 Then
+                If mciSendStringW(CommandPlay, ReturnString, 0, Me.Handle) = 0 Then
 
                     Return True 'The sound is playing.
 
@@ -263,9 +263,9 @@ Public Class Form1
 
                 Dim CommandPause As String = $"pause {SoundName} notify"
 
-                Dim returnString As New StringBuilder(128)
+                Dim ReturnString As New StringBuilder(128)
 
-                If mciSendStringW(CommandPause, returnString, 0, Me.Handle) = 0 Then
+                If mciSendStringW(CommandPause, ReturnString, 0, Me.Handle) = 0 Then
 
                     Return True 'The sound is paused.
 
