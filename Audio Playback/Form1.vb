@@ -154,6 +154,8 @@ Public Class Form1
 
         Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
 
+        Dim returnString As New System.Text.StringBuilder(128)
+
         'Do we have sounds?
         If Sounds IsNot Nothing Then
             'Yes, we have sounds.
@@ -167,7 +169,7 @@ Public Class Form1
                     'Yes, the level is in range.
 
                     'Was the volume set?
-                    If mciSendStringW(CommandVolume, Nothing, 0, IntPtr.Zero) = 0 Then
+                    If mciSendStringW(CommandVolume, returnString, 0, IntPtr.Zero) = 0 Then
 
                         Return True 'The volume was set.
 
@@ -189,29 +191,31 @@ Public Class Form1
 
         Dim CommandPlayRepete As String = "play " & SoundName & " repeat"
 
-        'Do we have sounds?
+        Dim returnString As New System.Text.StringBuilder(128)
+
+        ' Do we have sounds?
         If Sounds IsNot Nothing Then
-            'Yes, we have sounds.
+            ' Yes, we have sounds.
 
-            'Is the sound in the array?
+            ' Is the sound in the array?
             If Not Sounds.Contains(SoundName) Then
-                'No, the sound is not in the array.
+                ' No, the sound is not in the array.
 
-                Return False 'The sound is not playing.
+                Return False ' The sound is not playing.
 
             End If
 
-            mciSendStringW(CommandSeekToStart, Nothing, 0, IntPtr.Zero)
+            mciSendStringW(CommandSeekToStart, returnString, 0, IntPtr.Zero)
 
-            If mciSendStringW(CommandPlayRepete, Nothing, 0, Me.Handle) <> 0 Then
+            If mciSendStringW(CommandPlayRepete, returnString, 0, Me.Handle) <> 0 Then
 
-                Return False 'The sound is not playing.
+                Return False ' The sound is not playing.
 
             End If
 
         End If
 
-        Return True 'The sound is playing.
+        Return True ' The sound is playing.
 
     End Function
 
