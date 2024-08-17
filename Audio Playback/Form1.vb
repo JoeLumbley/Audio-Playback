@@ -253,9 +253,6 @@ Public Class Form1
 
     Private Function PauseSound(SoundName As String) As Boolean
 
-        Dim CommandPause As String = "pause " & SoundName & " notify"
-
-
         'Do we have sounds?
         If Sounds IsNot Nothing Then
             'Yes, we have sounds.
@@ -263,6 +260,8 @@ Public Class Form1
             'Is the sound in the array?
             If Sounds.Contains(SoundName) Then
                 'Yes, the sound is in the array.
+
+                Dim CommandPause As String = "pause " & SoundName & " notify"
 
                 Dim returnString As New StringBuilder(128)
 
@@ -324,13 +323,13 @@ Public Class Form1
 
     Private Function GetStatus(SoundName As String, StatusType As String) As String
 
-        Dim CommandStatus As String = "status " & SoundName & " " & StatusType
-
-        Dim StatusReturn As New System.Text.StringBuilder(128)
-
         If Sounds IsNot Nothing Then
 
             If Sounds.Contains(SoundName) Then
+
+                Dim CommandStatus As String = "status " & SoundName & " " & StatusType
+
+                Dim StatusReturn As New StringBuilder(128)
 
                 mciSendStringW(CommandStatus, StatusReturn, 128, IntPtr.Zero)
 
@@ -346,15 +345,15 @@ Public Class Form1
 
     Private Sub CloseSounds()
 
-        Dim CommandClose As String
-
         If Sounds IsNot Nothing Then
 
             For Each Sound In Sounds
 
-                CommandClose = "close " & Sound
+                Dim CommandClose As String = "close " & Sound
 
-                mciSendStringW(CommandClose, Nothing, 0, IntPtr.Zero)
+                Dim returnString As New StringBuilder(128)
+
+                mciSendStringW(CommandClose, returnString, 0, IntPtr.Zero)
 
             Next
 
