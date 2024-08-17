@@ -201,11 +201,11 @@ Public Class Form1
 
             Dim CommandSeekToStart As String = $"seek {SoundName} to start"
 
-            Dim CommandPlayRepete As String = $"play {SoundName} repeat"
-
             Dim ReturnString As New StringBuilder(128)
 
             mciSendStringW(CommandSeekToStart, ReturnString, 0, IntPtr.Zero)
+
+            Dim CommandPlayRepete As String = $"play {SoundName} repeat"
 
             If mciSendStringW(CommandPlayRepete, ReturnString, 0, Me.Handle) <> 0 Then
 
