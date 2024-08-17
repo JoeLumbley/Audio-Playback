@@ -96,7 +96,7 @@ Public Class Form1
     Private Function AddSound(SoundName As String, FilePath As String) As Boolean
 
         'Do we have a name and does the file exist?
-        If Not SoundName.Trim = String.Empty And IO.File.Exists(FilePath) Then
+        If Not String.IsNullOrWhiteSpace(SoundName) AndAlso IO.File.Exists(FilePath) Then
             'Yes, we have a name and the file exists.
 
             Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
