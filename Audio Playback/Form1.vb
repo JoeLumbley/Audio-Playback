@@ -161,7 +161,7 @@ Public Class Form1
                 'Yes, the sound is the sounds array.
 
                 'Is the level in the valid range?
-                If Level >= 0 And Level <= 1000 Then
+                If Level >= 0 AndAlso Level <= 1000 Then
                     'Yes, the level is in range.
 
                     Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
