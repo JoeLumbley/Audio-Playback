@@ -101,7 +101,7 @@ Public Class Form1
 
             Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
 
-            Dim returnString As New StringBuilder(128)
+            Dim ReturnString As New StringBuilder(128)
 
             'Do we have sounds?
             If Sounds IsNot Nothing Then
@@ -112,7 +112,7 @@ Public Class Form1
                     'No, the sound is not in the array.
 
                     'Did the sound file open?
-                    If mciSendStringW(CommandOpen, returnString, 0, IntPtr.Zero) = 0 Then
+                    If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
                         'Yes, the sound file did open.
 
                         'Add the sound to the Sounds array.
@@ -130,7 +130,7 @@ Public Class Form1
                 'No, we do not have sounds.
 
                 'Did the sound file open?
-                If mciSendStringW(CommandOpen, returnString, 0, IntPtr.Zero) = 0 Then
+                If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
                     'Yes, the sound file did open.
 
                     'Start the Sounds array with the sound.
@@ -166,10 +166,10 @@ Public Class Form1
 
                     Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
 
-                    Dim returnString As New StringBuilder(128)
+                    Dim ReturnString As New StringBuilder(128)
 
                     'Was the volume set?
-                    If mciSendStringW(CommandVolume, returnString, 0, IntPtr.Zero) = 0 Then
+                    If mciSendStringW(CommandVolume, ReturnString, 0, IntPtr.Zero) = 0 Then
 
                         Return True 'The volume was set.
 
