@@ -351,9 +351,9 @@ Public Class Form1
 
                 Dim CommandClose As String = $"close {Sound}"
 
-                Dim returnString As New StringBuilder(128)
+                Dim ReturnString As New StringBuilder(128)
 
-                mciSendStringW(CommandClose, returnString, 0, IntPtr.Zero)
+                mciSendStringW(CommandClose, ReturnString, 0, IntPtr.Zero)
 
             Next
 
