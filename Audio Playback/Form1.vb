@@ -95,13 +95,13 @@ Public Class Form1
 
     Private Function AddSound(SoundName As String, FilePath As String) As Boolean
 
-        Dim CommandOpen As String = "open " & Chr(34) & FilePath & Chr(34) & " alias " & SoundName
-
-        Dim returnString As New StringBuilder(128)
-
         'Do we have a name and does the file exist?
         If Not SoundName.Trim = String.Empty And IO.File.Exists(FilePath) Then
             'Yes, we have a name and the file exists.
+
+            Dim CommandOpen As String = "open " & Chr(34) & FilePath & Chr(34) & " alias " & SoundName
+
+            Dim returnString As New StringBuilder(128)
 
             'Do we have sounds?
             If Sounds IsNot Nothing Then
@@ -152,10 +152,6 @@ Public Class Form1
 
     Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
 
-        Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
-
-        Dim returnString As New StringBuilder(128)
-
         'Do we have sounds?
         If Sounds IsNot Nothing Then
             'Yes, we have sounds.
@@ -167,6 +163,10 @@ Public Class Form1
                 'Is the level in the valid range?
                 If Level >= 0 And Level <= 1000 Then
                     'Yes, the level is in range.
+
+                    Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
+
+                    Dim returnString As New StringBuilder(128)
 
                     'Was the volume set?
                     If mciSendStringW(CommandVolume, returnString, 0, IntPtr.Zero) = 0 Then
@@ -187,12 +187,6 @@ Public Class Form1
 
     Private Function LoopSound(SoundName As String) As Boolean
 
-        Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
-
-        Dim CommandPlayRepete As String = "play " & SoundName & " repeat"
-
-        Dim returnString As New StringBuilder(128)
-
         ' Do we have sounds?
         If Sounds IsNot Nothing Then
             ' Yes, we have sounds.
@@ -204,6 +198,12 @@ Public Class Form1
                 Return False ' The sound is not playing.
 
             End If
+
+            Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
+
+            Dim CommandPlayRepete As String = "play " & SoundName & " repeat"
+
+            Dim returnString As New StringBuilder(128)
 
             mciSendStringW(CommandSeekToStart, returnString, 0, IntPtr.Zero)
 
@@ -221,12 +221,6 @@ Public Class Form1
 
     Private Function PlaySound(SoundName As String) As Boolean
 
-        Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
-
-        Dim CommandPlay As String = "play " & SoundName & " notify"
-
-        Dim returnString As New StringBuilder(128)
-
         'Do we have sounds?
         If Sounds IsNot Nothing Then
             'Yes, we have sounds.
@@ -234,6 +228,12 @@ Public Class Form1
             'Is the sound in the array?
             If Sounds.Contains(SoundName) Then
                 'Yes, the sound is in the array.
+
+                Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
+
+                Dim CommandPlay As String = "play " & SoundName & " notify"
+
+                Dim returnString As New StringBuilder(128)
 
                 mciSendStringW(CommandSeekToStart, Nothing, 0, IntPtr.Zero)
 
@@ -358,8 +358,6 @@ Public Class Form1
             Next
 
         End If
-
-        Sounds = Nothing
 
     End Sub
 
