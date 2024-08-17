@@ -231,13 +231,13 @@ Public Class Form1
 
                 Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
 
-                Dim CommandPlay As String = "play " & SoundName & " notify"
-
                 Dim returnString As New StringBuilder(128)
 
-                mciSendStringW(CommandSeekToStart, Nothing, 0, IntPtr.Zero)
+                mciSendStringW(CommandSeekToStart, returnString, 0, IntPtr.Zero)
 
-                If mciSendStringW(CommandPlay, Nothing, 0, Me.Handle) = 0 Then
+                Dim CommandPlay As String = "play " & SoundName & " notify"
+
+                If mciSendStringW(CommandPlay, returnString, 0, Me.Handle) = 0 Then
 
                     Return True 'The sound is playing.
 
