@@ -97,7 +97,7 @@ Public Class Form1
 
         Dim CommandOpen As String = "open " & Chr(34) & FilePath & Chr(34) & " alias " & SoundName
 
-        Dim returnString As New System.Text.StringBuilder(128)
+        Dim returnString As New StringBuilder(128)
 
         'Do we have a name and does the file exist?
         If Not SoundName.Trim = String.Empty And IO.File.Exists(FilePath) Then
@@ -154,7 +154,7 @@ Public Class Form1
 
         Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
 
-        Dim returnString As New System.Text.StringBuilder(128)
+        Dim returnString As New StringBuilder(128)
 
         'Do we have sounds?
         If Sounds IsNot Nothing Then
@@ -191,7 +191,7 @@ Public Class Form1
 
         Dim CommandPlayRepete As String = "play " & SoundName & " repeat"
 
-        Dim returnString As New System.Text.StringBuilder(128)
+        Dim returnString As New StringBuilder(128)
 
         ' Do we have sounds?
         If Sounds IsNot Nothing Then
@@ -225,7 +225,7 @@ Public Class Form1
 
         Dim CommandPlay As String = "play " & SoundName & " notify"
 
-        Dim returnString As New System.Text.StringBuilder(128)
+        Dim returnString As New StringBuilder(128)
 
         'Do we have sounds?
         If Sounds IsNot Nothing Then
@@ -255,7 +255,6 @@ Public Class Form1
 
         Dim CommandPause As String = "pause " & SoundName & " notify"
 
-        Dim returnString As New System.Text.StringBuilder(128)
 
         'Do we have sounds?
         If Sounds IsNot Nothing Then
@@ -264,6 +263,8 @@ Public Class Form1
             'Is the sound in the array?
             If Sounds.Contains(SoundName) Then
                 'Yes, the sound is in the array.
+
+                Dim returnString As New StringBuilder(128)
 
                 If mciSendStringW(CommandPause, returnString, 0, Me.Handle) = 0 Then
 
