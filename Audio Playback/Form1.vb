@@ -99,7 +99,7 @@ Public Class Form1
         If Not SoundName.Trim = String.Empty And IO.File.Exists(FilePath) Then
             'Yes, we have a name and the file exists.
 
-            Dim CommandOpen As String = "open " & Chr(34) & FilePath & Chr(34) & " alias " & SoundName
+            Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
 
             Dim returnString As New StringBuilder(128)
 
@@ -164,7 +164,7 @@ Public Class Form1
                 If Level >= 0 And Level <= 1000 Then
                     'Yes, the level is in range.
 
-                    Dim CommandVolume As String = "setaudio " & SoundName & " volume to " & Level.ToString
+                    Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
 
                     Dim returnString As New StringBuilder(128)
 
@@ -199,9 +199,9 @@ Public Class Form1
 
             End If
 
-            Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
+            Dim CommandSeekToStart As String = $"seek {SoundName} to start"
 
-            Dim CommandPlayRepete As String = "play " & SoundName & " repeat"
+            Dim CommandPlayRepete As String = $"play {SoundName} repeat"
 
             Dim returnString As New StringBuilder(128)
 
@@ -229,13 +229,13 @@ Public Class Form1
             If Sounds.Contains(SoundName) Then
                 'Yes, the sound is in the array.
 
-                Dim CommandSeekToStart As String = "seek " & SoundName & " to start"
+                Dim CommandSeekToStart As String = $"seek {SoundName} to start"
 
                 Dim returnString As New StringBuilder(128)
 
                 mciSendStringW(CommandSeekToStart, returnString, 0, IntPtr.Zero)
 
-                Dim CommandPlay As String = "play " & SoundName & " notify"
+                Dim CommandPlay As String = $"play {SoundName} notify"
 
                 If mciSendStringW(CommandPlay, returnString, 0, Me.Handle) = 0 Then
 
@@ -261,7 +261,7 @@ Public Class Form1
             If Sounds.Contains(SoundName) Then
                 'Yes, the sound is in the array.
 
-                Dim CommandPause As String = "pause " & SoundName & " notify"
+                Dim CommandPause As String = $"pause {SoundName} notify"
 
                 Dim returnString As New StringBuilder(128)
 
@@ -327,7 +327,7 @@ Public Class Form1
 
             If Sounds.Contains(SoundName) Then
 
-                Dim CommandStatus As String = "status " & SoundName & " " & StatusType
+                Dim CommandStatus As String = $"status {SoundName} {StatusType}"
 
                 Dim StatusReturn As New StringBuilder(128)
 
@@ -349,7 +349,7 @@ Public Class Form1
 
             For Each Sound In Sounds
 
-                Dim CommandClose As String = "close " & Sound
+                Dim CommandClose As String = $"close {Sound}"
 
                 Dim returnString As New StringBuilder(128)
 
