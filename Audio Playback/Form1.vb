@@ -168,53 +168,6 @@ Public Class Form1
 
     End Function
 
-
-
-
-
-
-
-
-
-
-
-
-
-    'Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
-
-    '    'Do we have sounds?
-    '    If Sounds IsNot Nothing Then
-    '        'Yes, we have sounds.
-
-    '        'Is the sound in the sounds array?
-    '        If Sounds.Contains(SoundName) Then
-    '            'Yes, the sound is the sounds array.
-
-    '            'Is the level in the valid range?
-    '            If Level >= 0 AndAlso Level <= 1000 Then
-    '                'Yes, the level is in range.
-
-    '                Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
-
-    '                Dim ReturnString As New StringBuilder(128)
-
-    '                'Was the volume set?
-    '                If mciSendStringW(CommandVolume, ReturnString, 0, IntPtr.Zero) = 0 Then
-
-    '                    Return True 'The volume was set.
-
-    '                End If
-
-    '            End If
-
-    '        End If
-
-    '    End If
-
-    '    Return False 'The volume was not set.
-
-    'End Function
-
     Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
 
         ' Do we have sounds and is the sound in the array and is the level in the valid range?
@@ -233,39 +186,84 @@ Public Class Form1
 
     End Function
 
+
+
+
+
+
+
+
+
+
+    'Private Function LoopSound(SoundName As String) As Boolean
+
+    '    ' Do we have sounds?
+    '    If Sounds IsNot Nothing Then
+    '        ' Yes, we have sounds.
+
+    '        ' Is the sound in the array?
+    '        If Not Sounds.Contains(SoundName) Then
+    '            ' No, the sound is not in the array.
+
+    '            Return False ' The sound is not playing.
+
+    '        End If
+
+    '        Dim CommandSeekToStart As String = $"seek {SoundName} to start"
+
+    '        Dim ReturnString As New StringBuilder(128)
+
+    '        mciSendStringW(CommandSeekToStart, ReturnString, 0, IntPtr.Zero)
+
+    '        Dim CommandPlayRepete As String = $"play {SoundName} repeat"
+
+    '        If mciSendStringW(CommandPlayRepete, ReturnString, 0, Me.Handle) <> 0 Then
+
+    '            Return False ' The sound is not playing.
+
+    '        End If
+
+    '    End If
+
+    '    Return True ' The sound is playing.
+
+    'End Function
+
+
+
+
     Private Function LoopSound(SoundName As String) As Boolean
 
-        ' Do we have sounds?
-        If Sounds IsNot Nothing Then
-            ' Yes, we have sounds.
-
-            ' Is the sound in the array?
-            If Not Sounds.Contains(SoundName) Then
-                ' No, the sound is not in the array.
-
-                Return False ' The sound is not playing.
-
-            End If
+        ' Do we have sounds and is the sound in the array?
+        If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
+            ' We have sounds and the sound is in the array.
 
             Dim CommandSeekToStart As String = $"seek {SoundName} to start"
 
-            Dim ReturnString As New StringBuilder(128)
+            Dim CommandPlayRepeat As String = $"play {SoundName} repeat"
 
-            mciSendStringW(CommandSeekToStart, ReturnString, 0, IntPtr.Zero)
-
-            Dim CommandPlayRepete As String = $"play {SoundName} repeat"
-
-            If mciSendStringW(CommandPlayRepete, ReturnString, 0, Me.Handle) <> 0 Then
-
-                Return False ' The sound is not playing.
-
-            End If
+            Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso
+                   SendMciCommand(CommandPlayRepeat, Me.Handle) ' The sound is looping.
 
         End If
 
-        Return True ' The sound is playing.
+        Debug.Print($"The sound is not looping {SoundName}")
+
+        Return False ' The sound is not looping.
 
     End Function
+
+
+
+
+
+
+
+
+
+
+
+
 
     Private Function PlaySound(SoundName As String) As Boolean
 
