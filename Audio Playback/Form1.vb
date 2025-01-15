@@ -93,6 +93,8 @@ Public Class Form1
 
     End Sub
 
+#Region "Sound Management"
+
     Private Function AddSound(SoundName As String, FilePath As String) As Boolean
 
         'Do we have a name and does the file exist?
@@ -380,6 +382,8 @@ Public Class Form1
         End If
 
     End Sub
+
+#End Region
 
 End Class
 
