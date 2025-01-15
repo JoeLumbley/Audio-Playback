@@ -186,52 +186,6 @@ Public Class Form1
 
     End Function
 
-
-
-
-
-
-
-
-
-
-    'Private Function LoopSound(SoundName As String) As Boolean
-
-    '    ' Do we have sounds?
-    '    If Sounds IsNot Nothing Then
-    '        ' Yes, we have sounds.
-
-    '        ' Is the sound in the array?
-    '        If Not Sounds.Contains(SoundName) Then
-    '            ' No, the sound is not in the array.
-
-    '            Return False ' The sound is not playing.
-
-    '        End If
-
-    '        Dim CommandSeekToStart As String = $"seek {SoundName} to start"
-
-    '        Dim ReturnString As New StringBuilder(128)
-
-    '        mciSendStringW(CommandSeekToStart, ReturnString, 0, IntPtr.Zero)
-
-    '        Dim CommandPlayRepete As String = $"play {SoundName} repeat"
-
-    '        If mciSendStringW(CommandPlayRepete, ReturnString, 0, Me.Handle) <> 0 Then
-
-    '            Return False ' The sound is not playing.
-
-    '        End If
-
-    '    End If
-
-    '    Return True ' The sound is playing.
-
-    'End Function
-
-
-
-
     Private Function LoopSound(SoundName As String) As Boolean
 
         ' Do we have sounds and is the sound in the array?
