@@ -47,6 +47,8 @@ Imports System.IO
 - **Imports System.Text**: This namespace provides classes for manipulating strings, including `StringBuilder`, which is used for building strings efficiently.
 - **Imports System.IO**: This namespace contains classes for handling input and output, especially for file operations.
 
+[Index](#index)
+
 ## Class Definition
 
 ```vb
@@ -54,6 +56,8 @@ Public Class Form1
 ```
 
 - This line defines a public class named `Form1`. This is the main form of the application where all functionalities will be implemented.
+
+[Index](#index)
 
 ## DllImport Attribute
 
@@ -72,6 +76,8 @@ End Function
   - **cchReturn**: The size of the return string.
   - **hwndCallback**: A handle to a window for receiving notifications.
 
+[Index](#index)
+
 ## Sound Array Declaration
 
 ```vb
@@ -79,6 +85,8 @@ Private Sounds() As String
 ```
 
 - This line declares an array called `Sounds` that will hold the names of the audio files being managed.
+
+[Index](#index)
 
 ## Form Load Event
 
@@ -128,6 +136,8 @@ LoopSound("Music")
 - This repeats the process for another sound file, `CashCollected.mp3`, adding it with overlapping capabilities and setting its volume to 900.
 - **LoopSound("Music")**: This starts looping the "Music" sound.
 
+[Index](#index)
+
 ## Button Click Events
 
 ### Play Overlapping Sounds
@@ -156,6 +166,8 @@ End Sub
 
 - This method checks if "Music" is currently playing. If it is, it pauses the sound and changes the button text to "Play Loop". If not, it starts looping the sound and changes the button text to "Pause Loop".
 
+[Index](#index)
+
 ## Form Closing Event
 
 ```vb
@@ -165,6 +177,8 @@ End Sub
 ```
 
 - This method is called when the form is closing. It ensures that all sounds are properly closed before the application exits.
+
+[Index](#index)
 
 ## Adding a Sound
 
@@ -221,6 +235,8 @@ Return False
 
 - If the sound could not be added, the function returns `False`.
 
+[Index](#index)
+
 ## Set Volume Function
 
 ```vb
@@ -259,6 +275,8 @@ Return False
 ```
 
 - If the volume could not be set, the function returns `False`.
+- 
+[Index](#index)
 
 ## Loop Sound Function
 
@@ -302,6 +320,8 @@ Return True
 ```
 
 - If the sound is successfully set to loop, the function returns `True`.
+- 
+[Index](#index)
 
 ## Play Sound Function
 
@@ -343,6 +363,8 @@ Return False
 ```
 
 - If the sound could not be played, the function returns `False`.
+- 
+[Index](#index)
 
 ## Pause Sound Function
 
@@ -381,6 +403,8 @@ Return False
 ```
 
 - If the sound could not be paused, the function returns `False`.
+- 
+[Index](#index)
 
 ## Is Playing Function
 
@@ -391,6 +415,8 @@ End Function
 ```
 
 - This function checks if a specified sound is currently playing by calling `GetStatus` with the status type "mode".
+- 
+[Index](#index)
 
 ## Adding Overlapping Sounds
 
@@ -409,6 +435,8 @@ Next
 ```
 
 - This loops through a set of suffixes and adds the sound file with each suffix to allow multiple overlapping sounds.
+
+[Index](#index)
 
 ## Playing Overlapping Sounds
 
