@@ -584,6 +584,7 @@ By following this guide, you should now have a solid understanding of how the Au
 [Adding Overlapping Sounds](#adding-overlapping-sounds)
 [Button Click Events](#button-click-events)
 [Play Overlapping Sounds](#play-overlapping-sounds)
+
 [Toggle Music Looping](#toggle-music-looping)
 [Form Closing Event](#form-closing-event)
 [Adding a Sound](#adding-a-sound)
