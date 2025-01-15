@@ -573,21 +573,21 @@ By following this guide, you should now have a solid understanding of how the Au
 
 
 [Imports](#imports)
+
 [Class Definition](#class-definition)
+
 [DllImport Attribute](#dllimport-attribute)
+
 [Sound Array Declaration](#sound-array-declaration)
 
 [Form Load Event](#form-load-event)
 [Setting the Title](#setting-the-title)
-
 [Creating Sound Files](#creating-sound-files)
 [Adding Sounds](#adding-sounds)
 [Adding Overlapping Sounds](#adding-overlapping-sounds)
 
 [Button Click Events](#button-click-events)
-
 [Play Overlapping Sounds](#play-overlapping-sounds)
-
 [Toggle Music Looping](#toggle-music-looping)
 
 [Form Closing Event](#form-closing-event)
@@ -619,12 +619,16 @@ By following this guide, you should now have a solid understanding of how the Au
 [Final Return Statement](#final-return-statement-5)
 
 [Is Playing Function](#is-playing-function)
+
 [Adding Overlapping Sounds](#adding-overlapping-sounds-2)
 [Loop Through Suffixes](#loop-through-suffixes)
+
 [Playing Overlapping Sounds](#playing-overlapping-sounds)
 [Loop Through Suffixes](#loop-through-suffixes-2)
+
 [Setting Volume for Overlapping Sounds](#setting-volume-for-overlapping-sounds)
 [Loop Through Suffixes](#loop-through-suffixes-3)
+
 [Getting Sound Status](#getting-sound-status)
 [Sound Existence Check](#sound-existence-check-5)
 [Command to Get Status](#command-to-get-status)
@@ -636,6 +640,7 @@ By following this guide, you should now have a solid understanding of how the Au
 [Creating Sound Files from Resources](#creating-sound-files-from-resources)
 [Check and Write Level Sound](#check-and-write-level-sound)
 [Check and Write Cash Collected Sound](#check-and-write-cash-collected-sound)
+
 [Conclusion](#conclusion)
 
 
