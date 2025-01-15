@@ -162,6 +162,8 @@ Public Class Form1
 
         End If
 
+        Debug.Print($"The sound was not added {SoundName}")
+
         Return False ' The sound was not added.
 
     End Function
@@ -224,6 +226,8 @@ Public Class Form1
             Return SendMciCommand(CommandVolume, IntPtr.Zero) ' The volume was set.
 
         End If
+
+        Debug.Print($"The volume was not set {SoundName}")
 
         Return False ' The volume was not set.
 
