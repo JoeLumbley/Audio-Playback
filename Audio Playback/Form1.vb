@@ -116,65 +116,6 @@ Public Class Form1
 
     End Function
 
-    'Private Function AddSound(SoundName As String, FilePath As String) As Boolean
-
-    '    'Do we have a name and does the file exist?
-    '    If Not String.IsNullOrWhiteSpace(SoundName) AndAlso IO.File.Exists(FilePath) Then
-    '        'Yes, we have a name and the file exists.
-
-    '        Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
-
-    '        Dim ReturnString As New StringBuilder(128)
-
-    '        'Do we have sounds?
-    '        If Sounds IsNot Nothing Then
-    '            'Yes, we have sounds.
-
-    '            'Is the sound in the array already?
-    '            If Not Sounds.Contains(SoundName) Then
-    '                'No, the sound is not in the array.
-
-    '                'Did the sound file open?
-    '                If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
-    '                    'Yes, the sound file did open.
-
-    '                    'Add the sound to the Sounds array.
-    '                    Array.Resize(Sounds, Sounds.Length + 1)
-
-    '                    Sounds(Sounds.Length - 1) = SoundName
-
-    '                    Return True 'The sound was added.
-
-    '                End If
-
-    '            End If
-
-    '        Else
-    '            'No, we do not have sounds.
-
-    '            'Did the sound file open?
-    '            If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
-    '                'Yes, the sound file did open.
-
-    '                'Start the Sounds array with the sound.
-    '                ReDim Sounds(0)
-
-    '                Sounds(0) = SoundName
-
-    '                Return True 'The sound was added.
-
-    '            End If
-
-    '        End If
-
-    '    End If
-
-    '    Return False 'The sound was not added.
-
-    'End Function
-
-
-
     Private Function AddSound(SoundName As String, FilePath As String) As Boolean
 
         ' Do we have a name and does the file exist?
@@ -237,38 +178,54 @@ Public Class Form1
 
 
 
+    'Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
+
+    '    'Do we have sounds?
+    '    If Sounds IsNot Nothing Then
+    '        'Yes, we have sounds.
+
+    '        'Is the sound in the sounds array?
+    '        If Sounds.Contains(SoundName) Then
+    '            'Yes, the sound is the sounds array.
+
+    '            'Is the level in the valid range?
+    '            If Level >= 0 AndAlso Level <= 1000 Then
+    '                'Yes, the level is in range.
+
+    '                Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
+
+    '                Dim ReturnString As New StringBuilder(128)
+
+    '                'Was the volume set?
+    '                If mciSendStringW(CommandVolume, ReturnString, 0, IntPtr.Zero) = 0 Then
+
+    '                    Return True 'The volume was set.
+
+    '                End If
+
+    '            End If
+
+    '        End If
+
+    '    End If
+
+    '    Return False 'The volume was not set.
+
+    'End Function
+
     Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
 
-        'Do we have sounds?
-        If Sounds IsNot Nothing Then
-            'Yes, we have sounds.
+        ' Do we have sounds and is the sound in the array and is the level in the valid range?
+        If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) AndAlso Level >= 0 AndAlso Level <= 1000 Then
+            ' We have sounds and the sound is in the array and the level is in range.
 
-            'Is the sound in the sounds array?
-            If Sounds.Contains(SoundName) Then
-                'Yes, the sound is the sounds array.
+            Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
 
-                'Is the level in the valid range?
-                If Level >= 0 AndAlso Level <= 1000 Then
-                    'Yes, the level is in range.
-
-                    Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
-
-                    Dim ReturnString As New StringBuilder(128)
-
-                    'Was the volume set?
-                    If mciSendStringW(CommandVolume, ReturnString, 0, IntPtr.Zero) = 0 Then
-
-                        Return True 'The volume was set.
-
-                    End If
-
-                End If
-
-            End If
+            Return SendMciCommand(CommandVolume, IntPtr.Zero) ' The volume was set.
 
         End If
 
-        Return False 'The volume was not set.
+        Return False ' The volume was not set.
 
     End Function
 
