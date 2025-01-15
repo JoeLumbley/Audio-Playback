@@ -623,37 +623,37 @@ By following this guide, you should now have a solid understanding of how the Au
 
 [Setting the Volume](#setting-the-volume)
 
-[Final Return Statement](#final-return-statement-2)
+[Final Return Statement](#final-return-statement-1)
 
 ---
 
 [Loop Sound Function](#loop-sound-function)
 
-[Sound Existence Check](#sound-existence-check-2)
+[Sound Existence Check](#sound-existence-check)
 
 [Looping Logic](#looping-logic)
 
-[Final Return Statement](#final-return-statement-3)
+[Final Return Statement](#final-return-statement-2)
 
 ---
 
 [Play Sound Function](#play-sound-function)
 
-[Sound Existence Check](#sound-existence-check-3)
+[Sound Existence Check](#sound-existence-check-1)
 
 [Playing Logic](#playing-logic)
 
-[Final Return Statement](#final-return-statement-4)
+[Final Return Statement](#final-return-statement-3)
 
 ---
 
 [Pause Sound Function](#pause-sound-function)
 
-[Sound Existence Check](#sound-existence-check-4)
+[Sound Existence Check](#sound-existence-check-2)
 
 [Pausing Logic](#pausing-logic)
 
-[Final Return Statement](#final-return-statement-5)
+[Final Return Statement](#final-return-statement-4)
 
 ---
 
@@ -661,7 +661,7 @@ By following this guide, you should now have a solid understanding of how the Au
 
 ---
 
-[Adding Overlapping Sounds](#adding-overlapping-sounds-2)
+[Adding Overlapping Sounds](#adding-overlapping-sounds-1)
 
 [Loop Through Suffixes](#loop-through-suffixes)
 
@@ -669,23 +669,23 @@ By following this guide, you should now have a solid understanding of how the Au
 
 [Playing Overlapping Sounds](#playing-overlapping-sounds)
 
-[Loop Through Suffixes](#loop-through-suffixes-2)
+[Loop Through Suffixes](#loop-through-suffixes-1)
 
 ---
 
 [Setting Volume for Overlapping Sounds](#setting-volume-for-overlapping-sounds)
 
-[Loop Through Suffixes](#loop-through-suffixes-3)
+[Loop Through Suffixes](#loop-through-suffixes-2)
 
 ---
 
 [Getting Sound Status](#getting-sound-status)
 
-[Sound Existence Check](#sound-existence-check-5)
+[Sound Existence Check](#sound-existence-check-3)
 
 [Command to Get Status](#command-to-get-status)
 
-[Final Return Statement](#final-return-statement-6)
+[Final Return Statement](#final-return-statement-5)
 
 ---
 
