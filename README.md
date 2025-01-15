@@ -33,6 +33,8 @@ With its robust functionality and seamless integration with the Windows Multimed
 
 Welcome to the detailed walkthrough of the Audio Playback application code! This guide is designed for beginners and will explain each line of the code clearly and thoroughly. Let’s dive in!
 
+[Index](#index)
+
 ## Imports
 
 ```vb
@@ -566,8 +568,9 @@ By following this guide, you should now have a solid understanding of how the Au
 
 
 
+# Index
 
-
+[Index](#index)
 
 
 
