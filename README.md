@@ -431,19 +431,9 @@ Next
 
 - This checks each suffix to see if the sound is already playing. If it finds one that isn’t, it plays that sound and exits the loop.
 
+[Index](#index)
+
 ## Setting Volume for Overlapping Sounds
-
-
-
-
-
-
-
-
-
-
-
-
 
 ```vb
 Private Sub SetVolumeOverlapping(SoundName As String, Level As Integer)
