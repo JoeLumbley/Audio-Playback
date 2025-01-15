@@ -590,6 +590,7 @@ By following this guide, you should now have a solid understanding of how the Au
 [Adding a Sound](#adding-a-sound)
 [Checking Conditions](#checking-conditions)
 [Opening the Sound File](#opening-the-sound-file)
+
 [Sound Management Logic](#sound-management-logic)
 [Final Return Statement](#final-return-statement)
 [Set Volume Function](#set-volume-function)
