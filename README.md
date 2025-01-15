@@ -25,7 +25,7 @@ Clone the repository now and embark on a transformative audio playback experienc
 
 
 
-# Audio Playback Application: Code Walkthrough
+# Code Walkthrough
 
 Welcome to the detailed walkthrough of the Audio Playback application code! This guide is designed for beginners and will explain each line of the code clearly and thoroughly. Let’s dive in!
 
