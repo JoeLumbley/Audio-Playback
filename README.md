@@ -578,6 +578,7 @@ By following this guide, you should now have a solid understanding of how the Au
 [Sound Array Declaration](#sound-array-declaration)
 [Form Load Event](#form-load-event)
 [Setting the Title](#setting-the-title)
+
 [Creating Sound Files](#creating-sound-files)
 [Adding Sounds](#adding-sounds)
 [Adding Overlapping Sounds](#adding-overlapping-sounds)
