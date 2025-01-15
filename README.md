@@ -596,6 +596,7 @@ By following this guide, you should now have a solid understanding of how the Au
 [Set Volume Function](#set-volume-function)
 [Volume Checking Logic](#volume-checking-logic)
 [Setting the Volume](#setting-the-volume)
+
 [Final Return Statement](#final-return-statement-2)
 [Loop Sound Function](#loop-sound-function)
 [Sound Existence Check](#sound-existence-check-2)
