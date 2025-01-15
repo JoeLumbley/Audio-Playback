@@ -61,6 +61,9 @@ Public Class Form1
 
         LoopSound("Music")
 
+        Debug.Print($"Running... {Now.ToString}")
+
+
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -95,52 +98,115 @@ Public Class Form1
 
 #Region "Sound Management"
 
+    Private Function SendMciCommand(command As String, hwndCallback As IntPtr) As Boolean
+        Dim ReturnString As New StringBuilder(128)
+        Try
+            Return mciSendStringW(command, ReturnString, 0, hwndCallback) = 0
+        Catch ex As Exception
+            'MessageBox.Show($"Error: {ex.Message}")
+            Debug.Print($"Error: {ex.Message}")
+            Return False
+        End Try
+    End Function
+
+    'Private Function AddSound(SoundName As String, FilePath As String) As Boolean
+
+    '    'Do we have a name and does the file exist?
+    '    If Not String.IsNullOrWhiteSpace(SoundName) AndAlso IO.File.Exists(FilePath) Then
+    '        'Yes, we have a name and the file exists.
+
+    '        Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
+
+    '        Dim ReturnString As New StringBuilder(128)
+
+    '        'Do we have sounds?
+    '        If Sounds IsNot Nothing Then
+    '            'Yes, we have sounds.
+
+    '            'Is the sound in the array already?
+    '            If Not Sounds.Contains(SoundName) Then
+    '                'No, the sound is not in the array.
+
+    '                'Did the sound file open?
+    '                If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
+    '                    'Yes, the sound file did open.
+
+    '                    'Add the sound to the Sounds array.
+    '                    Array.Resize(Sounds, Sounds.Length + 1)
+
+    '                    Sounds(Sounds.Length - 1) = SoundName
+
+    '                    Return True 'The sound was added.
+
+    '                End If
+
+    '            End If
+
+    '        Else
+    '            'No, we do not have sounds.
+
+    '            'Did the sound file open?
+    '            If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
+    '                'Yes, the sound file did open.
+
+    '                'Start the Sounds array with the sound.
+    '                ReDim Sounds(0)
+
+    '                Sounds(0) = SoundName
+
+    '                Return True 'The sound was added.
+
+    '            End If
+
+    '        End If
+
+    '    End If
+
+    '    Return False 'The sound was not added.
+
+    'End Function
+
+
+
     Private Function AddSound(SoundName As String, FilePath As String) As Boolean
 
-        'Do we have a name and does the file exist?
+        ' Do we have a name and does the file exist?
         If Not String.IsNullOrWhiteSpace(SoundName) AndAlso IO.File.Exists(FilePath) Then
-            'Yes, we have a name and the file exists.
+            ' Yes, we have a name and the file exists.
 
             Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
 
-            Dim ReturnString As New StringBuilder(128)
+            ' Do we have sounds?
+            If Sounds Is Nothing Then
+                ' No we do not have sounds.
 
-            'Do we have sounds?
-            If Sounds IsNot Nothing Then
-                'Yes, we have sounds.
+                ' Did the sound file open?
+                If SendMciCommand(CommandOpen, IntPtr.Zero) Then
+                    ' Yes, the sound file did open.
 
-                'Is the sound in the array already?
-                If Not Sounds.Contains(SoundName) Then
-                    'No, the sound is not in the array.
-
-                    'Did the sound file open?
-                    If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
-                        'Yes, the sound file did open.
-
-                        'Add the sound to the Sounds array.
-                        Array.Resize(Sounds, Sounds.Length + 1)
-
-                        Sounds(Sounds.Length - 1) = SoundName
-
-                        Return True 'The sound was added.
-
-                    End If
-
-                End If
-
-            Else
-                'No, we do not have sounds.
-
-                'Did the sound file open?
-                If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
-                    'Yes, the sound file did open.
-
-                    'Start the Sounds array with the sound.
+                    ' Start the Sounds array with the sound.
                     ReDim Sounds(0)
 
                     Sounds(0) = SoundName
 
-                    Return True 'The sound was added.
+                    Return True ' The sound was added.
+
+                End If
+
+                ' Is the sound in the array already?
+            ElseIf Not Sounds.Contains(SoundName) Then
+                ' Yes we have sounds and no the sound is not in the array.
+
+                ' Did the sound file open?
+                If SendMciCommand(CommandOpen, IntPtr.Zero) Then
+                    'Yes, the sound file did open.
+
+                    ' Add the sound to the Sounds array.
+                    Array.Resize(Sounds, Sounds.Length + 1)
+
+                    Sounds(Sounds.Length - 1) = SoundName
+
+                    Return True ' The sound was added.
 
                 End If
 
@@ -148,9 +214,21 @@ Public Class Form1
 
         End If
 
-        Return False 'The sound was not added.
+        Return False ' The sound was not added.
 
     End Function
+
+
+
+
+
+
+
+
+
+
+
+
 
     Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
 
