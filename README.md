@@ -450,6 +450,8 @@ Next
 ```
 
 - This loops through each suffix and calls the `SetVolume` method to set the specified volume level for each overlapping instance of the sound.
+- 
+[Index](#index)
 
 ## Getting Sound Status
 
@@ -545,6 +547,9 @@ End If
 ```
 
 - This repeats the process for `CashCollected.mp3`, ensuring that both sound files are available for playback.
+
+[Index](#index)
+
 
 ## Conclusion
 
