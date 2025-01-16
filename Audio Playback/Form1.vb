@@ -228,46 +228,6 @@ Public Class Form1
 
     End Function
 
-
-
-
-
-
-
-
-
-
-
-    'Private Function PauseSound(SoundName As String) As Boolean
-
-    '    'Do we have sounds?
-    '    If Sounds IsNot Nothing Then
-    '        'Yes, we have sounds.
-
-    '        'Is the sound in the array?
-    '        If Sounds.Contains(SoundName) Then
-    '            'Yes, the sound is in the array.
-
-    '            Dim CommandPause As String = $"pause {SoundName} notify"
-
-    '            Dim ReturnString As New StringBuilder(128)
-
-    '            If mciSendStringW(CommandPause, ReturnString, 0, Me.Handle) = 0 Then
-
-    '                Return True 'The sound is paused.
-
-    '            End If
-
-    '        End If
-
-    '    End If
-
-    '    Return False 'The sound is not paused.
-
-    'End Function
-
-
-
     Private Function PauseSound(SoundName As String) As Boolean
 
         ' Do we have sounds and is the sound in the array?
@@ -285,16 +245,6 @@ Public Class Form1
         Return False ' The sound is not paused.
 
     End Function
-
-
-
-
-
-
-
-
-
-
 
     Private Function IsPlaying(SoundName As String) As Boolean
 
@@ -340,25 +290,24 @@ Public Class Form1
 
     Private Function GetStatus(SoundName As String, StatusType As String) As String
 
-        If Sounds IsNot Nothing Then
+        ' Do we have sounds and is the sound in the array?
+        If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
+            ' We have sounds and the sound is in the array.
 
-            If Sounds.Contains(SoundName) Then
+            Dim CommandStatus As String = $"status {SoundName} {StatusType}"
 
-                Dim CommandStatus As String = $"status {SoundName} {StatusType}"
+            Dim StatusReturn As New StringBuilder(128)
 
-                Dim StatusReturn As New StringBuilder(128)
+            mciSendStringW(CommandStatus, StatusReturn, 128, IntPtr.Zero)
 
-                mciSendStringW(CommandStatus, StatusReturn, 128, IntPtr.Zero)
-
-                Return StatusReturn.ToString.Trim.ToLower
-
-            End If
+            Return StatusReturn.ToString.Trim.ToLower
 
         End If
 
         Return String.Empty
 
     End Function
+
 
     Private Sub CloseSounds()
 
