@@ -299,7 +299,7 @@ Public Class Form1
 
         Player.LoopSound("Music")
 
-        Debug.Print($"Running... {Now.ToString}")
+        Debug.Print($"Running... {Now}")
 
 
     End Sub
