@@ -308,7 +308,6 @@ Public Class Form1
 
     End Function
 
-
     Private Sub CloseSounds()
 
         If Sounds IsNot Nothing Then
@@ -317,9 +316,7 @@ Public Class Form1
 
                 Dim CommandClose As String = $"close {Sound}"
 
-                Dim ReturnString As New StringBuilder(128)
-
-                mciSendStringW(CommandClose, ReturnString, 0, IntPtr.Zero)
+                SendMciCommand(CommandClose, IntPtr.Zero)
 
             Next
 
