@@ -98,23 +98,6 @@ Public Class Form1
 
 #Region "Sound Management"
 
-    Private Function SendMciCommand(command As String, hwndCallback As IntPtr) As Boolean
-
-        Dim ReturnString As New StringBuilder(128)
-
-        Try
-
-            Return mciSendStringW(command, ReturnString, 0, hwndCallback) = 0
-
-        Catch ex As Exception
-
-            Debug.Print($"Error: {ex.Message}")
-
-            Return False
-
-        End Try
-
-    End Function
 
     Private Function AddSound(SoundName As String, FilePath As String) As Boolean
 
@@ -305,6 +288,25 @@ Public Class Form1
         End If
 
         Return String.Empty
+
+    End Function
+
+
+    Private Function SendMciCommand(command As String, hwndCallback As IntPtr) As Boolean
+
+        Dim ReturnString As New StringBuilder(128)
+
+        Try
+
+            Return mciSendStringW(command, ReturnString, 0, hwndCallback) = 0
+
+        Catch ex As Exception
+
+            Debug.Print($"Error: {ex.Message}")
+
+            Return False
+
+        End Try
 
     End Function
 
