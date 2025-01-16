@@ -238,33 +238,63 @@ Public Class Form1
 
 
 
+    'Private Function PauseSound(SoundName As String) As Boolean
+
+    '    'Do we have sounds?
+    '    If Sounds IsNot Nothing Then
+    '        'Yes, we have sounds.
+
+    '        'Is the sound in the array?
+    '        If Sounds.Contains(SoundName) Then
+    '            'Yes, the sound is in the array.
+
+    '            Dim CommandPause As String = $"pause {SoundName} notify"
+
+    '            Dim ReturnString As New StringBuilder(128)
+
+    '            If mciSendStringW(CommandPause, ReturnString, 0, Me.Handle) = 0 Then
+
+    '                Return True 'The sound is paused.
+
+    '            End If
+
+    '        End If
+
+    '    End If
+
+    '    Return False 'The sound is not paused.
+
+    'End Function
+
+
+
     Private Function PauseSound(SoundName As String) As Boolean
 
-        'Do we have sounds?
-        If Sounds IsNot Nothing Then
-            'Yes, we have sounds.
+        ' Do we have sounds and is the sound in the array?
+        If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
+            ' We have sounds and the sound is in the array.
 
-            'Is the sound in the array?
-            If Sounds.Contains(SoundName) Then
-                'Yes, the sound is in the array.
+            Dim CommandPause As String = $"pause {SoundName} notify"
 
-                Dim CommandPause As String = $"pause {SoundName} notify"
-
-                Dim ReturnString As New StringBuilder(128)
-
-                If mciSendStringW(CommandPause, ReturnString, 0, Me.Handle) = 0 Then
-
-                    Return True 'The sound is paused.
-
-                End If
-
-            End If
+            Return SendMciCommand(CommandPause, Me.Handle) ' The sound is paused.
 
         End If
 
-        Return False 'The sound is not paused.
+        Debug.Print($"The sound is not paused {SoundName}")
+
+        Return False ' The sound is not paused.
 
     End Function
+
+
+
+
+
+
+
+
+
+
 
     Private Function IsPlaying(SoundName As String) As Boolean
 
