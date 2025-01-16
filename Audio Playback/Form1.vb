@@ -291,7 +291,6 @@ Public Class Form1
 
     End Function
 
-
     Private Function SendMciCommand(command As String, hwndCallback As IntPtr) As Boolean
 
         Dim ReturnString As New StringBuilder(128)
@@ -328,21 +327,29 @@ Public Class Form1
 
     Private Sub CreateSoundFileFromResource()
 
-        Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
+        Try
 
-        If Not IO.File.Exists(FilePath) Then
+            Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
 
-            IO.File.WriteAllBytes(FilePath, My.Resources.level)
+            If Not IO.File.Exists(FilePath) Then
 
-        End If
+                IO.File.WriteAllBytes(FilePath, My.Resources.level)
 
-        FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
+            End If
 
-        If Not IO.File.Exists(FilePath) Then
+            FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
 
-            IO.File.WriteAllBytes(FilePath, My.Resources.CashCollected)
+            If Not IO.File.Exists(FilePath) Then
 
-        End If
+                IO.File.WriteAllBytes(FilePath, My.Resources.CashCollected)
+
+            End If
+
+        Catch ex As Exception
+
+            Debug.Print($"Error creating sound file: {ex.Message}")
+
+        End Try
 
     End Sub
 
