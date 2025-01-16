@@ -273,19 +273,27 @@ Public Class Form1
 
     Private Function GetStatus(SoundName As String, StatusType As String) As String
 
-        ' Do we have sounds and is the sound in the array?
-        If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
-            ' We have sounds and the sound is in the array.
+        Try
 
-            Dim CommandStatus As String = $"status {SoundName} {StatusType}"
+            ' Do we have sounds and is the sound in the array?
+            If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
+                ' We have sounds and the sound is in the array.
 
-            Dim StatusReturn As New StringBuilder(128)
+                Dim CommandStatus As String = $"status {SoundName} {StatusType}"
 
-            mciSendStringW(CommandStatus, StatusReturn, 128, IntPtr.Zero)
+                Dim StatusReturn As New StringBuilder(128)
 
-            Return StatusReturn.ToString.Trim.ToLower
+                mciSendStringW(CommandStatus, StatusReturn, 128, IntPtr.Zero)
 
-        End If
+                Return StatusReturn.ToString.Trim.ToLower
+
+            End If
+
+        Catch ex As Exception
+
+            Debug.Print($"Error getting status: {ex.Message}")
+
+        End Try
 
         Return String.Empty
 
