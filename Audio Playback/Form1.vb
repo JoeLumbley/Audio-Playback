@@ -283,7 +283,7 @@ Public Class Form1
 
         Text = "Audio Playback - Code with Joe"
 
-        CreateSoundFileFromResource()
+        CreateSoundFiles()
 
         Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
 
@@ -334,206 +334,39 @@ Public Class Form1
 
     End Sub
 
-#Region "Sound Management"
+    Private Sub CreateSoundFiles()
 
+        Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
 
+        CreateFileFromResource(FilePath, My.Resources.level)
 
-    'Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
+        FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
 
-    '    ' Do we have sounds and is the sound in the array and is the level in the valid range?
-    '    If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) AndAlso Level >= 0 AndAlso Level <= 1000 Then
-    '        ' We have sounds and the sound is in the array and the level is in range.
+        CreateFileFromResource(FilePath, My.Resources.CashCollected)
 
-    '        Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
+    End Sub
 
-    '        Return SendMciCommand(CommandVolume, IntPtr.Zero) ' The volume was set.
-
-    '    End If
-
-    '    Debug.Print($"The volume was not set {SoundName}")
-
-    '    Return False ' The volume was not set.
-
-    'End Function
-
-    'Private Function LoopSound(SoundName As String) As Boolean
-
-    '    ' Do we have sounds and is the sound in the array?
-    '    If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
-    '        ' We have sounds and the sound is in the array.
-
-    '        Dim CommandSeekToStart As String = $"seek {SoundName} to start"
-
-    '        Dim CommandPlayRepeat As String = $"play {SoundName} repeat"
-
-    '        Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso
-    '               SendMciCommand(CommandPlayRepeat, Me.Handle) ' The sound is looping.
-
-    '    End If
-
-    '    Debug.Print($"The sound is not looping {SoundName}")
-
-    '    Return False ' The sound is not looping.
-
-    'End Function
-
-    'Private Function PlaySound(SoundName As String) As Boolean
-
-    '    ' Do we have sounds and is the sound in the array?
-    '    If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
-    '        ' We have sounds and the sound is in the array.
-
-    '        Dim CommandSeekToStart As String = $"seek {SoundName} to start"
-
-    '        Dim CommandPlay As String = $"play {SoundName} notify"
-
-    '        Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso
-    '               SendMciCommand(CommandPlay, Me.Handle) ' The sound is playing.
-
-    '    End If
-
-    '    Debug.Print($"The sound is not playing {SoundName}")
-
-    '    Return False ' The sound is not playing.
-
-    'End Function
-
-    'Private Function PauseSound(SoundName As String) As Boolean
-
-    '    ' Do we have sounds and is the sound in the array?
-    '    If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
-    '        ' We have sounds and the sound is in the array.
-
-    '        Dim CommandPause As String = $"pause {SoundName} notify"
-
-    '        Return SendMciCommand(CommandPause, Me.Handle) ' The sound is paused.
-
-    '    End If
-
-    '    Debug.Print($"The sound is not paused {SoundName}")
-
-    '    Return False ' The sound is not paused.
-
-    'End Function
-
-    'Private Function IsPlaying(SoundName As String) As Boolean
-
-    '    Return GetStatus(SoundName, "mode") = "playing"
-
-    'End Function
-
-    'Private Sub AddOverlapping(SoundName As String, FilePath As String)
-
-    '    For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
-
-    '        AddSound(SoundName & Suffix, FilePath)
-
-    '    Next
-
-    'End Sub
-
-    'Private Sub PlayOverlapping(SoundName As String)
-
-    '    For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
-
-    '        If Not IsPlaying(SoundName & Suffix) Then
-
-    '            PlaySound(SoundName & Suffix)
-
-    '            Exit Sub
-
-    '        End If
-
-    '    Next
-
-    'End Sub
-
-    'Private Sub SetVolumeOverlapping(SoundName As String, Level As Integer)
-
-    '    For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
-
-    '        SetVolume(SoundName & Suffix, Level)
-
-    '    Next
-
-    'End Sub
-
-    'Private Function GetStatus(SoundName As String, StatusType As String) As String
-
-    '    Try
-
-    '        ' Do we have sounds and is the sound in the array?
-    '        If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
-    '            ' We have sounds and the sound is in the array.
-
-    '            Dim CommandStatus As String = $"status {SoundName} {StatusType}"
-
-    '            Dim StatusReturn As New StringBuilder(128)
-
-    '            mciSendStringW(CommandStatus, StatusReturn, 128, IntPtr.Zero)
-
-    '            Return StatusReturn.ToString.Trim.ToLower
-
-    '        End If
-
-    '    Catch ex As Exception
-
-    '        Debug.Print($"Error getting status: {ex.Message}")
-
-    '    End Try
-
-    '    Return String.Empty
-
-    'End Function
-
-
-    'Private Sub CloseSounds()
-
-    '    If Sounds IsNot Nothing Then
-
-    '        For Each Sound In Sounds
-
-    '            Dim CommandClose As String = $"close {Sound}"
-
-    '            SendMciCommand(CommandClose, IntPtr.Zero)
-
-    '        Next
-
-    '    End If
-
-    'End Sub
-
-    Private Sub CreateSoundFileFromResource()
+    Private Sub CreateFileFromResource(filePath As String, resource As Byte())
 
         Try
 
-            Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
+            If Not IO.File.Exists(filePath) Then
 
-            If Not IO.File.Exists(FilePath) Then
-
-                IO.File.WriteAllBytes(FilePath, My.Resources.level)
-
-            End If
-
-            FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
-
-            If Not IO.File.Exists(FilePath) Then
-
-                IO.File.WriteAllBytes(FilePath, My.Resources.CashCollected)
+                IO.File.WriteAllBytes(filePath, resource)
 
             End If
 
         Catch ex As Exception
 
-            Debug.Print($"Error creating sound file: {ex.Message}")
+            Debug.Print($"Error creating file: {ex.Message}")
 
         End Try
 
     End Sub
 
-#End Region
 
 End Class
+
 
 
 'Windows Multimedia
