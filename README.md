@@ -497,7 +497,6 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [Sounds Array](#sounds-array)
 
----
 
 [AddSound Method](#addSound-method)
 
@@ -509,7 +508,6 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [PauseSound Method](#pausesound-method)
 
----
 
 [IsPlaying Method](#isplaying-method)
 
@@ -517,11 +515,9 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [PlayOverlapping Method](#playoverlapping-method)
 
----
 
 [SetVolumeOverlapping Method](#setVolumeoverlapping-method)
 
----
 
 [SendMciCommand Method](#sendmcicommand-method)
 
@@ -533,7 +529,6 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [Player Declaration](#player-declaration)
 
----
 
 [Form Load Event](#form-load-event)
 
@@ -543,7 +538,6 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [Button1 Click Event](#button1-click-event)
 
----
 
 [Button2 Click Event](#button2-click-event)
 
