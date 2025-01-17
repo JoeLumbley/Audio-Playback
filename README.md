@@ -499,7 +499,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 ---
 
-[Form Load Event](#form-load-event)
+[AddSound Method](#addSound-method)
 
 [Setting the Title](#setting-the-title)
 
