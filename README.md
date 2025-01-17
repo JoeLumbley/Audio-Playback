@@ -177,7 +177,8 @@ Checks if the `Sounds` array is not empty and contains the sound.
 ```vb.net
 Dim CommandSeekToStart As String = $"seek {SoundName} to start"
 Dim CommandPlayRepeat As String = $"play {SoundName} repeat"
-Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso SendMciCommand(CommandPlayRepeat, IntPtr.Zero)
+Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso
+       SendMciCommand(CommandPlayRepeat, IntPtr.Zero)
 ```
 Creates and sends commands to seek to the start of the sound and play it in a loop.
 
