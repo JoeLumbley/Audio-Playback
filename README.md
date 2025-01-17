@@ -505,7 +505,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [LoopSound Method](#loopsound-method)
 
-[Adding Sounds](#adding-sounds)
+[PlaySound Method](#playsound-method)
 
 [Adding Overlapping Sounds](#adding-overlapping-sounds)
 
