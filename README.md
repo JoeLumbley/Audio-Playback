@@ -511,7 +511,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 ---
 
-[Button Click Events](#button-click-events)
+[IsPlaying Method](#isplaying-method)
 
 [Play Overlapping Sounds](#play-overlapping-sounds)
 
