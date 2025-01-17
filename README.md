@@ -501,7 +501,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [AddSound Method](#addSound-method)
 
-[Setting the Title](#setting-the-title)
+[SetVolume Method](#setvolume-method)
 
 [Creating Sound Files](#creating-sound-files)
 
