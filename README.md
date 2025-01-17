@@ -493,7 +493,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [AudioPlayer Structure](#audioPlayer-structure)
 
-[DllImport Attribute](#dllimport-attribute)
+[Dll Import](#dll-import)
 
 [Sound Array Declaration](#sound-array-declaration)
 
