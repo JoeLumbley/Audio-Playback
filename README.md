@@ -491,7 +491,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 
 
-[Class Definition](#class-definition)
+[AudioPlayer Structure](#AudioPlayer Structure)
 
 [DllImport Attribute](#dllimport-attribute)
 
