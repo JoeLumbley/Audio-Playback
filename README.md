@@ -33,6 +33,8 @@ With its robust functionality and seamless integration with the Windows Multimed
 
 Welcome to this detailed walkthrough of the `AudioPlayer` structure and the `Form1` class! We'll go through each line of code and explain its purpose. Let's dive in!
 
+[Index](#index)
+
 ## Imports
 
 ```vb.net
@@ -45,12 +47,16 @@ These imports bring in necessary namespaces for:
 - `System.Text`: For using the `StringBuilder` class.
 - `System.IO`: For file input and output operations.
 
+[Index](#index)
+
 ## AudioPlayer Structure
 
 ```vb.net
 Public Structure AudioPlayer
 ```
 This line defines a `Structure` named `AudioPlayer`. Structures in VB.NET are value types that can contain data and methods.
+
+[Index](#index)
 
 ### DLL Import
 
@@ -63,12 +69,16 @@ End Function
 ```
 This imports the `mciSendStringW` function from the `winmm.dll` library. This function sends a command string to the Media Control Interface (MCI) to control multimedia devices.
 
+[Index](#index)
+
 ### Sounds Array
 
 ```vb.net
 Private Sounds() As String
 ```
 This declares an array named `Sounds` to store the names of sounds that have been added.
+
+[Index](#index)
 
 ### AddSound Method
 
@@ -122,6 +132,8 @@ Return False
 ```
 Prints a debug message and returns `False` if the sound could not be added.
 
+[Index](#index)
+
 ### SetVolume Method
 
 ```vb.net
@@ -130,7 +142,9 @@ Public Function SetVolume(SoundName As String, Level As Integer) As Boolean
 This method sets the volume of a sound. It takes the sound name and volume level (0 to 1000) as parameters.
 
 ```vb.net
-If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) AndAlso Level >= 0 AndAlso Level <= 1000 Then
+If Sounds IsNot Nothing AndAlso
+   Sounds.Contains(SoundName) AndAlso
+   Level >= 0 AndAlso Level <= 1000 Then
 ```
 Checks if the `Sounds` array is not empty, contains the sound, and the volume level is valid.
 
@@ -145,6 +159,8 @@ Debug.Print($"The volume was not set {SoundName}")
 Return False
 ```
 Prints a debug message and returns `False` if the volume could not be set.
+
+[Index](#index)
 
 ### LoopSound Method
 
@@ -171,6 +187,8 @@ Return False
 ```
 Prints a debug message and returns `False` if the sound could not be looped.
 
+[Index](#index)
+
 ### PlaySound Method
 
 ```vb.net
@@ -196,6 +214,8 @@ Return False
 ```
 Prints a debug message and returns `False` if the sound could not be played.
 
+[Index](#index)
+
 ### PauseSound Method
 
 ```vb.net
@@ -220,6 +240,8 @@ Return False
 ```
 Prints a debug message and returns `False` if the sound could not be paused.
 
+[Index](#index)
+
 ### IsPlaying Method
 
 ```vb.net
@@ -231,6 +253,8 @@ This method checks if a sound is playing. It takes the sound name as a parameter
 Return GetStatus(SoundName, "mode") = "playing"
 ```
 Uses the `GetStatus` method to check if the sound is currently playing.
+
+[Index](#index)
 
 ### AddOverlapping Method
 
@@ -245,6 +269,8 @@ For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", 
 Next
 ```
 Loops through a set of suffixes (A to L) and adds each sound instance with a unique name.
+
+[Index](#index)
 
 ### PlayOverlapping Method
 
@@ -263,6 +289,8 @@ Next
 ```
 Loops through the set of suffixes and plays the first sound instance that is not already playing.
 
+[Index](#index)
+
 ### SetVolumeOverlapping Method
 
 ```vb.net
@@ -276,6 +304,8 @@ For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", 
 Next
 ```
 Loops through the set of suffixes and sets the volume for each sound instance.
+
+[Index](#index)
 
 ### SendMciCommand Method
 
@@ -295,6 +325,8 @@ End Try
 ```
 
 Here, the `mciSendStringW` function is called with the command string. If the function returns `0`, it means the command was successfully sent. If an exception occurs, the error is printed, and the method returns `False`.
+
+[Index](#index)
 
 ### GetStatus Method
 
@@ -321,6 +353,8 @@ Return String.Empty
 ```
 If an exception occurs, the error is printed, and an empty string is returned.
 
+[Index](#index)
+
 ### CloseSounds Method
 
 ```vb.net
@@ -339,6 +373,8 @@ End Sub
 ```
 Checks if the `Sounds` array is not empty. Loops through each sound and sends a command to close it.
 
+[Index](#index)
+
 ## Form1 Class
 
 ```vb.net
@@ -346,12 +382,16 @@ Public Class Form1
 ```
 This class defines a form in a Windows Forms application.
 
+[Index](#index)
+
 ### Player Declaration
 
 ```vb.net
 Private Player As AudioPlayer
 ```
 This declares an instance of the `AudioPlayer` structure.
+
+[Index](#index)
 
 ### Form Load Event
 
@@ -365,12 +405,16 @@ Text = "Audio Playback - Code with Joe"
 ```
 Sets the form's title.
 
+[Index](#index)
+
 ### CreateSoundFiles Method
 
 ```vb.net
 CreateSoundFiles()
 ```
 Calls the `CreateSoundFiles` method to create the necessary sound files from embedded resources.
+
+[Index](#index)
 
 ### Adding and Setting Up Sounds
 
@@ -386,6 +430,8 @@ Debug.Print($"Running... {Now}")
 ```
 Sets up the sound files by specifying their file paths, adding them to the player, setting their volume, and starting to loop the "Music" sound. It prints a debug message indicating the form is running.
 
+[Index](#index)
+
 ### Button1 Click Event
 
 ```vb.net
@@ -394,6 +440,8 @@ Player.PlayOverlapping("CashCollected")
 End Sub
 ```
 This method handles the `Click` event for `Button1`. It plays an overlapping instance of the "CashCollected" sound.
+
+[Index](#index)
 
 ### Button2 Click Event
 
@@ -410,6 +458,8 @@ End Sub
 ```
 This method handles the `Click` event for `Button2`. It toggles between playing and pausing the "Music" sound and updates the button text accordingly.
 
+[Index](#index)
+
 ### Form Closing Event
 
 ```vb.net
@@ -418,6 +468,8 @@ Player.CloseSounds()
 End Sub
 ```
 This method handles the form's `Closing` event. It closes all sound files to release resources.
+
+[Index](#index)
 
 ### CreateSoundFiles Method
 
@@ -430,6 +482,8 @@ CreateFileFromResource(FilePath, My.Resources.CashCollected)
 End Sub
 ```
 This method creates sound files from embedded resources. It specifies the file paths and calls `CreateFileFromResource` to write the resource data to the file system.
+
+[Index](#index)
 
 ### CreateFileFromResource Method
 
@@ -445,6 +499,8 @@ End Try
 End Sub
 ```
 This method writes resource data to a file if it does not already exist. It handles exceptions by printing an error message.
+
+[Index](#index)
 
 ## Summary
 
@@ -482,7 +538,6 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 ## Index
 
-[Index](#index)
 
 
 
