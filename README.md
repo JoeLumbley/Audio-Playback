@@ -495,7 +495,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [Dll Import](#dll-import)
 
-[Sound Array Declaration](#sound-array-declaration)
+[Sounds Array](#sounds-array)
 
 ---
 
