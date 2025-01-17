@@ -503,7 +503,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [SetVolume Method](#setvolume-method)
 
-[Creating Sound Files](#creating-sound-files)
+[LoopSound Method](#loopsound-method)
 
 [Adding Sounds](#adding-sounds)
 
