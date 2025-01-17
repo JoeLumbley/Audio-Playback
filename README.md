@@ -507,7 +507,7 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [PlaySound Method](#playsound-method)
 
-[Adding Overlapping Sounds](#adding-overlapping-sounds)
+[PauseSound Method](#pausesound-method)
 
 ---
 
