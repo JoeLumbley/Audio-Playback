@@ -31,424 +31,229 @@ With its robust functionality and seamless integration with the Windows Multimed
 
 # Code Walkthrough
 
-Welcome to the detailed walkthrough of the Audio Playback application code! This guide is designed for beginners and will explain each line of the code clearly and thoroughly. Let’s dive in!
-
-[Index](#index)
+Welcome to this detailed walkthrough of the `AudioPlayer` structure and the `Form1` class! We'll go through each line of code and explain its purpose. Let's dive in!
 
 ## Imports
 
-```vb
+```vb.net
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.IO
 ```
+These imports bring in necessary namespaces for:
+- `System.Runtime.InteropServices`: For interacting with unmanaged code.
+- `System.Text`: For using the `StringBuilder` class.
+- `System.IO`: For file input and output operations.
 
-- **Imports System.Runtime.InteropServices**: This namespace is used to enable interaction with unmanaged code, particularly for calling functions from Windows DLLs.
-- **Imports System.Text**: This namespace provides classes for manipulating strings, including `StringBuilder`, which is used for building strings efficiently.
-- **Imports System.IO**: This namespace contains classes for handling input and output, especially for file operations.
+## AudioPlayer Structure
 
-[Index](#index)
-
-## Class Definition
-
-```vb
-Public Class Form1
+```vb.net
+Public Structure AudioPlayer
 ```
+This line defines a `Structure` named `AudioPlayer`. Structures in VB.NET are value types that can contain data and methods.
 
-- This line defines a public class named `Form1`. This is the main form of the application where all functionalities will be implemented.
+### DLL Import
 
-[Index](#index)
-
-## DllImport Attribute
-
-```vb
+```vb.net
 <DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
 Private Shared Function mciSendStringW(<MarshalAs(UnmanagedType.LPTStr)> ByVal lpszCommand As String,
                                        <MarshalAs(UnmanagedType.LPWStr)> ByVal lpszReturnString As StringBuilder,
                                        ByVal cchReturn As UInteger, ByVal hwndCallback As IntPtr) As Integer
 End Function
 ```
+This imports the `mciSendStringW` function from the `winmm.dll` library. This function sends a command string to the Media Control Interface (MCI) to control multimedia devices.
 
-- **<DllImport("winmm.dll", EntryPoint:="mciSendStringW")>**: This attribute allows us to call the `mciSendStringW` function from the `winmm.dll`, which is a Windows Multimedia API function used for controlling multimedia playback.
-- **Private Shared Function mciSendStringW(...)**: This declares a function that will send commands to the multimedia API.
-  - **lpszCommand**: The command string to execute.
-  - **lpszReturnString**: A `StringBuilder` to hold any return string from the command.
-  - **cchReturn**: The size of the return string.
-  - **hwndCallback**: A handle to a window for receiving notifications.
+### Sounds Array
 
-[Index](#index)
-
-## Sound Array Declaration
-
-```vb
+```vb.net
 Private Sounds() As String
 ```
+This declares an array named `Sounds` to store the names of sounds that have been added.
 
-- This line declares an array called `Sounds` that will hold the names of the audio files being managed.
+### AddSound Method
 
-[Index](#index)
-
-## Form Load Event
-
-```vb
-Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+```vb.net
+Public Function AddSound(SoundName As String, FilePath As String) As Boolean
 ```
+This method adds a sound to the player. It takes the name of the sound and the path to the sound file as parameters.
 
-- This subroutine runs when the form is loaded. It initializes the application.
-
-### Setting the Title
-
-```vb
-Text = "Audio Playback - Code with Joe"
-```
-
-- This sets the title of the form to "Audio Playback - Code with Joe".
-
-### Creating Sound Files
-
-```vb
-CreateSoundFileFromResource()
-```
-
-- This calls a method to create sound files from resources if they do not already exist.
-
-### Adding Sounds
-
-```vb
-Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
-AddSound("Music", FilePath)
-SetVolume("Music", 600)
-```
-
-- **Dim FilePath**: This creates a string variable `FilePath` that combines the startup path of the application with the filename `level.mp3`.
-- **AddSound("Music", FilePath)**: This adds the sound file with the alias "Music".
-- **SetVolume("Music", 600)**: This sets the volume of the "Music" sound to 600 (on a scale of 0 to 1000).
-
-### Adding Overlapping Sounds
-
-```vb
-FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
-AddOverlapping("CashCollected", FilePath)
-SetVolumeOverlapping("CashCollected", 900)
-LoopSound("Music")
-```
-
-- This repeats the process for another sound file, `CashCollected.mp3`, adding it with overlapping capabilities and setting its volume to 900.
-- **LoopSound("Music")**: This starts looping the "Music" sound.
-
-[Index](#index)
-
-## Button Click Events
-
-### Play Overlapping Sounds
-
-```vb
-Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-    PlayOverlapping("CashCollected")
-End Sub
-```
-
-- This method plays the overlapping sound "CashCollected" when Button1 is clicked.
-
-### Toggle Music Looping
-
-```vb
-Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-    If IsPlaying("Music") = True Then
-        PauseSound("Music")
-        Button2.Text = "Play Loop"
-    Else
-        LoopSound("Music")
-        Button2.Text = "Pause Loop"
-    End If
-End Sub
-```
-
-- This method checks if "Music" is currently playing. If it is, it pauses the sound and changes the button text to "Play Loop". If not, it starts looping the sound and changes the button text to "Pause Loop".
-
-[Index](#index)
-
-## Form Closing Event
-
-```vb
-Private Sub Form1_Closing(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
-    CloseSounds()
-End Sub
-```
-
-- This method is called when the form is closing. It ensures that all sounds are properly closed before the application exits.
-
-[Index](#index)
-
-## Adding a Sound
-
-```vb
-Private Function AddSound(SoundName As String, FilePath As String) As Boolean
-```
-
-- This function attempts to add a sound file to the application.
-
-### Checking Conditions
-
-```vb
+```vb.net
 If Not String.IsNullOrWhiteSpace(SoundName) AndAlso IO.File.Exists(FilePath) Then
 ```
+Checks if the sound name is not empty or whitespace and if the file exists.
 
-- This checks if the `SoundName` is not empty and if the file exists at the specified path.
-
-### Opening the Sound File
-
-```vb
+```vb.net
 Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
-Dim ReturnString As New StringBuilder(128)
 ```
+Creates a command string to open the sound file and assign it an alias.
 
-- This constructs a command string to open the sound file with an alias and initializes a `StringBuilder` for any return data.
-
-### Sound Management Logic
-
-```vb
-If Sounds IsNot Nothing Then
-    If Not Sounds.Contains(SoundName) Then
-        If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
-            Array.Resize(Sounds, Sounds.Length + 1)
-            Sounds(Sounds.Length - 1) = SoundName
-            Return True
-        End If
-    End If
-Else
-    If mciSendStringW(CommandOpen, ReturnString, 0, IntPtr.Zero) = 0 Then
-        ReDim Sounds(0)
-        Sounds(0) = SoundName
-        Return True
-    End If
-End If
+```vb.net
+If Sounds Is Nothing Then
 ```
+Checks if the `Sounds` array is uninitialized.
 
-- This block checks if the `Sounds` array is initialized and whether the sound is already in the array. If not, it tries to open the sound file using `mciSendStringW`. If successful, it resizes the `Sounds` array and adds the new sound.
-
-### Final Return Statement
-
-```vb
-Return False
+```vb.net
+If SendMciCommand(CommandOpen, IntPtr.Zero) Then
 ```
+Sends the command to open the sound file.
 
-- If the sound could not be added, the function returns `False`.
-
-[Index](#index)
-
-## Set Volume Function
-
-```vb
-Private Function SetVolume(SoundName As String, Level As Integer) As Boolean
-```
-
-- This function sets the volume for a specified sound.
-
-### Volume Checking Logic
-
-```vb
-If Sounds IsNot Nothing Then
-    If Sounds.Contains(SoundName) Then
-        If Level >= 0 AndAlso Level <= 1000 Then
-```
-
-- This checks if the `Sounds` array contains the specified sound and if the provided volume level is within the valid range (0 to 1000).
-
-### Setting the Volume
-
-```vb
-Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
-Dim ReturnString As New StringBuilder(128)
-
-If mciSendStringW(CommandVolume, ReturnString, 0, IntPtr.Zero) = 0 Then
-    Return True
-End If
-```
-
-- This constructs a command to set the audio volume and checks if the command was successful.
-
-### Final Return Statement
-
-```vb
-Return False
-```
-
-- If the volume could not be set, the function returns `False`.
-- 
-[Index](#index)
-
-## Loop Sound Function
-
-```vb
-Private Function LoopSound(SoundName As String) As Boolean
-```
-
-- This function loops a specified sound.
-
-### Sound Existence Check
-
-```vb
-If Sounds IsNot Nothing Then
-    If Not Sounds.Contains(SoundName) Then
-        Return False
-    End If
-```
-
-- This checks if the `Sounds` array is initialized and if the sound is present. If not, it returns `False`.
-
-### Looping Logic
-
-```vb
-Dim CommandSeekToStart As String = $"seek {SoundName} to start"
-Dim ReturnString As New StringBuilder(128)
-
-mciSendStringW(CommandSeekToStart, ReturnString, 0, IntPtr.Zero)
-
-Dim CommandPlayRepete As String = $"play {SoundName} repeat"
-If mciSendStringW(CommandPlayRepete, ReturnString, 0, Me.Handle) <> 0 Then
-    Return False
-End If
-```
-
-- This constructs commands to seek the sound to the start and play it in a loop. If the command fails, it returns `False`.
-
-### Final Return Statement
-
-```vb
+```vb.net
+ReDim Sounds(0)
+Sounds(0) = SoundName
 Return True
 ```
+Initializes the `Sounds` array with the new sound and returns `True`.
 
-- If the sound is successfully set to loop, the function returns `True`.
-- 
-[Index](#index)
+```vb.net
+ElseIf Not Sounds.Contains(SoundName) Then
+```
+Checks if the sound is not already in the array.
 
-## Play Sound Function
+```vb.net
+Array.Resize(Sounds, Sounds.Length + 1)
+Sounds(Sounds.Length - 1) = SoundName
+Return True
+```
+Adds the new sound to the `Sounds` array and returns `True`.
 
-```vb
+```vb.net
+Debug.Print($"The sound was not added {SoundName}")
+Return False
+```
+Prints a debug message and returns `False` if the sound could not be added.
+
+### SetVolume Method
+
+```vb.net
+Public Function SetVolume(SoundName As String, Level As Integer) As Boolean
+```
+This method sets the volume of a sound. It takes the sound name and volume level (0 to 1000) as parameters.
+
+```vb.net
+If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) AndAlso Level >= 0 AndAlso Level <= 1000 Then
+```
+Checks if the `Sounds` array is not empty, contains the sound, and the volume level is valid.
+
+```vb.net
+Dim CommandVolume As String = $"setaudio {SoundName} volume to {Level}"
+Return SendMciCommand(CommandVolume, IntPtr.Zero)
+```
+Creates and sends the command to set the volume.
+
+```vb.net
+Debug.Print($"The volume was not set {SoundName}")
+Return False
+```
+Prints a debug message and returns `False` if the volume could not be set.
+
+### LoopSound Method
+
+```vb.net
+Public Function LoopSound(SoundName As String) As Boolean
+```
+This method loops a sound. It takes the sound name as a parameter.
+
+```vb.net
+If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
+```
+Checks if the `Sounds` array is not empty and contains the sound.
+
+```vb.net
+Dim CommandSeekToStart As String = $"seek {SoundName} to start"
+Dim CommandPlayRepeat As String = $"play {SoundName} repeat"
+Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso SendMciCommand(CommandPlayRepeat, IntPtr.Zero)
+```
+Creates and sends commands to seek to the start of the sound and play it in a loop.
+
+```vb.net
+Debug.Print($"The sound is not looping {SoundName}")
+Return False
+```
+Prints a debug message and returns `False` if the sound could not be looped.
+
+### PlaySound Method
+
+```vb.net
 Private Function PlaySound(SoundName As String) As Boolean
 ```
+This method plays a sound. It takes the sound name as a parameter.
 
-- This function plays a specified sound.
-
-### Sound Existence Check
-
-```vb
-If Sounds IsNot Nothing Then
-    If Sounds.Contains(SoundName) Then
+```vb.net
+If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
 ```
+Checks if the `Sounds` array is not empty and contains the sound.
 
-- This checks if the sound exists in the `Sounds` array.
-
-### Playing Logic
-
-```vb
+```vb.net
 Dim CommandSeekToStart As String = $"seek {SoundName} to start"
-Dim ReturnString As New StringBuilder(128)
-
-mciSendStringW(CommandSeekToStart, ReturnString, 0, IntPtr.Zero)
-
 Dim CommandPlay As String = $"play {SoundName} notify"
-If mciSendStringW(CommandPlay, ReturnString, 0, Me.Handle) = 0 Then
-    Return True
-End If
+Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso SendMciCommand(CommandPlay, IntPtr.Zero)
 ```
+Creates and sends commands to seek to the start of the sound and play it.
 
-- This seeks the sound to the start and plays it. If successful, it returns `True`.
-
-### Final Return Statement
-
-```vb
+```vb.net
+Debug.Print($"The sound is not playing {SoundName}")
 Return False
 ```
+Prints a debug message and returns `False` if the sound could not be played.
 
-- If the sound could not be played, the function returns `False`.
-- 
-[Index](#index)
+### PauseSound Method
 
-## Pause Sound Function
-
-```vb
-Private Function PauseSound(SoundName As String) As Boolean
+```vb.net
+Public Function PauseSound(SoundName As String) As Boolean
 ```
+This method pauses a sound. It takes the sound name as a parameter.
 
-- This function pauses a specified sound.
-
-### Sound Existence Check
-
-```vb
-If Sounds IsNot Nothing Then
-    If Sounds.Contains(SoundName) Then
+```vb.net
+If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
 ```
+Checks if the `Sounds` array is not empty and contains the sound.
 
-- This checks if the sound exists in the `Sounds` array.
-
-### Pausing Logic
-
-```vb
+```vb.net
 Dim CommandPause As String = $"pause {SoundName} notify"
-Dim ReturnString As New StringBuilder(128)
-
-If mciSendStringW(CommandPause, ReturnString, 0, Me.Handle) = 0 Then
-    Return True
-End If
+Return SendMciCommand(CommandPause, IntPtr.Zero)
 ```
+Creates and sends the command to pause the sound.
 
-- This constructs a command to pause the sound. If successful, it returns `True`.
-
-### Final Return Statement
-
-```vb
+```vb.net
+Debug.Print($"The sound is not paused {SoundName}")
 Return False
 ```
+Prints a debug message and returns `False` if the sound could not be paused.
 
-- If the sound could not be paused, the function returns `False`.
-- 
-[Index](#index)
+### IsPlaying Method
 
-## Is Playing Function
-
-```vb
-Private Function IsPlaying(SoundName As String) As Boolean
-    Return GetStatus(SoundName, "mode") = "playing"
-End Function
+```vb.net
+Public Function IsPlaying(SoundName As String) As Boolean
 ```
+This method checks if a sound is playing. It takes the sound name as a parameter and returns a Boolean.
 
-- This function checks if a specified sound is currently playing by calling `GetStatus` with the status type "mode".
-- 
-[Index](#index)
-
-## Adding Overlapping Sounds
-
-```vb
-Private Sub AddOverlapping(SoundName As String, FilePath As String)
+```vb.net
+Return GetStatus(SoundName, "mode") = "playing"
 ```
+Uses the `GetStatus` method to check if the sound is currently playing.
 
-- This method adds multiple instances of a sound file for overlapping playback.
+### AddOverlapping Method
 
-### Loop Through Suffixes
+```vb.net
+Public Sub AddOverlapping(SoundName As String, FilePath As String)
+```
+This method adds multiple overlapping instances of a sound. It takes the sound name and file path as parameters.
 
-```vb
+```vb.net
 For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
     AddSound(SoundName & Suffix, FilePath)
 Next
 ```
+Loops through a set of suffixes (A to L) and adds each sound instance with a unique name.
 
-- This loops through a set of suffixes and adds the sound file with each suffix to allow multiple overlapping sounds.
+### PlayOverlapping Method
 
-[Index](#index)
-
-## Playing Overlapping Sounds
-
-```vb
-Private Sub PlayOverlapping(SoundName As String)
+```vb.net
+Public Sub PlayOverlapping(SoundName As String)
 ```
+This method plays one instance of an overlapping sound. It takes the sound name as a parameter.
 
-- This method plays an overlapping sound.
-
-### Loop Through Suffixes
-
-```vb
+```vb.net
 For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
     If Not IsPlaying(SoundName & Suffix) Then
         PlaySound(SoundName & Suffix)
@@ -456,139 +261,220 @@ For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", 
     End If
 Next
 ```
+Loops through the set of suffixes and plays the first sound instance that is not already playing.
 
-- This checks each suffix to see if the sound is already playing. If it finds one that isn’t, it plays that sound and exits the loop.
+### SetVolumeOverlapping Method
 
-[Index](#index)
-
-## Setting Volume for Overlapping Sounds
-
-```vb
-Private Sub SetVolumeOverlapping(SoundName As String, Level As Integer)
+```vb.net
+Public Sub SetVolumeOverlapping(SoundName As String, Level As Integer)
 ```
+This method sets the volume for all instances of an overlapping sound. It takes the sound name and volume level as parameters.
 
-- This method sets the volume for multiple overlapping sound instances.
-
-### Loop Through Suffixes
-
-```vb
+```vb.net
 For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
     SetVolume(SoundName & Suffix, Level)
 Next
 ```
+Loops through the set of suffixes and sets the volume for each sound instance.
 
-- This loops through each suffix and calls the `SetVolume` method to set the specified volume level for each overlapping instance of the sound.
-- 
-[Index](#index)
+### SendMciCommand Method
 
-## Getting Sound Status
+```vb.net
+Private Function SendMciCommand(command As String, hwndCallback As IntPtr) As Boolean
+```
+This method sends an MCI command. It takes the command string and a window handle for the callback as parameters.
 
-```vb
+```vb.net
+Dim ReturnString As New StringBuilder(128)
+Try
+    Return mciSendStringW(command, ReturnString, 0, hwndCallback) = 0
+Catch ex As Exception
+    Debug.Print($"Error: {ex.Message}")
+    Return False
+End Try
+```
+
+Here, the `mciSendStringW` function is called with the command string. If the function returns `0`, it means the command was successfully sent. If an exception occurs, the error is printed, and the method returns `False`.
+
+### GetStatus Method
+
+```vb.net
 Private Function GetStatus(SoundName As String, StatusType As String) As String
 ```
+This method gets the status of a sound. It takes the sound name and the status type (e.g., "mode") as parameters and returns the status as a string.
 
-- This function retrieves the status of a specified sound.
-
-### Sound Existence Check
-
-```vb
-If Sounds IsNot Nothing Then
-    If Sounds.Contains(SoundName) Then
+```vb.net
+If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
+    Dim CommandStatus As String = $"status {SoundName} {StatusType}"
+    Dim StatusReturn As New StringBuilder(128)
+    mciSendStringW(CommandStatus, StatusReturn, 128, IntPtr.Zero)
+    Return StatusReturn.ToString.Trim.ToLower
+End If
 ```
+Checks if the `Sounds` array is not empty and contains the sound. Creates and sends the command to get the status, stores the result in `StatusReturn`, and returns the status as a trimmed, lowercase string.
 
-- This checks if the `Sounds` array is initialized and contains the specified sound.
-
-### Command to Get Status
-
-```vb
-Dim CommandStatus As String = $"status {SoundName} {StatusType}"
-Dim StatusReturn As New StringBuilder(128)
-
-mciSendStringW(CommandStatus, StatusReturn, 128, IntPtr.Zero)
-
-Return StatusReturn.ToString.Trim.ToLower
-```
-
-- This constructs a command to get the status of the sound and stores the result in `StatusReturn`. It then returns the status as a trimmed lowercase string.
-
-### Final Return Statement
-
-```vb
+```vb.net
+Catch ex As Exception
+    Debug.Print($"Error getting status: {ex.Message}")
+End Try
 Return String.Empty
 ```
+If an exception occurs, the error is printed, and an empty string is returned.
 
-- If the sound is not found, it returns an empty string.
+### CloseSounds Method
 
-[Index](#index)
-
-## Closing Sounds
-
-```vb
-Private Sub CloseSounds()
+```vb.net
+Public Sub CloseSounds()
 ```
+This method closes all sound files.
 
-- This method ensures that all sounds are closed when the application is exiting.
-
-### Loop Through Sounds
-
-```vb
+```vb.net
 If Sounds IsNot Nothing Then
     For Each Sound In Sounds
         Dim CommandClose As String = $"close {Sound}"
-        Dim ReturnString As New StringBuilder(128)
-
-        mciSendStringW(CommandClose, ReturnString, 0, IntPtr.Zero)
+        SendMciCommand(CommandClose, IntPtr.Zero)
     Next
 End If
+End Sub
 ```
+Checks if the `Sounds` array is not empty. Loops through each sound and sends a command to close it.
 
-- This checks if there are any sounds and loops through each sound in the `Sounds` array, sending a close command to the multimedia API to free up resources.
+## Form1 Class
 
-[Index](#index)
-
-## Creating Sound Files from Resources
-
-```vb
-Private Sub CreateSoundFileFromResource()
+```vb.net
+Public Class Form1
 ```
+This class defines a form in a Windows Forms application.
 
-- This method creates sound files from embedded resources if they do not already exist.
+### Player Declaration
 
-### Check and Write Level Sound
+```vb.net
+Private Player As AudioPlayer
+```
+This declares an instance of the `AudioPlayer` structure.
 
-```vb
+### Form Load Event
+
+```vb.net
+Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+```
+This method handles the form's `Load` event.
+
+```vb.net
+Text = "Audio Playback - Code with Joe"
+```
+Sets the form's title.
+
+### CreateSoundFiles Method
+
+```vb.net
+CreateSoundFiles()
+```
+Calls the `CreateSoundFiles` method to create the necessary sound files from embedded resources.
+
+### Adding and Setting Up Sounds
+
+```vb.net
 Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
-If Not IO.File.Exists(FilePath) Then
-    IO.File.WriteAllBytes(FilePath, My.Resources.level)
-End If
-```
-
-- This checks if the `level.mp3` file exists in the application’s startup path. If it does not exist, it writes the sound data from resources to that file.
-
-### Check and Write Cash Collected Sound
-
-```vb
+Player.AddSound("Music", FilePath)
+Player.SetVolume("Music", 600)
 FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
-If Not IO.File.Exists(FilePath) Then
-    IO.File.WriteAllBytes(FilePath, My.Resources.CashCollected)
-End If
+Player.AddOverlapping("CashCollected", FilePath)
+Player.SetVolumeOverlapping("CashCollected", 900)
+Player.LoopSound("Music")
+Debug.Print($"Running... {Now}")
 ```
+Sets up the sound files by specifying their file paths, adding them to the player, setting their volume, and starting to loop the "Music" sound. It prints a debug message indicating the form is running.
 
-- This repeats the process for `CashCollected.mp3`, ensuring that both sound files are available for playback.
+### Button1 Click Event
 
-[Index](#index)
+```vb.net
+Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+Player.PlayOverlapping("CashCollected")
+End Sub
+```
+This method handles the `Click` event for `Button1`. It plays an overlapping instance of the "CashCollected" sound.
+
+### Button2 Click Event
+
+```vb.net
+Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+If Player.IsPlaying("Music") = True Then
+    Player.PauseSound("Music")
+    Button2.Text = "Play Loop"
+Else
+    Player.LoopSound("Music")
+    Button2.Text = "Pause Loop"
+End If
+End Sub
+```
+This method handles the `Click` event for `Button2`. It toggles between playing and pausing the "Music" sound and updates the button text accordingly.
+
+### Form Closing Event
+
+```vb.net
+Private Sub Form1_Closing(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+Player.CloseSounds()
+End Sub
+```
+This method handles the form's `Closing` event. It closes all sound files to release resources.
+
+### CreateSoundFiles Method
+
+```vb.net
+Private Sub CreateSoundFiles()
+Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
+CreateFileFromResource(FilePath, My.Resources.level)
+FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
+CreateFileFromResource(FilePath, My.Resources.CashCollected)
+End Sub
+```
+This method creates sound files from embedded resources. It specifies the file paths and calls `CreateFileFromResource` to write the resource data to the file system.
+
+### CreateFileFromResource Method
+
+```vb.net
+Private Sub CreateFileFromResource(filePath As String, resource As Byte())
+Try
+    If Not IO.File.Exists(filePath) Then
+        IO.File.WriteAllBytes(filePath, resource)
+    End If
+Catch ex As Exception
+    Debug.Print($"Error creating file: {ex.Message}")
+End Try
+End Sub
+```
+This method writes resource data to a file if it does not already exist. It handles exceptions by printing an error message.
+
+## Summary
+
+This code defines an `AudioPlayer` structure that manages sound files, including adding, playing, pausing, looping, and overlapping sounds. The `Form1` class sets up the form, initializes the audio player, and handles events for playing and pausing sounds.
+
+I hope this detailed explanation helps you understand the code better! If you have any questions or need further clarification, feel free to ask. 😊
 
 
-## Conclusion
 
-This walkthrough has provided a detailed explanation of the Audio Playback application code. Each section of the code was broken down line by line to help beginners understand how the application works. 
 
-### Key Takeaways:
-- The application uses the Windows Multimedia API to manage audio playback.
-- It supports features like volume control, looping, and overlapping sounds.
-- Proper resource management is essential for multimedia applications.
 
-By following this guide, you should now have a solid understanding of how the Audio Playback application operates. Feel free to experiment with the code, modify it, and see how it affects the functionality. Happy coding!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
