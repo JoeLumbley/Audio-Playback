@@ -513,115 +513,46 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 [IsPlaying Method](#isplaying-method)
 
-[Play Overlapping Sounds](#play-overlapping-sounds)
+[AddOverlapping Method](#addoverlapping-method)
 
-[Toggle Music Looping](#toggle-music-looping)
+[PlayOverlapping Method](#playoverlapping-method)
 
 ---
+
+[SetVolumeOverlapping Method](#setVolumeoverlapping-method)
+
+---
+
+[SendMciCommand Method](#sendmcicommand-method)
+
+[GetStatus Method](#getstatus-method)
+
+[CloseSounds Method](#closesounds-method)
+
+[Form1 Class](#form1-class)
+
+[Player Declaration](#player-declaration)
+
+---
+
+[Form Load Event](#form-load-event)
+
+[CreateSoundFiles Method](#createsoundfiles-method)
+
+[Adding and Setting Up Sounds](#adding-and-setting-up-sounds)
+
+[Button1 Click Event](#button1-click-event)
+
+---
+
+[Button2 Click Event](#button2-click-event)
 
 [Form Closing Event](#form-closing-event)
 
----
+[CreateSoundFiles Method](#createsoundfiles-method)
 
-[Adding a Sound](#adding-a-sound)
+[CreateFileFromResource Method](#createfilefromresource-method)
 
-[Checking Conditions](#checking-conditions)
-
-[Opening the Sound File](#opening-the-sound-file)
-
-[Sound Management Logic](#sound-management-logic)
-
-[Final Return Statement](#final-return-statement)
-
----
-
-[Set Volume Function](#set-volume-function)
-
-[Volume Checking Logic](#volume-checking-logic)
-
-[Setting the Volume](#setting-the-volume)
-
-[Final Return Statement](#final-return-statement-1)
-
----
-
-[Loop Sound Function](#loop-sound-function)
-
-[Sound Existence Check](#sound-existence-check)
-
-[Looping Logic](#looping-logic)
-
-[Final Return Statement](#final-return-statement-2)
-
----
-
-[Play Sound Function](#play-sound-function)
-
-[Sound Existence Check](#sound-existence-check-1)
-
-[Playing Logic](#playing-logic)
-
-[Final Return Statement](#final-return-statement-3)
-
----
-
-[Pause Sound Function](#pause-sound-function)
-
-[Sound Existence Check](#sound-existence-check-2)
-
-[Pausing Logic](#pausing-logic)
-
-[Final Return Statement](#final-return-statement-4)
-
----
-
-[Is Playing Function](#is-playing-function)
-
----
-
-[Adding Overlapping Sounds](#adding-overlapping-sounds-1)
-
-[Loop Through Suffixes](#loop-through-suffixes)
-
----
-
-[Playing Overlapping Sounds](#playing-overlapping-sounds)
-
-[Loop Through Suffixes](#loop-through-suffixes-1)
-
----
-
-[Setting Volume for Overlapping Sounds](#setting-volume-for-overlapping-sounds)
-
-[Loop Through Suffixes](#loop-through-suffixes-2)
-
----
-
-[Getting Sound Status](#getting-sound-status)
-
-[Sound Existence Check](#sound-existence-check-3)
-
-[Command to Get Status](#command-to-get-status)
-
-[Final Return Statement](#final-return-statement-5)
-
----
-
-[Closing Sounds](#closing-sounds)
-
-[Loop Through Sounds](#loop-through-sounds)
-
----
-
-[Creating Sound Files from Resources](#creating-sound-files-from-resources)
-
-[Check and Write Level Sound](#check-and-write-level-sound)
-
-[Check and Write Cash Collected Sound](#check-and-write-cash-collected-sound)
-
----
-
-[Conclusion](#conclusion)
 
 
 
