@@ -491,10 +491,10 @@ This method creates sound files from embedded resources. It specifies the file p
 ### CreateFileFromResource Method
 
 ```vb.net
-Private Sub CreateFileFromResource(filePath As String, resource As Byte())
+Private Sub CreateFileFromResource(filepath As String, resource As Byte())
 Try
-    If Not IO.File.Exists(filePath) Then
-        IO.File.WriteAllBytes(filePath, resource)
+    If Not IO.File.Exists(filepath) Then
+        IO.File.WriteAllBytes(filepath, resource)
     End If
 Catch ex As Exception
     Debug.Print($"Error creating file: {ex.Message}")
