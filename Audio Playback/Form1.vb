@@ -70,7 +70,7 @@ Public Structure AudioPlayer
 
                 ' Did the sound file open?
                 If SendMciCommand(CommandOpen, IntPtr.Zero) Then
-                    'Yes, the sound file did open.
+                    ' Yes, the sound file did open.
 
                     ' Add the sound to the Sounds array.
                     Array.Resize(Sounds, Sounds.Length + 1)
@@ -346,13 +346,13 @@ Public Class Form1
 
     End Sub
 
-    Private Sub CreateFileFromResource(filePath As String, resource As Byte())
+    Private Sub CreateFileFromResource(filepath As String, resource As Byte())
 
         Try
 
-            If Not IO.File.Exists(filePath) Then
+            If Not IO.File.Exists(filepath) Then
 
-                IO.File.WriteAllBytes(filePath, resource)
+                IO.File.WriteAllBytes(filepath, resource)
 
             End If
 
