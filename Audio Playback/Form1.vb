@@ -133,7 +133,7 @@ Public Structure AudioPlayer
 
     End Function
 
-    Private Function PlaySound(SoundName As String) As Boolean
+    Public Function PlaySound(SoundName As String) As Boolean
 
         ' Do we have sounds and is the sound in the array?
         If Sounds IsNot Nothing AndAlso Sounds.Contains(SoundName) Then
@@ -148,7 +148,7 @@ Public Structure AudioPlayer
 
         End If
 
-        Debug.Print($"The sound is not playing {SoundName}")
+        Debug.Print($"{SoundName} is not playing ")
 
         Return False ' The sound is not playing.
 
@@ -308,7 +308,10 @@ Public Class Form1
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        Player.PlayOverlapping("CashCollected")
+        'Player.PlayOverlapping("CashCollected")
+
+        Player.PlaySound("TestSoundName")
+
 
     End Sub
 
