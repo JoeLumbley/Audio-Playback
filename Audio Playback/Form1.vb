@@ -88,7 +88,7 @@ Public Structure AudioPlayer
 
         End If
 
-        Debug.Print($"The sound was not added {SoundName}")
+        Debug.Print($"{SoundName} not added to sounds.")
 
         Return False ' The sound was not added.
 
@@ -106,7 +106,7 @@ Public Structure AudioPlayer
 
         End If
 
-        Debug.Print($"The volume was not set {SoundName}")
+        Debug.Print($"{SoundName} volume not set.")
 
         Return False ' The volume was not set.
 
@@ -127,7 +127,7 @@ Public Structure AudioPlayer
 
         End If
 
-        Debug.Print($"The sound is not looping {SoundName}")
+        Debug.Print($"{SoundName} not looping.")
 
         Return False ' The sound is not looping.
 
@@ -148,7 +148,7 @@ Public Structure AudioPlayer
 
         End If
 
-        Debug.Print($"{SoundName} is not playing ")
+        Debug.Print($"{SoundName} not playing.")
 
         Return False ' The sound is not playing.
 
@@ -166,7 +166,7 @@ Public Structure AudioPlayer
 
         End If
 
-        Debug.Print($"The sound is not paused {SoundName}")
+        Debug.Print($"{SoundName} not paused.")
 
         Return False ' The sound is not paused.
 
@@ -224,7 +224,7 @@ Public Structure AudioPlayer
 
         Catch ex As Exception
 
-            Debug.Print($"Error: {ex.Message}")
+            Debug.Print($"Error sending MCI command: {ex.Message}")
 
             Return False
 
