@@ -224,7 +224,7 @@ Public Structure AudioPlayer
 
         Catch ex As Exception
 
-            Debug.Print($"Error sending MCI command: {ex.Message}")
+            Debug.Print($"Error sending MCI command: {command} | {ex.Message}")
 
             Return False
 
