@@ -252,7 +252,7 @@ Public Structure AudioPlayer
 
         Catch ex As Exception
 
-            Debug.Print($"Error getting status: {ex.Message}")
+            Debug.Print($"Error getting status: {SoundName} | {ex.Message}")
 
         End Try
 
