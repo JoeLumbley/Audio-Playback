@@ -536,7 +536,7 @@ To add an existing MP3 file to the resource file `Resource1`, follow these steps
 
 
   
-![004](https://github.com/user-attachments/assets/0ee66adf-b0b6-4f38-aea6-13753e3608d9)
+![009](https://github.com/user-attachments/assets/04b1e9df-832d-4e7d-936f-c5efa83d28ca)
 
 
 
@@ -550,8 +550,8 @@ To add an existing MP3 file to the resource file `Resource1`, follow these steps
    - Select the MP3 file you wish to add and click **"Open"**.
 
 
-![003](https://github.com/user-attachments/assets/2c97331f-3adb-4e6f-aafa-78a7de57165c)
 
+![007](https://github.com/user-attachments/assets/74701765-744c-465e-af17-f104ffbc1cc3)
 
 
  **Verify the Addition**:
@@ -572,6 +572,7 @@ To add an existing MP3 file to the resource file `Resource1`, follow these steps
 By following these steps, you can easily add any existing MP3 file to your resources and use it within your Audio Playback application.
 
 
+![008](https://github.com/user-attachments/assets/27a0767d-939c-4ebf-8b45-2d8154d76a5d)
 
 
 
