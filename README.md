@@ -10,7 +10,7 @@ Welcome to **Audio Playback**, a dynamic and versatile tool crafted for seamless
 
 
 
-![002](https://github.com/user-attachments/assets/b9055e37-a806-42e5-a00f-8aee1537032f)
+![003](https://github.com/user-attachments/assets/77a43c5d-0e87-43ff-8de0-7e37148a3049)
 
 
 
