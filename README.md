@@ -2,7 +2,19 @@
 
 Welcome to **Audio Playback**, a dynamic and versatile tool crafted for seamless audio management using the Windows Multimedia API. This application is packed with features that make it an essential asset for developers and audio enthusiasts alike.
 
-![001](https://github.com/JoeLumbley/Audio-Playback/assets/77564255/b6163547-41d4-477d-bd9b-75b84b8f2209)
+
+
+
+
+
+
+
+
+![002](https://github.com/user-attachments/assets/b9055e37-a806-42e5-a00f-8aee1537032f)
+
+
+
+
 
 ## Key Features:
 
