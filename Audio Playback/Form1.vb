@@ -342,11 +342,11 @@ Public Class Form1
 
         Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
 
-        CreateFileFromResource(FilePath, My.Resources.level)
+        CreateFileFromResource(FilePath, My.Resources.Resource1.level)
 
         FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
 
-        CreateFileFromResource(FilePath, My.Resources.CashCollected)
+        CreateFileFromResource(FilePath, My.Resources.Resource1.CashCollected)
 
     End Sub
 

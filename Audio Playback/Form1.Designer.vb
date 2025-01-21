@@ -22,9 +22,7 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        components = New ComponentModel.Container()
         Button1 = New Button()
-        MusicLoopTimer = New Timer(components)
         Button2 = New Button()
         SuspendLayout()
         ' 
@@ -60,6 +58,5 @@ Partial Class Form1
     End Sub
 
     Friend WithEvents Button1 As Button
-    Friend WithEvents MusicLoopTimer As Timer
     Friend WithEvents Button2 As Button
 End Class
