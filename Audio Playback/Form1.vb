@@ -35,7 +35,7 @@ Imports System.IO
 Public Structure AudioPlayer
 
     <DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
-    Private Shared Function mciSendStringW(<MarshalAs(UnmanagedType.LPTStr)> ByVal lpszCommand As String,
+    Private Shared Function mciSendStringW(<MarshalAs(UnmanagedType.LPWStr)> ByVal lpszCommand As String,
                                            <MarshalAs(UnmanagedType.LPWStr)> ByVal lpszReturnString As StringBuilder,
                                            ByVal cchReturn As UInteger, ByVal hwndCallback As IntPtr) As Integer
     End Function
