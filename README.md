@@ -205,7 +205,7 @@ Prints a debug message and returns `False` if the sound could not be looped.
 ### PlaySound Method
 
 ```vb.net
-Private Function PlaySound(SoundName As String) As Boolean
+Public Function PlaySound(SoundName As String) As Boolean
 ```
 This method plays a sound. It takes the sound name as a parameter.
 
