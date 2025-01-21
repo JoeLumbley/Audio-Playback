@@ -139,7 +139,7 @@ Return True
 Adds the new sound to the `Sounds` array and returns `True`.
 
 ```vb.net
-Debug.Print($"The sound was not added {SoundName}")
+Debug.Print($"{SoundName} not added to sounds.")
 Return False
 ```
 Prints a debug message and returns `False` if the sound could not be added.
@@ -167,7 +167,7 @@ Return SendMciCommand(CommandVolume, IntPtr.Zero)
 Creates and sends the command to set the volume.
 
 ```vb.net
-Debug.Print($"The volume was not set {SoundName}")
+Debug.Print($"{SoundName} volume not set.")
 Return False
 ```
 Prints a debug message and returns `False` if the volume could not be set.
@@ -195,7 +195,7 @@ Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso
 Creates and sends commands to seek to the start of the sound and play it in a loop.
 
 ```vb.net
-Debug.Print($"The sound is not looping {SoundName}")
+Debug.Print(Debug.Print($"{SoundName} not looping.")
 Return False
 ```
 Prints a debug message and returns `False` if the sound could not be looped.
@@ -224,7 +224,7 @@ Return SendMciCommand(CommandSeekToStart, IntPtr.Zero) AndAlso
 Creates and sends commands to seek to the start of the sound and play it.
 
 ```vb.net
-Debug.Print($"The sound is not playing {SoundName}")
+Debug.Print($"{SoundName} not playing.")
 Return False
 ```
 Prints a debug message and returns `False` if the sound could not be played.
@@ -250,7 +250,7 @@ Return SendMciCommand(CommandPause, IntPtr.Zero)
 Creates and sends the command to pause the sound.
 
 ```vb.net
-Debug.Print($"The sound is not paused {SoundName}")
+Debug.Print($"{SoundName} not paused.")
 Return False
 ```
 Prints a debug message and returns `False` if the sound could not be paused.
@@ -334,7 +334,7 @@ Dim ReturnString As New StringBuilder(128)
 Try
     Return mciSendStringW(command, ReturnString, 0, hwndCallback) = 0
 Catch ex As Exception
-    Debug.Print($"Error: {ex.Message}")
+    Debug.Print($"Error sending MCI command: {command} | {ex.Message}")
     Return False
 End Try
 ```
@@ -362,7 +362,7 @@ Checks if the `Sounds` array is not empty and contains the sound. Creates and se
 
 ```vb.net
 Catch ex As Exception
-    Debug.Print($"Error getting status: {ex.Message}")
+    Debug.Print($"Error getting status: {SoundName} | {ex.Message}")
 End Try
 Return String.Empty
 ```
@@ -577,25 +577,6 @@ By following these steps, you can easily add any existing MP3 file or other reso
 
 
 
----
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -603,12 +584,7 @@ By following these steps, you can easily add any existing MP3 file or other reso
 ## Index
 
 
-
-
-
-
 [Imports](#imports)
-
 
 
 [AudioPlayer Structure](#audioPlayer-structure)
