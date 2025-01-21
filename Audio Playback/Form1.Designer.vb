@@ -32,19 +32,16 @@ Partial Class Form1
         ' 
         Button1.Location = New Point(12, 12)
         Button1.Name = "Button1"
-        Button1.Size = New Size(112, 34)
+        Button1.Size = New Size(203, 34)
         Button1.TabIndex = 0
-        Button1.Text = "Play Cash"
+        Button1.Text = "Play Overlapping"
         Button1.UseVisualStyleBackColor = True
-        ' 
-        ' MusicLoopTimer
-        ' 
         ' 
         ' Button2
         ' 
         Button2.Location = New Point(12, 63)
         Button2.Name = "Button2"
-        Button2.Size = New Size(112, 34)
+        Button2.Size = New Size(203, 34)
         Button2.TabIndex = 1
         Button2.Text = "Pause Loop"
         Button2.UseVisualStyleBackColor = True

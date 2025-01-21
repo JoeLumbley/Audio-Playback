@@ -284,6 +284,8 @@ Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        CenterToScreen()
+
         Text = "Audio Playback - Code with Joe"
 
         CreateSoundFiles()
