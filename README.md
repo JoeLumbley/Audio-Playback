@@ -517,14 +517,7 @@ This method writes resource data to a file if it does not already exist. It hand
 
 [Index](#index)
 
-## Summary
-
-This code defines an `AudioPlayer` structure that manages sound files, including adding, playing, pausing, looping, and overlapping sounds. The `Form1` class sets up the form, initializes the audio player, and handles events for playing and pausing sounds.
-
-I hope this detailed explanation helps you understand the code better! If you have any questions or need further clarification, feel free to ask. 😊
-
-
-
+---
 
 
 
@@ -623,7 +616,11 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 
 
+---
 
+This code defines an `AudioPlayer` structure that manages sound files, including adding, playing, pausing, looping, and overlapping sounds. The `Form1` class sets up the form, initializes the audio player, and handles events for playing and pausing sounds.
+
+I hope this detailed explanation helps you understand the code better! If you have any questions or need further clarification, feel free to ask. 😊
 
 
 
