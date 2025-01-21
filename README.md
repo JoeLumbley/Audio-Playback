@@ -7,10 +7,10 @@ Welcome to **Audio Playback**, a dynamic and versatile tool crafted for seamless
 
 
 
+![002](https://github.com/user-attachments/assets/4a0592e4-786c-4f07-8964-6489218bd567)
 
 
 
-![003](https://github.com/user-attachments/assets/77a43c5d-0e87-43ff-8de0-7e37148a3049)
 
 
 
@@ -74,7 +74,7 @@ This line defines a `Structure` named `AudioPlayer`. Structures in VB.NET are va
 
 ```vb.net
 <DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
-Private Shared Function mciSendStringW(<MarshalAs(UnmanagedType.LPTStr)> ByVal lpszCommand As String,
+Private Shared Function mciSendStringW(<MarshalAs(UnmanagedType.LPWStr)> ByVal lpszCommand As String,
                                        <MarshalAs(UnmanagedType.LPWStr)> ByVal lpszReturnString As StringBuilder,
                                        ByVal cchReturn As UInteger, ByVal hwndCallback As IntPtr) As Integer
 End Function
@@ -205,7 +205,7 @@ Prints a debug message and returns `False` if the sound could not be looped.
 ### PlaySound Method
 
 ```vb.net
-Private Function PlaySound(SoundName As String) As Boolean
+Public Function PlaySound(SoundName As String) As Boolean
 ```
 This method plays a sound. It takes the sound name as a parameter.
 
@@ -517,18 +517,65 @@ This method writes resource data to a file if it does not already exist. It hand
 
 [Index](#index)
 
-## Summary
-
-This code defines an `AudioPlayer` structure that manages sound files, including adding, playing, pausing, looping, and overlapping sounds. The `Form1` class sets up the form, initializes the audio player, and handles events for playing and pausing sounds.
-
-I hope this detailed explanation helps you understand the code better! If you have any questions or need further clarification, feel free to ask. 😊
+---
 
 
 
 
 
 
+## Adding Resources
 
+To add an existing MP3 file to the resource file `Resource1`, follow these steps:
+
+ **Open the Resource File**:
+   - In your Visual Studio project, locate the `Resource1.resx` file. This file is in the **"Solution Explorer"** panel of your project.
+
+ **Edit the Resource File**:
+   - Double-click on `Resource1.resx` to open the resource editor.
+
+
+  
+![004](https://github.com/user-attachments/assets/0ee66adf-b0b6-4f38-aea6-13753e3608d9)
+
+
+
+
+ **Add Existing File**:
+   - In the resource editor, click on the **"Green Plus Sign"** to add a new resource.
+   - Select the type **"File"** and then choose **"Add Existing File..."**.
+
+ **Select Your MP3 File**:
+   - Navigate to the location of your MP3 file in the file dialog that appears.
+   - Select the MP3 file you wish to add and click **"Open"**.
+
+
+![003](https://github.com/user-attachments/assets/2c97331f-3adb-4e6f-aafa-78a7de57165c)
+
+
+
+ **Verify the Addition**:
+   - Ensure that your MP3 file appears in the list of resources in the resource editor. It should now be accessible via the `Resource1` class in your code.
+
+ **Accessing the Resource in Code**:
+   - You can access the added MP3 file in your code using the following syntax:
+     ```csharp
+     
+     // Replace 'CashCollected' with the name of your MP3 file
+     CreateFileFromResource(filePath, Audio_Playback_CS.Resource1.CashCollected);
+     
+     ```
+
+ **Save Changes**:
+   - Save the changes to the `Resource1.resx` file.
+
+By following these steps, you can easily add any existing MP3 file to your resources and use it within your Audio Playback application.
+
+
+
+
+
+---
 
 
 
@@ -623,7 +670,11 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 
 
+---
 
+This code defines an `AudioPlayer` structure that manages sound files, including adding, playing, pausing, looping, and overlapping sounds. The `Form1` class sets up the form, initializes the audio player, and handles events for playing and pausing sounds.
+
+I hope this detailed explanation helps you understand the code better! If you have any questions or need further clarification, feel free to ask. 😊
 
 
 
