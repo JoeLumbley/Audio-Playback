@@ -685,12 +685,18 @@ By following these steps, you can easily add any existing MP3 file or other reso
 
 [Dll Import](#dll-import)
 
+
+[Adding Sounds](#adding-sounds)
+
 [Sounds Array](#sounds-array)
-
-
+ 
 [AddSound Method](#addSound-method)
 
+
+[Setting Volume](#setting-volume)
+
 [SetVolume Method](#setvolume-method)
+
 
 [LoopSound Method](#loopsound-method)
 
@@ -733,6 +739,9 @@ By following these steps, you can easily add any existing MP3 file or other reso
 
 [Form Closing Event](#form-closing-event)
 
+
+[Adding Resources](#adding-resources)
+ 
 [CreateSoundFiles Method](#createsoundfiles-method)
 
 [CreateFileFromResource Method](#createfilefromresource-method)
