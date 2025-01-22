@@ -64,12 +64,14 @@ These imports bring in necessary namespaces for:
 - `System.IO`: For file input and output operations.
 
 
+---
+
 ## AudioPlayer Structure
 
 ```vb.net
 Public Structure AudioPlayer
 ```
-This line defines a `Structure` named `AudioPlayer`. Structures in VB.NET are value types that can contain data and methods.
+This line defines a `Structure` named `AudioPlayer`. Structures in are value types that can contain data and methods.
 
 
 ### DLL Import
