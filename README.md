@@ -106,6 +106,9 @@ Public Function AddSound(SoundName As String, FilePath As String) As Boolean
 ```
 This method adds a sound to the player. It takes the name of the sound and the path to the sound file as parameters.
 
+
+
+
 ```vb.net
 If Not String.IsNullOrWhiteSpace(SoundName) AndAlso IO.File.Exists(FilePath) Then
 ```
