@@ -678,78 +678,81 @@ By following these steps, you can easily add any existing MP3 file or other reso
 ## Index
 
 
-[Imports](#imports)
+- [Imports](#imports)
 
+- [AudioPlayer Structure](#audioPlayer-structure)
 
-[AudioPlayer Structure](#audioPlayer-structure)
-
-[Dll Import](#dll-import)
-
+- [Dll Import](#dll-import)
 
 [Adding Sounds](#adding-sounds)
 
-[Sounds Array](#sounds-array)
+- [Sounds Array](#sounds-array)
  
-[AddSound Method](#addSound-method)
-
+- [AddSound Method](#addSound-method)
 
 [Setting Volume](#setting-volume)
 
-[SetVolume Method](#setvolume-method)
+- [SetVolume Method](#setvolume-method)
 
+[Looping Sounds](#looping-sounds)
 
-[LoopSound Method](#loopsound-method)
+- [LoopSound Method](#loopsound-method)
 
-[PlaySound Method](#playsound-method)
+[Playing Sounds](#playing-sounds)
 
-[PauseSound Method](#pausesound-method)
+- [PlaySound Method](#playsound-method)
 
+[Pausing Sounds](#pausing-sounds)
+
+- [PauseSound Method](#pausesound-method)
 
 [IsPlaying Method](#isplaying-method)
 
-[AddOverlapping Method](#addoverlapping-method)
+[Managing Overlapping Sounds](#managing-overlapping-sounds)
+ 
+- [AddOverlapping Method](#addoverlapping-method)
 
-[PlayOverlapping Method](#playoverlapping-method)
+- [PlayOverlapping Method](#playoverlapping-method)
 
+- [SetVolumeOverlapping Method](#setVolumeoverlapping-method)
 
-[SetVolumeOverlapping Method](#setVolumeoverlapping-method)
+[Sending MCI Commands](#sending-mci-commands)
 
+- [SendMciCommand Method](#sendmcicommand-method)
 
-[SendMciCommand Method](#sendmcicommand-method)
+[Getting Sound Status](#getting-sound-status)
 
-[GetStatus Method](#getstatus-method)
+- [GetStatus Method](#getstatus-method)
 
-[CloseSounds Method](#closesounds-method)
+[Closing Sounds](#closing-sounds)
 
-[Form1 Class](#form1-class)
+- [CloseSounds Method](#closesounds-method)
 
-[Player Declaration](#player-declaration)
+[Form Class and Event Handlers](#form-class-and-event-handlers)
+ 
+- [Form1 Class](#form1-class)
 
+- [Player Declaration](#player-declaration)
 
-[Form Load Event](#form-load-event)
+- [Form Load Event](#form-load-event)
 
-[CreateSoundFiles Method](#createsoundfiles-method)
+- [CreateSoundFiles Method](#createsoundfiles-method)
 
-[Adding and Setting Up Sounds](#adding-and-setting-up-sounds)
+- [Adding and Setting Up Sounds](#adding-and-setting-up-sounds)
 
-[Button1 Click Event](#button1-click-event)
+- [Button1 Click Event](#button1-click-event)
 
+- [Button2 Click Event](#button2-click-event)
 
-[Button2 Click Event](#button2-click-event)
+- [Form Closing Event](#form-closing-event)
 
-[Form Closing Event](#form-closing-event)
+[Creating Sound Files](#creating-sound-files)
+ 
+- [CreateSoundFiles Method](#createsoundfiles-method)
 
+- [CreateFileFromResource Method](#createfilefromresource-method)
 
 [Adding Resources](#adding-resources)
- 
-[CreateSoundFiles Method](#createsoundfiles-method)
-
-[CreateFileFromResource Method](#createfilefromresource-method)
-
-
-
-
-
 
 ---
 
