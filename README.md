@@ -296,17 +296,8 @@ Prints a debug message and returns `False` if the sound could not be paused.
 
 [Index](#index)
 
-### IsPlaying Method
 
-```vb.net
-Public Function IsPlaying(SoundName As String) As Boolean
-```
-This method checks if a sound is playing. It takes the sound name as a parameter and returns a Boolean.
 
-```vb.net
-Return GetStatus(SoundName, "mode") = "playing"
-```
-Uses the `GetStatus` method to check if the sound is currently playing.
 
 [Index](#index)
 
@@ -428,6 +419,21 @@ End Try
 Return String.Empty
 ```
 If an exception occurs, the error is printed, and an empty string is returned.
+
+
+
+### IsPlaying Method
+
+```vb.net
+Public Function IsPlaying(SoundName As String) As Boolean
+```
+This method checks if a sound is playing. It takes the sound name as a parameter and returns a Boolean.
+
+```vb.net
+Return GetStatus(SoundName, "mode") = "playing"
+```
+Uses the `GetStatus` method to check if the sound is currently playing.
+
 
 [Index](#index)
 
