@@ -7,8 +7,8 @@ Welcome to **Audio Playback**, a dynamic and versatile tool crafted for seamless
 
 
 
-![002](https://github.com/user-attachments/assets/4a0592e4-786c-4f07-8964-6489218bd567)
 
+![005](https://github.com/user-attachments/assets/fbe31a7e-3d0a-450d-aa1c-9ab0f965047e)
 
 
 
