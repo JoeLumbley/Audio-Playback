@@ -47,6 +47,10 @@ Welcome to this detailed walkthrough of the `AudioPlayer` structure and the `For
 
 [Index](#index)
 
+---
+
+
+
 ## Imports
 
 ```vb.net
@@ -59,7 +63,6 @@ These imports bring in necessary namespaces for:
 - `System.Text`: For using the `StringBuilder` class.
 - `System.IO`: For file input and output operations.
 
-[Index](#index)
 
 ## AudioPlayer Structure
 
@@ -68,7 +71,6 @@ Public Structure AudioPlayer
 ```
 This line defines a `Structure` named `AudioPlayer`. Structures in VB.NET are value types that can contain data and methods.
 
-[Index](#index)
 
 ### DLL Import
 
@@ -83,6 +85,12 @@ This imports the `mciSendStringW` function from the `winmm.dll` library. This fu
 
 [Index](#index)
 
+
+---
+
+
+## Adding Sounds
+
 ### Sounds Array
 
 ```vb.net
@@ -90,7 +98,6 @@ Private Sounds() As String
 ```
 This declares an array named `Sounds` to store the names of sounds that have been added.
 
-[Index](#index)
 
 ### AddSound Method
 
@@ -146,6 +153,13 @@ Prints a debug message and returns `False` if the sound could not be added.
 
 [Index](#index)
 
+
+---
+
+
+## Setting Volume
+
+
 ### SetVolume Method
 
 ```vb.net
@@ -173,6 +187,14 @@ Return False
 Prints a debug message and returns `False` if the volume could not be set.
 
 [Index](#index)
+
+
+
+---
+
+
+## Looping Sounds
+
 
 ### LoopSound Method
 
@@ -202,6 +224,13 @@ Prints a debug message and returns `False` if the sound could not be looped.
 
 [Index](#index)
 
+
+---
+
+
+## Playing Sounds
+
+
 ### PlaySound Method
 
 ```vb.net
@@ -230,6 +259,13 @@ Return False
 Prints a debug message and returns `False` if the sound could not be played.
 
 [Index](#index)
+
+---
+
+
+## Pausing Sounds
+
+
 
 ### PauseSound Method
 
@@ -270,6 +306,13 @@ Return GetStatus(SoundName, "mode") = "playing"
 Uses the `GetStatus` method to check if the sound is currently playing.
 
 [Index](#index)
+
+
+---
+
+
+## Managing Overlapping Sounds
+
 
 ### AddOverlapping Method
 
@@ -322,6 +365,14 @@ Loops through the set of suffixes and sets the volume for each sound instance.
 
 [Index](#index)
 
+
+---
+
+
+## Sending MCI Commands
+
+
+
 ### SendMciCommand Method
 
 ```vb.net
@@ -342,6 +393,13 @@ End Try
 Here, the `mciSendStringW` function is called with the command string. If the function returns `0`, it means the command was successfully sent. If an exception occurs, the error is printed, and the method returns `False`.
 
 [Index](#index)
+
+
+---
+
+
+## Getting Sound Status
+
 
 ### GetStatus Method
 
@@ -370,6 +428,18 @@ If an exception occurs, the error is printed, and an empty string is returned.
 
 [Index](#index)
 
+
+
+
+
+---
+
+
+## Closing Sounds
+
+
+
+
 ### CloseSounds Method
 
 ```vb.net
@@ -389,6 +459,16 @@ End Sub
 Checks if the `Sounds` array is not empty. Loops through each sound and sends a command to close it.
 
 [Index](#index)
+
+
+
+
+---
+
+
+## Form Class and Event Handlers
+
+
 
 ## Form1 Class
 
@@ -485,6 +565,17 @@ End Sub
 This method handles the form's `Closing` event. It closes all sound files to release resources.
 
 [Index](#index)
+
+
+
+
+---
+
+
+## Creating Sound Files
+
+
+
 
 ### CreateSoundFiles Method
 
