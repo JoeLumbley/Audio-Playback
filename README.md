@@ -483,7 +483,7 @@ Checks if the `Sounds` array is not empty. Loops through each sound and sends a 
 
 
 
-## Form1 Class
+### Form1 Class
 
 ```vb.net
 Public Class Form1
