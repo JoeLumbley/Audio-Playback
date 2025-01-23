@@ -272,6 +272,8 @@ Public Structure AudioPlayer
 
             Next
 
+            Sounds = Nothing
+
         End If
 
     End Sub
