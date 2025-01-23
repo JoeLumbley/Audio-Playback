@@ -123,7 +123,7 @@ Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
 ```
 Creates a command string to open the sound file and assign it an alias.
 
-The double quotes around `{FilePath}` are needed because file paths in commands can contain spaces. If a file path includes spaces, the command might not interpret it correctly unless it's enclosed in quotes. For example, `C:\My Files\file.wav` would be misinterpreted without quotes. 
+The **double quotes `""`** around `{FilePath}` are needed because file paths in commands can contain spaces. If a file path includes spaces, the command might not interpret it correctly unless it's enclosed in quotes. For example, `C:\My Files\file.wav` would be misinterpreted without quotes. 
 
 Enclosing the file path in double quotes ensures that the entire path is treated as a single string, even if it contains spaces. This way, the command parser correctly recognizes it as the full path to the file.
 
