@@ -123,6 +123,14 @@ Dim CommandOpen As String = $"open ""{FilePath}"" alias {SoundName}"
 ```
 Creates a command string to open the sound file and assign it an alias.
 
+The double quotes around `{FilePath}` are needed because file paths in commands can contain spaces. If a file path includes spaces, the command might not interpret it correctly unless it's enclosed in quotes. For example, `C:\My Files\file.wav` would be misinterpreted without quotes. 
+
+Enclosing the file path in double quotes ensures that the entire path is treated as a single string, even if it contains spaces. This way, the command parser correctly recognizes it as the full path to the file.
+
+Here's a simple example:
+- Without quotes: `open C:\My Files\file.wav alias SoundAlias` would fail.
+- With quotes: `open "C:\My Files\file.wav" alias SoundAlias` works properly.
+
 ```vb.net
 If Sounds Is Nothing Then
 ```
@@ -594,29 +602,39 @@ This method handles the form's `Closing` event. It closes all sound files to rel
 
 ```vb.net
 Private Sub CreateSoundFiles()
-Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
-CreateFileFromResource(FilePath, My.Resources.level)
-FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
-CreateFileFromResource(FilePath, My.Resources.CashCollected)
+    Dim FilePath As String = Path.Combine(Application.StartupPath, "level.mp3")
+    CreateFileFromResource(FilePath, My.Resources.level)
+    FilePath = Path.Combine(Application.StartupPath, "CashCollected.mp3")
+    CreateFileFromResource(FilePath, My.Resources.CashCollected)
 End Sub
 ```
 This method creates sound files from embedded resources. It specifies the file paths and calls `CreateFileFromResource` to write the resource data to the file system.
 
-[Index](#index)
 
 ### CreateFileFromResource Method
 
 ```vb.net
+
 Private Sub CreateFileFromResource(filepath As String, resource As Byte())
-Try
-    If Not IO.File.Exists(filepath) Then
-        IO.File.WriteAllBytes(filepath, resource)
-    End If
-Catch ex As Exception
-    Debug.Print($"Error creating file: {ex.Message}")
-End Try
+
+    Try
+
+        If Not IO.File.Exists(filepath) Then
+
+            IO.File.WriteAllBytes(filepath, resource)
+
+        End If
+
+    Catch ex As Exception
+
+        Debug.Print($"Error creating file: {ex.Message}")
+
+    End Try
+
 End Sub
+
 ```
+
 This method writes resource data to a file if it does not already exist. It handles exceptions by printing an error message.
 
 [Index](#index)
