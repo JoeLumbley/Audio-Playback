@@ -696,11 +696,33 @@ To add a resource file to your Visual Studio project, follow these steps:
 
 By following these steps, you can easily add any existing MP3 file or other resources to your Visual Studio project and utilize them within your Audio Playback application.
 
+
+[Index](#index)
+
+
 ---
 
 
 
 
+
+
+
+# Related Projects
+
+If you're interested in exploring a similar project, check out **Audio Playback C#**, which is a port of this project. You can find the C# version in its repository: [Audio Playback C# Repository](https://github.com/JoeLumbley/Audio-Playback-CS). 
+
+For more information about the original project, visit the [Audio Playback Repository](https://github.com/JoeLumbley/Audio-Playback). 
+
+Happy coding!
+
+
+![013](https://github.com/user-attachments/assets/2576064e-19b6-4755-bf70-e6e9a3d2cfb8)
+
+
+
+
+---
 
 
 
@@ -789,38 +811,6 @@ By following these steps, you can easily add any existing MP3 file or other reso
 
 ---
 
-This code defines an `AudioPlayer` structure that manages sound files, including adding, playing, pausing, looping, and overlapping sounds. The `Form1` class sets up the form, initializes the audio player, and handles events for playing and pausing sounds.
-
-I hope this detailed explanation helps you understand the code better! If you have any questions or need further clarification, feel free to ask. 😊
-
-
-
-
-
-
-
-
-
----
-
-
-
-
-# Related Projects
-
-If you're interested in exploring a similar project, check out **Audio Playback C#**, which is a port of this project. You can find the C# version in its repository: [Audio Playback C# Repository](https://github.com/JoeLumbley/Audio-Playback-CS). 
-
-For more information about the original project, visit the [Audio Playback Repository](https://github.com/JoeLumbley/Audio-Playback). 
-
-Happy coding!
-
-
-![013](https://github.com/user-attachments/assets/2576064e-19b6-4755-bf70-e6e9a3d2cfb8)
-
-
-
-
----
 
 
 
