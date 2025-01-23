@@ -7,8 +7,8 @@ Welcome to **Audio Playback**, a dynamic and versatile tool crafted for seamless
 
 
 
-![002](https://github.com/user-attachments/assets/4a0592e4-786c-4f07-8964-6489218bd567)
 
+![005](https://github.com/user-attachments/assets/fbe31a7e-3d0a-450d-aa1c-9ab0f965047e)
 
 
 
@@ -47,6 +47,10 @@ Welcome to this detailed walkthrough of the `AudioPlayer` structure and the `For
 
 [Index](#index)
 
+---
+
+
+
 ## Imports
 
 ```vb.net
@@ -59,16 +63,18 @@ These imports bring in necessary namespaces for:
 - `System.Text`: For using the `StringBuilder` class.
 - `System.IO`: For file input and output operations.
 
+
 [Index](#index)
+
+---
 
 ## AudioPlayer Structure
 
 ```vb.net
 Public Structure AudioPlayer
 ```
-This line defines a `Structure` named `AudioPlayer`. Structures in VB.NET are value types that can contain data and methods.
+This line defines a `Structure` named `AudioPlayer`. Structures in are value types that can contain data and methods.
 
-[Index](#index)
 
 ### DLL Import
 
@@ -83,6 +89,12 @@ This imports the `mciSendStringW` function from the `winmm.dll` library. This fu
 
 [Index](#index)
 
+
+---
+
+
+## Adding Sounds
+
 ### Sounds Array
 
 ```vb.net
@@ -90,7 +102,6 @@ Private Sounds() As String
 ```
 This declares an array named `Sounds` to store the names of sounds that have been added.
 
-[Index](#index)
 
 ### AddSound Method
 
@@ -98,6 +109,9 @@ This declares an array named `Sounds` to store the names of sounds that have bee
 Public Function AddSound(SoundName As String, FilePath As String) As Boolean
 ```
 This method adds a sound to the player. It takes the name of the sound and the path to the sound file as parameters.
+
+
+
 
 ```vb.net
 If Not String.IsNullOrWhiteSpace(SoundName) AndAlso IO.File.Exists(FilePath) Then
@@ -146,6 +160,13 @@ Prints a debug message and returns `False` if the sound could not be added.
 
 [Index](#index)
 
+
+---
+
+
+## Setting Volume
+
+
 ### SetVolume Method
 
 ```vb.net
@@ -174,6 +195,14 @@ Prints a debug message and returns `False` if the volume could not be set.
 
 [Index](#index)
 
+
+
+---
+
+
+## Looping Sounds
+
+
 ### LoopSound Method
 
 ```vb.net
@@ -201,6 +230,13 @@ Return False
 Prints a debug message and returns `False` if the sound could not be looped.
 
 [Index](#index)
+
+
+---
+
+
+## Playing Sounds
+
 
 ### PlaySound Method
 
@@ -231,6 +267,13 @@ Prints a debug message and returns `False` if the sound could not be played.
 
 [Index](#index)
 
+---
+
+
+## Pausing Sounds
+
+
+
 ### PauseSound Method
 
 ```vb.net
@@ -257,19 +300,17 @@ Prints a debug message and returns `False` if the sound could not be paused.
 
 [Index](#index)
 
-### IsPlaying Method
 
-```vb.net
-Public Function IsPlaying(SoundName As String) As Boolean
-```
-This method checks if a sound is playing. It takes the sound name as a parameter and returns a Boolean.
 
-```vb.net
-Return GetStatus(SoundName, "mode") = "playing"
-```
-Uses the `GetStatus` method to check if the sound is currently playing.
 
 [Index](#index)
+
+
+---
+
+
+## Managing Overlapping Sounds
+
 
 ### AddOverlapping Method
 
@@ -322,6 +363,14 @@ Loops through the set of suffixes and sets the volume for each sound instance.
 
 [Index](#index)
 
+
+---
+
+
+## Sending MCI Commands
+
+
+
 ### SendMciCommand Method
 
 ```vb.net
@@ -342,6 +391,13 @@ End Try
 Here, the `mciSendStringW` function is called with the command string. If the function returns `0`, it means the command was successfully sent. If an exception occurs, the error is printed, and the method returns `False`.
 
 [Index](#index)
+
+
+---
+
+
+## Getting Sound Status
+
 
 ### GetStatus Method
 
@@ -368,7 +424,34 @@ Return String.Empty
 ```
 If an exception occurs, the error is printed, and an empty string is returned.
 
+
+
+### IsPlaying Method
+
+```vb.net
+Public Function IsPlaying(SoundName As String) As Boolean
+```
+This method checks if a sound is playing. It takes the sound name as a parameter and returns a Boolean.
+
+```vb.net
+Return GetStatus(SoundName, "mode") = "playing"
+```
+Uses the `GetStatus` method to check if the sound is currently playing.
+
+
 [Index](#index)
+
+
+
+
+
+---
+
+
+## Closing Sounds
+
+
+
 
 ### CloseSounds Method
 
@@ -390,7 +473,17 @@ Checks if the `Sounds` array is not empty. Loops through each sound and sends a 
 
 [Index](#index)
 
-## Form1 Class
+
+
+
+---
+
+
+## Form Class and Event Handlers
+
+
+
+### Form1 Class
 
 ```vb.net
 Public Class Form1
@@ -485,6 +578,17 @@ End Sub
 This method handles the form's `Closing` event. It closes all sound files to release resources.
 
 [Index](#index)
+
+
+
+
+---
+
+
+## Creating Sound Files
+
+
+
 
 ### CreateSoundFiles Method
 
@@ -584,69 +688,83 @@ By following these steps, you can easily add any existing MP3 file or other reso
 ## Index
 
 
-[Imports](#imports)
+- [Imports](#imports)
+
+- [AudioPlayer Structure](#audioPlayer-structure)
+
+- [Dll Import](#dll-import)
+
+[Adding Sounds](#adding-sounds)
+
+- [Sounds Array](#sounds-array)
+ 
+- [AddSound Method](#addSound-method)
+
+[Setting Volume](#setting-volume)
+
+- [SetVolume Method](#setvolume-method)
+
+[Looping Sounds](#looping-sounds)
+
+- [LoopSound Method](#loopsound-method)
+
+[Playing Sounds](#playing-sounds)
+
+- [PlaySound Method](#playsound-method)
+
+[Pausing Sounds](#pausing-sounds)
+
+- [PauseSound Method](#pausesound-method)
 
 
-[AudioPlayer Structure](#audioPlayer-structure)
+[Managing Overlapping Sounds](#managing-overlapping-sounds)
+ 
+- [AddOverlapping Method](#addoverlapping-method)
 
-[Dll Import](#dll-import)
+- [PlayOverlapping Method](#playoverlapping-method)
 
-[Sounds Array](#sounds-array)
+- [SetVolumeOverlapping Method](#setVolumeoverlapping-method)
 
+[Sending MCI Commands](#sending-mci-commands)
 
-[AddSound Method](#addSound-method)
+- [SendMciCommand Method](#sendmcicommand-method)
 
-[SetVolume Method](#setvolume-method)
+[Getting Sound Status](#getting-sound-status)
 
-[LoopSound Method](#loopsound-method)
+- [GetStatus Method](#getstatus-method)
 
-[PlaySound Method](#playsound-method)
-
-[PauseSound Method](#pausesound-method)
-
-
-[IsPlaying Method](#isplaying-method)
-
-[AddOverlapping Method](#addoverlapping-method)
-
-[PlayOverlapping Method](#playoverlapping-method)
+- [IsPlaying Method](#isplaying-method)
 
 
-[SetVolumeOverlapping Method](#setVolumeoverlapping-method)
+[Closing Sounds](#closing-sounds)
 
+- [CloseSounds Method](#closesounds-method)
 
-[SendMciCommand Method](#sendmcicommand-method)
+[Form Class and Event Handlers](#form-class-and-event-handlers)
+ 
+- [Form1 Class](#form1-class)
 
-[GetStatus Method](#getstatus-method)
+- [Player Declaration](#player-declaration)
 
-[CloseSounds Method](#closesounds-method)
+- [Form Load Event](#form-load-event)
 
-[Form1 Class](#form1-class)
+- [CreateSoundFiles Method](#createsoundfiles-method)
 
-[Player Declaration](#player-declaration)
+- [Adding and Setting Up Sounds](#adding-and-setting-up-sounds)
 
+- [Button1 Click Event](#button1-click-event)
 
-[Form Load Event](#form-load-event)
+- [Button2 Click Event](#button2-click-event)
 
-[CreateSoundFiles Method](#createsoundfiles-method)
+- [Form Closing Event](#form-closing-event)
 
-[Adding and Setting Up Sounds](#adding-and-setting-up-sounds)
+[Creating Sound Files](#creating-sound-files)
+ 
+- [CreateSoundFiles Method](#createsoundfiles-method)
 
-[Button1 Click Event](#button1-click-event)
+- [CreateFileFromResource Method](#createfilefromresource-method)
 
-
-[Button2 Click Event](#button2-click-event)
-
-[Form Closing Event](#form-closing-event)
-
-[CreateSoundFiles Method](#createsoundfiles-method)
-
-[CreateFileFromResource Method](#createfilefromresource-method)
-
-
-
-
-
+[Adding Resources](#adding-resources)
 
 ---
 
