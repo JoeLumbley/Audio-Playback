@@ -795,3 +795,33 @@ I hope this detailed explanation helps you understand the code better! If you ha
 
 
 
+
+
+
+
+
+
+---
+
+
+
+
+# Related Projects
+
+If you're interested in exploring a similar project, check out **Audio Playback C#**, which is a port of this project. You can find the C# version in its repository: [Audio Playback C# Repository](https://github.com/JoeLumbley/Audio-Playback-CS). 
+
+For more information about the original project, visit the [Audio Playback Repository](https://github.com/JoeLumbley/Audio-Playback). 
+
+Happy coding!
+
+
+
+![015](https://github.com/user-attachments/assets/ad48fe71-9020-41dd-9bd6-5b4fe7228ecb)
+
+
+
+---
+
+
+
+
