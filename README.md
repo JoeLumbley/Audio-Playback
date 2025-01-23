@@ -466,11 +466,8 @@ Uses the `GetStatus` method to check if the sound is currently playing.
 ### CloseSounds Method
 
 ```vb.net
-Public Sub CloseSounds()
-```
-This method closes all sound files.
 
-```vb.net
+Public Sub CloseSounds()
 
     If Sounds IsNot Nothing Then
 
