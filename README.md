@@ -716,7 +716,6 @@ By following these steps, you can easily add any existing MP3 file or other reso
 
 - [PauseSound Method](#pausesound-method)
 
-[IsPlaying Method](#isplaying-method)
 
 [Managing Overlapping Sounds](#managing-overlapping-sounds)
  
@@ -733,6 +732,9 @@ By following these steps, you can easily add any existing MP3 file or other reso
 [Getting Sound Status](#getting-sound-status)
 
 - [GetStatus Method](#getstatus-method)
+
+- [IsPlaying Method](#isplaying-method)
+
 
 [Closing Sounds](#closing-sounds)
 
