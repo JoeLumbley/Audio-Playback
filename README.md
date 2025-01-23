@@ -498,7 +498,6 @@ Public Class Form1
 ```
 This class defines a form in a Windows Forms application.
 
-[Index](#index)
 
 ### Player Declaration
 
@@ -507,7 +506,6 @@ Private Player As AudioPlayer
 ```
 This declares an instance of the `AudioPlayer` structure.
 
-[Index](#index)
 
 ### Form Load Event
 
@@ -521,7 +519,6 @@ Text = "Audio Playback - Code with Joe"
 ```
 Sets the form's title.
 
-[Index](#index)
 
 ### CreateSoundFiles Method
 
@@ -530,7 +527,6 @@ CreateSoundFiles()
 ```
 Calls the `CreateSoundFiles` method to create the necessary sound files from embedded resources.
 
-[Index](#index)
 
 ### Adding and Setting Up Sounds
 
@@ -546,7 +542,6 @@ Debug.Print($"Running... {Now}")
 ```
 Sets up the sound files by specifying their file paths, adding them to the player, setting their volume, and starting to loop the "Music" sound. It prints a debug message indicating the form is running.
 
-[Index](#index)
 
 ### Button1 Click Event
 
@@ -557,7 +552,6 @@ End Sub
 ```
 This method handles the `Click` event for `Button1`. It plays an overlapping instance of the "CashCollected" sound.
 
-[Index](#index)
 
 ### Button2 Click Event
 
@@ -574,7 +568,6 @@ End Sub
 ```
 This method handles the `Click` event for `Button2`. It toggles between playing and pausing the "Music" sound and updates the button text accordingly.
 
-[Index](#index)
 
 ### Form Closing Event
 
