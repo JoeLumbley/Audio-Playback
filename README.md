@@ -449,19 +449,16 @@ Uses the `GetStatus` method to check if the sound is currently playing.
 
 [Index](#index)
 
-
-
-
-
 ---
 
 
+
+
+
+
+
+
 ## Closing Sounds
-
-
-
-
-
 
 ### CloseSounds Method
 
