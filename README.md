@@ -461,6 +461,8 @@ Uses the `GetStatus` method to check if the sound is currently playing.
 
 
 
+
+
 ### CloseSounds Method
 
 ```vb.net
@@ -469,22 +471,36 @@ Public Sub CloseSounds()
 This method closes all sound files.
 
 ```vb.net
-If Sounds IsNot Nothing Then
-    For Each Sound In Sounds
-        Dim CommandClose As String = $"close {Sound}"
-        SendMciCommand(CommandClose, IntPtr.Zero)
-    Next
-End If
+
+    If Sounds IsNot Nothing Then
+
+        For Each Sound In Sounds
+
+            Dim CommandClose As String = $"close {Sound}"
+
+            SendMciCommand(CommandClose, IntPtr.Zero)
+
+        Next
+
+        Sounds = Nothing
+
+    End If
+
 End Sub
+
 ```
-Checks if the `Sounds` array is not empty. Loops through each sound and sends a command to close it.
+
+- **Checks if the `Sounds` array is not empty:** This prevents any errors that might occur if `Sounds` is `Nothing` (or `null`) before attempting to loop through it.
+- **Loops through each sound and sends a command to close it:** This ensures that every sound in the `Sounds` array is properly closed using the `SendMciCommand` method.
+- **`Sounds = Nothing`:** This line sets the `Sounds` array to `Nothing` (or `null`). This effectively clears the reference to the array, making sure that all resources associated with the sounds are released, and it prevents further usage of the array without reinitialization.
+
+By setting `Sounds` to `Nothing`, you are cleaning up and ensuring there are no lingering references to the sounds array, which can help with garbage collection and resource management in your application.
 
 [Index](#index)
 
 
-
-
 ---
+
 
 
 ## Form Class and Event Handlers
