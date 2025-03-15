@@ -180,7 +180,9 @@ Public Structure AudioPlayer
 
     Public Sub AddOverlapping(SoundName As String, FilePath As String)
 
-        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
+        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H",
+                                      "I", "J", "K", "L", "M", "N", "O", "P",
+                                      "Q", "R", "S", "T", "U", "V", "W", "X"}
 
             AddSound(SoundName & Suffix, FilePath)
 
@@ -190,7 +192,9 @@ Public Structure AudioPlayer
 
     Public Sub PlayOverlapping(SoundName As String)
 
-        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
+        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H",
+                                      "I", "J", "K", "L", "M", "N", "O", "P",
+                                      "Q", "R", "S", "T", "U", "V", "W", "X"}
 
             If Not IsPlaying(SoundName & Suffix) Then
 
@@ -206,7 +210,9 @@ Public Structure AudioPlayer
 
     Public Sub SetVolumeOverlapping(SoundName As String, Level As Integer)
 
-        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"}
+        For Each Suffix As String In {"A", "B", "C", "D", "E", "F", "G", "H",
+                                      "I", "J", "K", "L", "M", "N", "O", "P",
+                                      "Q", "R", "S", "T", "U", "V", "W", "X"}
 
             SetVolume(SoundName & Suffix, Level)
 
