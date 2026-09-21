@@ -139,6 +139,7 @@ Public Class Form1
 
     Private Sub RestartAudioEngine()
 
+        ' Fade-out and stop the loop if it's playing, then restart the audio engine after a delay to allow fade-out to complete.
         If Audio.IsPlaying("loop") Then
             Audio.FadeOutAndStop("loop", 2000)
         End If
