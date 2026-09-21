@@ -23,7 +23,6 @@
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ' SOFTWARE.
 
-' Level music by Joseph Lumbley Jr.
 
 Imports System.IO
 
@@ -45,26 +44,17 @@ Public Class Form1
     Private playLoop As Boolean = True
 
 
-
-
-
-
-
-
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         CenterToScreen()
 
         Text = "Audio Playback - Code with Joe"
 
-        Audio = New AudioPlayer()
-
-
         CreateSoundFiles()
 
+        Audio = New AudioPlayer()
 
         LoadAndRegisterSounds()
-
 
         Audio.LoopSound("loop")
 
@@ -78,7 +68,7 @@ Public Class Form1
         Audio.SetVolume("loop", 100)
 
         Audio.AddOverlapping("overlapping", Path.Combine(Application.StartupPath, "overlapping.mp3"))
-        Audio.SetVolumeOverlapping("overlapping", 400)
+        Audio.SetVolumeOverlapping("overlapping", 200)
 
     End Sub
 
