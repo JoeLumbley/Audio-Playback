@@ -30,24 +30,15 @@ Imports Microsoft.Win32
 
 Public Class Form1
 
-
     Private Audio As AudioPlayer
 
     Private WithEvents AudioRestartTimer As New Timer With {
         .Interval = 180000,
         .Enabled = True
     }
-    'Private WithEvents AudioRestartTimer As New Timer With {
-    '    .Interval = 15000,
-    '    .Enabled = True
-    '}
-
 
     Private loopShouldPlay As Boolean = True
-
     Private loopVolume As Integer = 100
-
-
 
     ' Windows 11 dark mode title bar support
     Private Const DWMWA_USE_IMMERSIVE_DARK_MODE As Integer = 20
@@ -60,19 +51,21 @@ Public Class Form1
     ) As Integer
     End Function
 
+    ' ============================================================
+    ' Form Load / Init
+    ' ============================================================
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         CenterToScreen()
         Text = "Audio Playback - Code with Joe"
 
-        ' Apply dark mode if Windows is in dark mode
-        Dim dark As Boolean = IsDarkMode()
-        If dark Then
+        If IsDarkMode() Then
             ApplyDarkTheme()
-            ApplyDarkTitleBar(dark)
+            ApplyDarkTitleBar(True)
         End If
 
         CreateSoundFiles()
+
         Audio = New AudioPlayer()
         LoadAndRegisterSounds()
 
@@ -80,72 +73,124 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        ' Start the audio engine when the form is shown
-
-        PlayLoop(2000) ' Fade in over 2 seconds
-
+        PlayLoop(800)
     End Sub
 
+    ' ============================================================
+    ' Buttons
+    ' ============================================================
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
         PlayOverlappingSound()
-
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
 
-        ' Toggle loop playback 
         If loopShouldPlay Then
             loopShouldPlay = False
-
-            FadeOutAndStopLoop(2000)
-
+            FadeOutAndStopLoop(800)
             Button2.Text = "Play Loop"
-
         Else
             loopShouldPlay = True
-
-            PlayLoop(2000)
-
+            PlayLoop(800)
             Button2.Text = "Stop Loop"
-
         End If
 
     End Sub
 
+    ' ============================================================
+    ' Form Closing
+    ' ============================================================
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        Audio?.CloseAll()
+
+        AudioRestartTimer?.Stop()
+        AudioRestartTimer?.Dispose()
+
+        Audio?.Dispose()
+        Audio = Nothing
+
     End Sub
 
+    ' ============================================================
+    ' Audio Engine Restart
+    ' ============================================================
     Private Sub AudioRestartTimer_Tick(sender As Object, e As EventArgs) Handles AudioRestartTimer.Tick
         RestartAudioEngine()
     End Sub
 
+    Private Sub RestartAudioEngine()
+
+        If Audio?.IsPlaying("loop") Then
+            Audio?.FadeOutAndStop("loop", 800)
+        End If
+
+        Dim t As New Timer() With {.Interval = 900}
+
+        AddHandler t.Tick,
+            Sub()
+                t.Stop()
+                t.Dispose()
+
+                Audio?.Dispose()
+                Audio = Nothing
+
+                Audio = New AudioPlayer()
+                LoadAndRegisterSounds()
+
+                If loopShouldPlay Then
+                    PlayLoop(800)
+                End If
+            End Sub
+
+        t.Start()
+    End Sub
+
+    ' ============================================================
+    ' Sound File Creation
+    ' ============================================================
     Private Sub CreateSoundFiles()
 
-        CreateFileFromResource(Path.Combine(Application.StartupPath, "loop.mp3"), My.Resources.Resource1.pause)
+        CreateFileFromResource(Path.Combine(Application.StartupPath, "loop.mp3"),
+                               My.Resources.Resource1.pause)
 
-        CreateFileFromResource(Path.Combine(Application.StartupPath, "overlapping.mp3"), My.Resources.Resource1.cashcollected)
+        CreateFileFromResource(Path.Combine(Application.StartupPath, "overlapping.mp3"),
+                               My.Resources.Resource1.cashcollected)
 
     End Sub
 
+    Private Sub CreateFileFromResource(filepath As String, resource As Byte())
+
+        Try
+            If Not File.Exists(filepath) Then
+                File.WriteAllBytes(filepath, resource)
+            End If
+        Catch ex As Exception
+            Debug.Print($"Error creating file: {ex.Message}")
+        End Try
+
+    End Sub
+
+    ' ============================================================
+    ' Audio Registration
+    ' ============================================================
     Private Sub LoadAndRegisterSounds()
 
         Audio?.AddSound("loop", Path.Combine(Application.StartupPath, "loop.mp3"))
-        Audio?.SetVolume("loop", 100)
+        Audio?.SetVolume("loop", loopVolume)
 
         Audio?.AddOverlapping("overlapping", Path.Combine(Application.StartupPath, "overlapping.mp3"))
         Audio?.SetVolumeOverlapping("overlapping", 200)
 
     End Sub
 
+    ' ============================================================
+    ' Playback Helpers
+    ' ============================================================
     Private Sub PlayOverlappingSound()
         Audio?.PlayOverlapping("overlapping")
     End Sub
 
     Private Sub PlayLoop(durationMs As Integer)
 
-        ' Fade‑in loop
         Audio?.SetVolume("loop", 0)
         Audio?.LoopSound("loop")
         Audio?.FadeVolume("loop", 0, loopVolume, durationMs)
@@ -153,89 +198,46 @@ Public Class Form1
     End Sub
 
     Private Sub FadeOutAndStopLoop(durationMs As Integer)
-        If Audio?.IsPlaying("loop") Then Audio?.FadeOutAndStop("loop", durationMs)
-    End Sub
-
-
-    Private Sub RestartAudioEngine()
-
-        ' Fade-out and stop the loop if it's playing
         If Audio?.IsPlaying("loop") Then
-            Audio?.FadeOutAndStop("loop", 2000)
+            Audio?.FadeOutAndStop("loop", durationMs)
         End If
-
-        ' Wait for fade-out to complete before restarting engine
-        Dim t As New Timer() With {.Interval = 2300}
-
-        AddHandler t.Tick, Sub()
-                               t.Stop()
-                               t.Dispose()
-
-                               ' Dispose old engine
-                               Audio?.Dispose()
-                               Audio = Nothing
-
-                               ' Create new engine
-                               Audio = New AudioPlayer()
-
-                               ' Reload all sounds
-                               LoadAndRegisterSounds()
-
-                               ' Restore loop based on state
-                               If loopShouldPlay Then
-                                   Audio?.LoopSound("loop")
-                               End If
-
-                           End Sub
-
-        t.Start()
-
     End Sub
 
-    Private Sub CreateFileFromResource(filepath As String, resource As Byte())
-
-        Try
-
-            If Not IO.File.Exists(filepath) Then
-
-                IO.File.WriteAllBytes(filepath, resource)
-
-            End If
-
-        Catch ex As Exception
-
-            Debug.Print($"Error creating file: {ex.Message}")
-
-        End Try
-
-    End Sub
-
+    ' ============================================================
+    ' Dark Mode Detection
+    ' ============================================================
     Private Function IsDarkMode() As Boolean
+
+        ' Windows 11+ uses Application.SystemColorMode
         If Environment.OSVersion.Version.Build >= 22000 Then
-            ' Windows 11+
-            Return System.Windows.Forms.Application.SystemColorMode = System.Windows.Forms.SystemColorMode.Dark
-        Else
-            ' Windows 10 fallback
-            Return IsSystemDarkMode_Win10()
+            Return Application.SystemColorMode = SystemColorMode.Dark
         End If
+
+        Return IsSystemDarkMode_Win10()
+
     End Function
 
     Private Function IsSystemDarkMode_Win10() As Boolean
         Try
-            Dim key As RegistryKey =
-            Registry.CurrentUser.OpenSubKey(
-                "Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")
+            Using key As RegistryKey =
+                Registry.CurrentUser.OpenSubKey(
+                    "Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")
 
-            If key Is Nothing Then Return False
+                If key Is Nothing Then Return False
 
-            Dim value As Object = key.GetValue("AppsUseLightTheme", 1)
-            Return CInt(value) = 0
+                Dim value As Object = key.GetValue("AppsUseLightTheme", 1)
+                Return CInt(value) = 0
+            End Using
         Catch
             Return False
         End Try
     End Function
 
+    ' ============================================================
+    ' Dark Mode UI
+    ' ============================================================
     Private Sub ApplyDarkTheme()
+
         Me.BackColor = Color.FromArgb(32, 32, 32)
         Me.ForeColor = Color.White
 
@@ -246,27 +248,31 @@ Public Class Form1
                 ctrl.BackColor = Color.FromArgb(55, 55, 55)
             End If
         Next
+
     End Sub
 
     Private Sub ApplyDarkTitleBar(isDark As Boolean)
-        If Environment.OSVersion.Version.Build < 22000 Then Exit Sub ' Only Windows 11+
+
+        ' Only apply dark title bar on Windows 11+
+        If Environment.OSVersion.Version.Build < 22000 Then Exit Sub
 
         Dim value As Integer = If(isDark, 1, 0)
-        DwmSetWindowAttribute(Me.Handle,
-                              DWMWA_USE_IMMERSIVE_DARK_MODE,
-                              value,
-                              Marshal.SizeOf(value))
+
+        DwmSetWindowAttribute(
+            Me.Handle,
+            DWMWA_USE_IMMERSIVE_DARK_MODE,
+            value,
+            Marshal.SizeOf(value))
 
     End Sub
 
-
-
 End Class
+
+
+
 
 ' Copilot is our AI assistant.
 
 
 ' I also make coding videos on my YouTube channel: Code with Joe.
 ' https://www.youtube.com/@codewithjoe6074
-
-
