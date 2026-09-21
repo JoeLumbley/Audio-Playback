@@ -111,8 +111,6 @@ Public Class Form1
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
 
-
-
         ' Toggle loop playback 
         If loopShouldPlay Then
             loopShouldPlay = False
@@ -131,39 +129,9 @@ Public Class Form1
         End If
 
 
-
-
-
-
-
-
-
-
-        'If Audio.IsPlaying("loop") = True Then
-
-        '    loopShouldPlay = False
-
-        '    Audio.FadeOutAndStop("loop", 2000)
-
-        '    Button2.Text = "Play Loop"
-
-        'Else
-
-        '    loopShouldPlay = True
-
-        '    'Audio.LoopSound("loop")
-
-        '    PlayLoop(2000)
-
-        '    Button2.Text = "Pause Loop"
-
-        'End If
-
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-
-
 
         Audio.CloseAll()
 
