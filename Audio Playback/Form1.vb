@@ -114,7 +114,7 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        Audio.CloseAll()
+        Audio?.CloseAll()
     End Sub
 
     Private Sub AudioRestartTimer_Tick(sender As Object, e As EventArgs) Handles AudioRestartTimer.Tick
@@ -131,37 +131,37 @@ Public Class Form1
 
     Private Sub LoadAndRegisterSounds()
 
-        Audio.AddSound("loop", Path.Combine(Application.StartupPath, "loop.mp3"))
-        Audio.SetVolume("loop", 100)
+        Audio?.AddSound("loop", Path.Combine(Application.StartupPath, "loop.mp3"))
+        Audio?.SetVolume("loop", 100)
 
-        Audio.AddOverlapping("overlapping", Path.Combine(Application.StartupPath, "overlapping.mp3"))
-        Audio.SetVolumeOverlapping("overlapping", 200)
+        Audio?.AddOverlapping("overlapping", Path.Combine(Application.StartupPath, "overlapping.mp3"))
+        Audio?.SetVolumeOverlapping("overlapping", 200)
 
     End Sub
 
     Private Sub PlayOverlappingSound()
-        Audio.PlayOverlapping("overlapping")
+        Audio?.PlayOverlapping("overlapping")
     End Sub
 
     Private Sub PlayLoop(durationMs As Integer)
 
         ' Fade‑in loop
-        Audio.SetVolume("loop", 0)
-        Audio.LoopSound("loop")
-        Audio.FadeVolume("loop", 0, loopVolume, durationMs)
+        Audio?.SetVolume("loop", 0)
+        Audio?.LoopSound("loop")
+        Audio?.FadeVolume("loop", 0, loopVolume, durationMs)
 
     End Sub
 
     Private Sub FadeOutAndStopLoop(durationMs As Integer)
-        If Audio.IsPlaying("loop") Then Audio.FadeOutAndStop("loop", durationMs)
+        If Audio?.IsPlaying("loop") Then Audio?.FadeOutAndStop("loop", durationMs)
     End Sub
 
 
     Private Sub RestartAudioEngine()
 
         ' Fade-out and stop the loop if it's playing
-        If Audio.IsPlaying("loop") Then
-            Audio.FadeOutAndStop("loop", 2000)
+        If Audio?.IsPlaying("loop") Then
+            Audio?.FadeOutAndStop("loop", 2000)
         End If
 
         ' Wait for fade-out to complete before restarting engine
@@ -173,7 +173,6 @@ Public Class Form1
 
                                ' Dispose old engine
                                Audio?.Dispose()
-
                                Audio = Nothing
 
                                ' Create new engine
@@ -184,7 +183,7 @@ Public Class Form1
 
                                ' Restore loop based on state
                                If loopShouldPlay Then
-                                   Audio.LoopSound("loop")
+                                   Audio?.LoopSound("loop")
                                End If
 
                            End Sub
