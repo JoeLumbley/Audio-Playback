@@ -66,7 +66,7 @@ Public Class Form1
         LoadAndRegisterSounds()
 
 
-        Audio.LoopSound("Music")
+        Audio.LoopSound("loop")
 
         Debug.Print($"Running... {Now}")
 
@@ -74,28 +74,28 @@ Public Class Form1
 
     Private Sub LoadAndRegisterSounds()
 
-        Audio.AddSound("Music", Path.Combine(Application.StartupPath, "level.mp3"))
-        Audio.SetVolume("Music", 100)
+        Audio.AddSound("loop", Path.Combine(Application.StartupPath, "loop.mp3"))
+        Audio.SetVolume("loop", 100)
 
-        Audio.AddOverlapping("CashCollected", Path.Combine(Application.StartupPath, "CashCollected.mp3"))
-        Audio.SetVolumeOverlapping("CashCollected", 300)
+        Audio.AddOverlapping("overlapping", Path.Combine(Application.StartupPath, "overlapping.mp3"))
+        Audio.SetVolumeOverlapping("overlapping", 400)
 
     End Sub
 
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        Audio.PlayOverlapping("CashCollected")
+        Audio.PlayOverlapping("overlapping")
 
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
 
-        If Audio.IsPlaying("Music") = True Then
+        If Audio.IsPlaying("loop") = True Then
 
             playLoop = False
 
-            Audio.PauseSound("Music")
+            Audio.PauseSound("loop")
 
             Button2.Text = "Play Loop"
 
@@ -103,7 +103,7 @@ Public Class Form1
 
             playLoop = True
 
-            Audio.LoopSound("Music")
+            Audio.LoopSound("loop")
 
             Button2.Text = "Pause Loop"
 
@@ -119,9 +119,9 @@ Public Class Form1
 
     Private Sub CreateSoundFiles()
 
-        CreateFileFromResource(Path.Combine(Application.StartupPath, "level.mp3"), My.Resources.level)
+        CreateFileFromResource(Path.Combine(Application.StartupPath, "loop.mp3"), My.Resources.Resource1.pause)
 
-        CreateFileFromResource(Path.Combine(Application.StartupPath, "CashCollected.mp3"), My.Resources.CashCollected)
+        CreateFileFromResource(Path.Combine(Application.StartupPath, "overlapping.mp3"), My.Resources.Resource1.cashcollected)
 
     End Sub
 
@@ -149,8 +149,8 @@ Public Class Form1
 
     Private Sub RestartAudioEngine()
 
-        If Audio.IsPlaying("Music") Then
-            Audio.FadeOutAndStop("Music", 2000)
+        If Audio.IsPlaying("loop") Then
+            Audio.FadeOutAndStop("loop", 2000)
         End If
 
         ' Wait for fade-out to complete before restarting engine
@@ -171,7 +171,7 @@ Public Class Form1
 
                                ' Restore loop based on state
                                If playLoop Then
-                                   Audio.LoopSound("Music")
+                                   Audio.LoopSound("loop")
                                End If
 
                            End Sub

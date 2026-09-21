@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Class Resource1
@@ -67,9 +67,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Byte[].
         '''</summary>
-        Friend Shared ReadOnly Property CashCollected() As Byte()
+        Friend Shared ReadOnly Property bounce() As Byte()
             Get
-                Dim obj As Object = ResourceManager.GetObject("CashCollected", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("bounce", resourceCulture)
                 Return CType(obj,Byte())
             End Get
         End Property
@@ -77,9 +77,19 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Byte[].
         '''</summary>
-        Friend Shared ReadOnly Property level() As Byte()
+        Friend Shared ReadOnly Property cashcollected() As Byte()
             Get
-                Dim obj As Object = ResourceManager.GetObject("level", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("cashcollected", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Byte[].
+        '''</summary>
+        Friend Shared ReadOnly Property pause() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("pause", resourceCulture)
                 Return CType(obj,Byte())
             End Get
         End Property
