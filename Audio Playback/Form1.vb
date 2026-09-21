@@ -43,10 +43,14 @@ Public Class Form1
     '}
 
 
-    Private playLoop As Boolean = True
+    Private loopShouldPlay As Boolean = True
 
+    Private loopVolume As Integer = 100
+
+
+
+    ' Windows 11 dark mode title bar support
     Private Const DWMWA_USE_IMMERSIVE_DARK_MODE As Integer = 20
-
     <DllImport("dwmapi.dll")>
     Private Shared Function DwmSetWindowAttribute(
         hWnd As IntPtr,
@@ -55,9 +59,6 @@ Public Class Form1
         attrSize As Integer
     ) As Integer
     End Function
-
-
-
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -75,16 +76,113 @@ Public Class Form1
         CreateSoundFiles()
         Audio = New AudioPlayer()
         LoadAndRegisterSounds()
-        Audio.LoopSound("loop")
+        'Audio.LoopSound("loop")
 
         Debug.Print($"Running... {Now}")
     End Sub
 
+    Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        ' Start the audio engine when the form is shown
+
+        PlayLoop(2000) ' Fade in over 2 seconds
+
+        'Audio.SetVolume("loop", 0) ' Start with volume at 0 to fade in
+        'Audio.LoopSound("loop") ' Start looping the sound
+        'Audio.FadeVolume("loop", 0, loopVolume, 2000) ' Fade in over 2 seconds
+
+    End Sub
+
+    Private Sub PlayLoop(durationMs As Integer)
+
+        ' Fade‑in loop
+        Audio.SetVolume("loop", 0)
+        Audio.LoopSound("loop")
+        Audio.FadeVolume("loop", 0, loopVolume, durationMs)
+
+    End Sub
+
+
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+        Audio.PlayOverlapping("overlapping")
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+
+
+
+        ' Toggle loop playback 
+        If loopShouldPlay Then
+            loopShouldPlay = False
+
+            If Audio.IsPlaying("loop") = True Then Audio.FadeOutAndStop("loop", 2000)
+
+            Button2.Text = "Play Loop"
+
+        Else
+            loopShouldPlay = True
+
+            PlayLoop(2000)
+
+            Button2.Text = "Pause Loop"
+
+        End If
 
 
 
 
 
+
+
+
+
+
+        'If Audio.IsPlaying("loop") = True Then
+
+        '    loopShouldPlay = False
+
+        '    Audio.FadeOutAndStop("loop", 2000)
+
+        '    Button2.Text = "Play Loop"
+
+        'Else
+
+        '    loopShouldPlay = True
+
+        '    'Audio.LoopSound("loop")
+
+        '    PlayLoop(2000)
+
+        '    Button2.Text = "Pause Loop"
+
+        'End If
+
+    End Sub
+
+    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+
+
+
+        Audio.CloseAll()
+
+    End Sub
+
+
+
+    Private Sub AudioRestartTimer_Tick(sender As Object, e As EventArgs) Handles AudioRestartTimer.Tick
+        RestartAudioEngine()
+    End Sub
+
+
+    Private Sub CreateSoundFiles()
+
+        CreateFileFromResource(Path.Combine(Application.StartupPath, "loop.mp3"), My.Resources.Resource1.pause)
+
+        CreateFileFromResource(Path.Combine(Application.StartupPath, "overlapping.mp3"), My.Resources.Resource1.cashcollected)
+
+    End Sub
 
     Private Sub LoadAndRegisterSounds()
 
@@ -97,68 +195,10 @@ Public Class Form1
     End Sub
 
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
-        Audio.PlayOverlapping("overlapping")
-
-    End Sub
-
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-
-        If Audio.IsPlaying("loop") = True Then
-
-            playLoop = False
-
-            Audio.PauseSound("loop")
-
-            Button2.Text = "Play Loop"
-
-        Else
-
-            playLoop = True
-
-            Audio.LoopSound("loop")
-
-            Button2.Text = "Pause Loop"
-
-        End If
-
-    End Sub
-
-
-    Private Sub CreateSoundFiles()
-
-        CreateFileFromResource(Path.Combine(Application.StartupPath, "loop.mp3"), My.Resources.Resource1.pause)
-
-        CreateFileFromResource(Path.Combine(Application.StartupPath, "overlapping.mp3"), My.Resources.Resource1.cashcollected)
-
-    End Sub
-
-    Private Sub CreateFileFromResource(filepath As String, resource As Byte())
-
-        Try
-
-            If Not IO.File.Exists(filepath) Then
-
-                IO.File.WriteAllBytes(filepath, resource)
-
-            End If
-
-        Catch ex As Exception
-
-            Debug.Print($"Error creating file: {ex.Message}")
-
-        End Try
-
-    End Sub
-
-    Private Sub AudioRestartTimer_Tick(sender As Object, e As EventArgs) Handles AudioRestartTimer.Tick
-        RestartAudioEngine()
-    End Sub
 
     Private Sub RestartAudioEngine()
 
-        ' Fade-out and stop the loop if it's playing, then restart the audio engine after a delay to allow fade-out to complete.
+        ' Fade-out and stop the loop if it's playing
         If Audio.IsPlaying("loop") Then
             Audio.FadeOutAndStop("loop", 2000)
         End If
@@ -182,7 +222,7 @@ Public Class Form1
                                LoadAndRegisterSounds()
 
                                ' Restore loop based on state
-                               If playLoop Then
+                               If loopShouldPlay Then
                                    Audio.LoopSound("loop")
                                End If
 
@@ -192,11 +232,24 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        Audio.CloseAll()
+
+    Private Sub CreateFileFromResource(filepath As String, resource As Byte())
+
+        Try
+
+            If Not IO.File.Exists(filepath) Then
+
+                IO.File.WriteAllBytes(filepath, resource)
+
+            End If
+
+        Catch ex As Exception
+
+            Debug.Print($"Error creating file: {ex.Message}")
+
+        End Try
 
     End Sub
-
 
 
     Private Function IsDarkMode() As Boolean
@@ -249,19 +302,6 @@ Public Class Form1
                               Marshal.SizeOf(value))
 
     End Sub
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

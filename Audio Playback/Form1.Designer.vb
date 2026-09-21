@@ -28,32 +28,37 @@ Partial Class Form1
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(12, 12)
+        Button1.AutoSize = True
+        Button1.Location = New Point(11, 11)
+        Button1.Margin = New Padding(2)
         Button1.Name = "Button1"
-        Button1.Size = New Size(203, 34)
+        Button1.Size = New Size(162, 42)
         Button1.TabIndex = 0
         Button1.Text = "Play Overlapping"
         Button1.UseVisualStyleBackColor = True
         ' 
         ' Button2
         ' 
-        Button2.Location = New Point(12, 63)
+        Button2.Location = New Point(11, 80)
+        Button2.Margin = New Padding(2)
         Button2.Name = "Button2"
-        Button2.Size = New Size(203, 34)
+        Button2.Size = New Size(162, 42)
         Button2.TabIndex = 1
         Button2.Text = "Pause Loop"
         Button2.UseVisualStyleBackColor = True
         ' 
         ' Form1
         ' 
-        AutoScaleDimensions = New SizeF(10F, 25F)
+        AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(800, 450)
+        ClientSize = New Size(640, 360)
         Controls.Add(Button2)
         Controls.Add(Button1)
+        Margin = New Padding(2)
         Name = "Form1"
         Text = "Form1"
         ResumeLayout(False)
+        PerformLayout()
 
     End Sub
 
