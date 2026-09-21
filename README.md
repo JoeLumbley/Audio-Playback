@@ -1,7 +1,3 @@
-Below is a polished, professional GitHub‑ready description of your app — clear, structured, and written for developers who want to understand what the project does and how it works.
-
----
-
 # Audio Playback Engine (VB.NET / WinForms)
 
 A lightweight, fully‑managed audio playback engine for VB.NET WinForms applications.  
