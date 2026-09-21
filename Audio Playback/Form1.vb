@@ -224,11 +224,6 @@ Public Class Form1
 
     End Sub
 
-    'Private Sub Form1_Closing(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
-
-    '    Audio.CloseAll()
-
-    'End Sub
 
     Private Sub CreateSoundFiles()
 
