@@ -173,6 +173,8 @@ Public Class Form1
                                ' Dispose old engine
                                Audio?.Dispose()
 
+                               Audio = Nothing
+
                                ' Create new engine
                                Audio = New AudioPlayer()
 
