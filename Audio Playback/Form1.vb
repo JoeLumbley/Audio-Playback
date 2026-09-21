@@ -72,11 +72,9 @@ Public Class Form1
             ApplyDarkTitleBar(dark)
         End If
 
-
         CreateSoundFiles()
         Audio = New AudioPlayer()
         LoadAndRegisterSounds()
-        'Audio.LoopSound("loop")
 
         Debug.Print($"Running... {Now}")
     End Sub
@@ -86,26 +84,11 @@ Public Class Form1
 
         PlayLoop(2000) ' Fade in over 2 seconds
 
-        'Audio.SetVolume("loop", 0) ' Start with volume at 0 to fade in
-        'Audio.LoopSound("loop") ' Start looping the sound
-        'Audio.FadeVolume("loop", 0, loopVolume, 2000) ' Fade in over 2 seconds
-
     End Sub
-
-    Private Sub PlayLoop(durationMs As Integer)
-
-        ' Fade‑in loop
-        Audio.SetVolume("loop", 0)
-        Audio.LoopSound("loop")
-        Audio.FadeVolume("loop", 0, loopVolume, durationMs)
-
-    End Sub
-
-
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        Audio.PlayOverlapping("overlapping")
+        PlayOverlappingSound()
 
     End Sub
 
@@ -115,7 +98,7 @@ Public Class Form1
         If loopShouldPlay Then
             loopShouldPlay = False
 
-            If Audio.IsPlaying("loop") Then Audio.FadeOutAndStop("loop", 2000)
+            FadeOutAndStopLoop(2000)
 
             Button2.Text = "Play Loop"
 
@@ -124,25 +107,19 @@ Public Class Form1
 
             PlayLoop(2000)
 
-            Button2.Text = "Pause Loop"
+            Button2.Text = "Stop Loop"
 
         End If
-
 
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-
         Audio.CloseAll()
-
     End Sub
-
-
 
     Private Sub AudioRestartTimer_Tick(sender As Object, e As EventArgs) Handles AudioRestartTimer.Tick
         RestartAudioEngine()
     End Sub
-
 
     Private Sub CreateSoundFiles()
 
@@ -162,6 +139,22 @@ Public Class Form1
 
     End Sub
 
+    Private Sub PlayOverlappingSound()
+        Audio.PlayOverlapping("overlapping")
+    End Sub
+
+    Private Sub PlayLoop(durationMs As Integer)
+
+        ' Fade‑in loop
+        Audio.SetVolume("loop", 0)
+        Audio.LoopSound("loop")
+        Audio.FadeVolume("loop", 0, loopVolume, durationMs)
+
+    End Sub
+
+    Private Sub FadeOutAndStopLoop(durationMs As Integer)
+        If Audio.IsPlaying("loop") Then Audio.FadeOutAndStop("loop", durationMs)
+    End Sub
 
 
     Private Sub RestartAudioEngine()
@@ -200,7 +193,6 @@ Public Class Form1
 
     End Sub
 
-
     Private Sub CreateFileFromResource(filepath As String, resource As Byte())
 
         Try
@@ -218,7 +210,6 @@ Public Class Form1
         End Try
 
     End Sub
-
 
     Private Function IsDarkMode() As Boolean
         If Environment.OSVersion.Version.Build >= 22000 Then
@@ -245,7 +236,6 @@ Public Class Form1
         End Try
     End Function
 
-
     Private Sub ApplyDarkTheme()
         Me.BackColor = Color.FromArgb(32, 32, 32)
         Me.ForeColor = Color.White
@@ -258,7 +248,6 @@ Public Class Form1
             End If
         Next
     End Sub
-
 
     Private Sub ApplyDarkTitleBar(isDark As Boolean)
         If Environment.OSVersion.Version.Build < 22000 Then Exit Sub ' Only Windows 11+
