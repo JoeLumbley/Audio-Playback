@@ -115,7 +115,7 @@ Public Class Form1
         If loopShouldPlay Then
             loopShouldPlay = False
 
-            If Audio.IsPlaying("loop") = True Then Audio.FadeOutAndStop("loop", 2000)
+            If Audio.IsPlaying("loop") Then Audio.FadeOutAndStop("loop", 2000)
 
             Button2.Text = "Play Loop"
 
