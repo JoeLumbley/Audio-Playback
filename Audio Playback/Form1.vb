@@ -178,7 +178,7 @@ End Class
 ' Copilot is our AI assistant.
 
 
-' I also make coding videos on my YouTube channel.
+' I also make coding videos on my YouTube channel: Code with Joe.
 ' https://www.youtube.com/@codewithjoe6074
 
 
