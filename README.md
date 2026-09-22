@@ -11,6 +11,8 @@ This project demonstrates how to build a **multi‑sound audio system** using th
 
 The app is designed as a clean, approachable example for developers learning VB.NET, WinForms, or game‑style audio playback. It is also featured in videos on the *Code with Joe* YouTube channel.
 
+<img width="1920" height="1080" alt="015" src="https://github.com/user-attachments/assets/8f91869c-abc9-4287-9cee-148bbf17719a" />
+
 ---
 
 ## Features
