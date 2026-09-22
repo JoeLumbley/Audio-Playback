@@ -23,7 +23,6 @@
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ' SOFTWARE.
 
-
 Imports System.IO
 Imports System.Runtime.InteropServices
 Imports Microsoft.Win32
@@ -38,7 +37,7 @@ Public Class Form1
     }
 
     Private loopShouldPlay As Boolean = True
-    Private loopVolume As Integer = 100
+    Private loopVolume As Integer = 200
 
     ' Windows 11 dark mode title bar support
     Private Const DWMWA_USE_IMMERSIVE_DARK_MODE As Integer = 20
@@ -178,7 +177,7 @@ Public Class Form1
         Audio?.SetVolume("loop", loopVolume)
 
         Audio?.AddOverlapping("overlapping", Path.Combine(Application.StartupPath, "overlapping.mp3"))
-        Audio?.SetVolumeOverlapping("overlapping", 200)
+        Audio?.SetVolumeOverlapping("overlapping", 800)
 
     End Sub
 
@@ -208,7 +207,6 @@ Public Class Form1
     ' ============================================================
     Private Function IsDarkMode() As Boolean
 
-        ' Windows 11+ uses Application.SystemColorMode
         If Environment.OSVersion.Version.Build >= 22000 Then
             Return Application.SystemColorMode = SystemColorMode.Dark
         End If
@@ -253,7 +251,6 @@ Public Class Form1
 
     Private Sub ApplyDarkTitleBar(isDark As Boolean)
 
-        ' Only apply dark title bar on Windows 11+
         If Environment.OSVersion.Version.Build < 22000 Then Exit Sub
 
         Dim value As Integer = If(isDark, 1, 0)
@@ -267,8 +264,6 @@ Public Class Form1
     End Sub
 
 End Class
-
-
 
 
 ' Copilot is our AI assistant.
