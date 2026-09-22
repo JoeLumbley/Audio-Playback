@@ -1,4 +1,4 @@
-﻿' Audio Playback
+﻿' Audio Player
 
 ' Uses Windows MCI API (winmm.dll) for playback of multiple audio files simultaneously.
 
