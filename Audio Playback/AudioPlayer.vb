@@ -41,133 +41,6 @@ Public Class AudioPlayer
         CloseAll()
     End Sub
 
-    ' ============================================================
-    ' Helpers
-    ' ============================================================
-    Private Function Normalize(name As String) As String
-        If name Is Nothing Then Return ""
-        Return name.Trim().Replace(" ", "_")
-    End Function
-
-    Private Function ShouldLogError(command As String, code As Integer) As Boolean
-        If code = 263 Then
-            Dim c = command.Trim().ToLowerInvariant()
-            If c.StartsWith("status ") OrElse c.StartsWith("stop ") OrElse c.StartsWith("close ") Then
-                Return False
-            End If
-        End If
-        Return True
-    End Function
-
-    Private Function Send(command As String) As Boolean
-        Dim sb As New StringBuilder(256)
-        Dim result = mciSendStringW(command, sb, CUInt(sb.Capacity), IntPtr.Zero)
-
-        If result <> 0 AndAlso ShouldLogError(command, result) Then
-            Debug.Print($"MCI Error {result}: {command}")
-            Return False
-        End If
-
-        Return result = 0
-    End Function
-
-    Private Function Query(command As String) As String
-        Dim sb As New StringBuilder(256)
-        Dim result = mciSendStringW(command, sb, CUInt(sb.Capacity), IntPtr.Zero)
-
-        If result <> 0 AndAlso ShouldLogError(command, result) Then
-            Debug.Print($"MCI Error {result}: {command}")
-            Return ""
-        End If
-
-        Return sb.ToString().Trim()
-    End Function
-
-    Private Function CooldownReady(soundName As String, ms As Integer) As Boolean
-        Dim now = Environment.TickCount
-
-        SyncLock syncRoot
-            Dim last As Integer
-            If Cooldowns.TryGetValue(soundName, last) Then
-                If now - last < ms Then Return False
-            End If
-            Cooldowns(soundName) = now
-        End SyncLock
-
-        Return True
-    End Function
-
-    Private Function GetDeviceType(filePath As String) As String
-        Select Case Path.GetExtension(filePath).ToLowerInvariant()
-            Case ".wav" : Return "waveaudio"
-            Case ".mp3" : Return "mpegvideo"
-            Case Else : Return ""
-        End Select
-    End Function
-
-    Private Function OpenSoundInternal(soundName As String, filePath As String, volume As Integer) As Boolean
-        Dim deviceType = GetDeviceType(filePath)
-        Dim ok As Boolean
-
-        If deviceType = "" Then
-            ok = Send($"open ""{filePath}"" alias {soundName}")
-        Else
-            ok = Send($"open ""{filePath}"" type {deviceType} alias {soundName}")
-        End If
-
-        If ok Then
-            SyncLock syncRoot
-                Aliases.Add(soundName)
-                SoundInfo(soundName) = (filePath, volume)
-            End SyncLock
-        End If
-
-        Return ok
-    End Function
-
-    ' ============================================================
-    ' Volume Fade (Async)
-    ' ============================================================
-    Private Async Function FadeVolumeAsync(soundName As String, startVol As Integer, endVol As Integer, durationMs As Integer) As Task
-        Dim steps As Integer = Math.Max(1, durationMs \ 10)
-        Dim delta As Double = (endVol - startVol) / steps
-        Dim current As Double = startVol
-
-        For i = 1 To steps
-            current += delta
-            SetVolume(soundName, CInt(current))
-            Await Task.Delay(10)
-        Next
-
-        SetVolume(soundName, endVol)
-    End Function
-
-    Public Sub FadeVolume(soundName As String, startVol As Integer, endVol As Integer, durationMs As Integer)
-        Dim r = FadeVolumeAsync(soundName, startVol, endVol, durationMs)
-    End Sub
-
-    ' ============================================================
-    ' Fade Out
-    ' ============================================================
-    Public Sub FadeOut(soundName As String, durationMs As Integer)
-        soundName = Normalize(soundName)
-
-        SyncLock syncRoot
-            If Not Aliases.Contains(soundName) Then Exit Sub
-        End SyncLock
-
-        Dim info = SoundInfo(soundName)
-        FadeVolume(soundName, info.volume, 0, durationMs)
-    End Sub
-
-    Public Sub FadeOutAndStop(soundName As String, durationMs As Integer)
-        FadeOut(soundName, durationMs)
-
-        Task.Run(Async Function()
-                     Await Task.Delay(durationMs)
-                     Send($"stop {Normalize(soundName)}")
-                 End Function)
-    End Sub
 
     ' ============================================================
     ' Core API
@@ -316,6 +189,135 @@ Public Class AudioPlayer
         For Each suffix In OverlapSuffixes
             SetVolume(baseName & suffix, level)
         Next
+    End Sub
+
+
+    ' ============================================================
+    ' Helpers
+    ' ============================================================
+    Private Function Normalize(name As String) As String
+        If name Is Nothing Then Return ""
+        Return name.Trim().Replace(" ", "_")
+    End Function
+
+    Private Function ShouldLogError(command As String, code As Integer) As Boolean
+        If code = 263 Then
+            Dim c = command.Trim().ToLowerInvariant()
+            If c.StartsWith("status ") OrElse c.StartsWith("stop ") OrElse c.StartsWith("close ") Then
+                Return False
+            End If
+        End If
+        Return True
+    End Function
+
+    Private Function Send(command As String) As Boolean
+        Dim sb As New StringBuilder(256)
+        Dim result = mciSendStringW(command, sb, CUInt(sb.Capacity), IntPtr.Zero)
+
+        If result <> 0 AndAlso ShouldLogError(command, result) Then
+            Debug.Print($"MCI Error {result}: {command}")
+            Return False
+        End If
+
+        Return result = 0
+    End Function
+
+    Private Function Query(command As String) As String
+        Dim sb As New StringBuilder(256)
+        Dim result = mciSendStringW(command, sb, CUInt(sb.Capacity), IntPtr.Zero)
+
+        If result <> 0 AndAlso ShouldLogError(command, result) Then
+            Debug.Print($"MCI Error {result}: {command}")
+            Return ""
+        End If
+
+        Return sb.ToString().Trim()
+    End Function
+
+    Private Function CooldownReady(soundName As String, ms As Integer) As Boolean
+        Dim now = Environment.TickCount
+
+        SyncLock syncRoot
+            Dim last As Integer
+            If Cooldowns.TryGetValue(soundName, last) Then
+                If now - last < ms Then Return False
+            End If
+            Cooldowns(soundName) = now
+        End SyncLock
+
+        Return True
+    End Function
+
+    Private Function GetDeviceType(filePath As String) As String
+        Select Case Path.GetExtension(filePath).ToLowerInvariant()
+            Case ".wav" : Return "waveaudio"
+            Case ".mp3" : Return "mpegvideo"
+            Case Else : Return ""
+        End Select
+    End Function
+
+    Private Function OpenSoundInternal(soundName As String, filePath As String, volume As Integer) As Boolean
+        Dim deviceType = GetDeviceType(filePath)
+        Dim ok As Boolean
+
+        If deviceType = "" Then
+            ok = Send($"open ""{filePath}"" alias {soundName}")
+        Else
+            ok = Send($"open ""{filePath}"" type {deviceType} alias {soundName}")
+        End If
+
+        If ok Then
+            SyncLock syncRoot
+                Aliases.Add(soundName)
+                SoundInfo(soundName) = (filePath, volume)
+            End SyncLock
+        End If
+
+        Return ok
+    End Function
+
+    ' ============================================================
+    ' Volume Fade (Async)
+    ' ============================================================
+    Private Async Function FadeVolumeAsync(soundName As String, startVol As Integer, endVol As Integer, durationMs As Integer) As Task
+        Dim steps As Integer = Math.Max(1, durationMs \ 10)
+        Dim delta As Double = (endVol - startVol) / steps
+        Dim current As Double = startVol
+
+        For i = 1 To steps
+            current += delta
+            SetVolume(soundName, CInt(current))
+            Await Task.Delay(10)
+        Next
+
+        SetVolume(soundName, endVol)
+    End Function
+
+    Public Sub FadeVolume(soundName As String, startVol As Integer, endVol As Integer, durationMs As Integer)
+        Dim r = FadeVolumeAsync(soundName, startVol, endVol, durationMs)
+    End Sub
+
+    ' ============================================================
+    ' Fade Out
+    ' ============================================================
+    Public Sub FadeOut(soundName As String, durationMs As Integer)
+        soundName = Normalize(soundName)
+
+        SyncLock syncRoot
+            If Not Aliases.Contains(soundName) Then Exit Sub
+        End SyncLock
+
+        Dim info = SoundInfo(soundName)
+        FadeVolume(soundName, info.volume, 0, durationMs)
+    End Sub
+
+    Public Sub FadeOutAndStop(soundName As String, durationMs As Integer)
+        FadeOut(soundName, durationMs)
+
+        Task.Run(Async Function()
+                     Await Task.Delay(durationMs)
+                     Send($"stop {Normalize(soundName)}")
+                 End Function)
     End Sub
 
     ' ============================================================
