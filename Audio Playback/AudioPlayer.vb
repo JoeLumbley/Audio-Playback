@@ -1,10 +1,8 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Text
-Imports System.Windows.Forms
-Imports System.Threading
-Imports System.Diagnostics
 Imports System.Threading.Tasks
 Imports System.IO
+Imports System.Diagnostics
 
 Public Class AudioPlayer
     Implements IDisposable
@@ -31,9 +29,6 @@ Public Class AudioPlayer
     Private ReadOnly OverlapSuffixes As String() =
         {"a", "b", "c", "d", "e", "f", "g", "h"}
 
-    'Private cleanupTimer As System.Threading.Timer
-    'Private cleanupInitialized As Boolean
-
     Private ReadOnly syncRoot As New Object()
 
     ' ============================================================
@@ -43,10 +38,8 @@ Public Class AudioPlayer
     End Sub
 
     Public Sub Dispose() Implements IDisposable.Dispose
-
         CloseAll()
     End Sub
-
 
     ' ============================================================
     ' Helpers
@@ -90,22 +83,6 @@ Public Class AudioPlayer
         Return sb.ToString().Trim()
     End Function
 
-    Private Function AnyPlaying() As Boolean
-        Dim snapshot As List(Of String)
-
-        SyncLock syncRoot
-            snapshot = Aliases.ToList()
-        End SyncLock
-
-        For Each aliasName In snapshot
-            If Query($"status {aliasName} mode").Equals("playing", StringComparison.OrdinalIgnoreCase) Then
-                Return True
-            End If
-        Next
-
-        Return False
-    End Function
-
     Private Function CooldownReady(soundName As String, ms As Integer) As Boolean
         Dim now = Environment.TickCount
 
@@ -121,8 +98,7 @@ Public Class AudioPlayer
     End Function
 
     Private Function GetDeviceType(filePath As String) As String
-        Dim ext = Path.GetExtension(filePath).ToLowerInvariant()
-        Select Case ext
+        Select Case Path.GetExtension(filePath).ToLowerInvariant()
             Case ".wav" : Return "waveaudio"
             Case ".mp3" : Return "mpegvideo"
             Case Else : Return ""
@@ -133,7 +109,7 @@ Public Class AudioPlayer
         Dim deviceType = GetDeviceType(filePath)
         Dim ok As Boolean
 
-        If String.IsNullOrEmpty(deviceType) Then
+        If deviceType = "" Then
             ok = Send($"open ""{filePath}"" alias {soundName}")
         Else
             ok = Send($"open ""{filePath}"" type {deviceType} alias {soundName}")
@@ -167,7 +143,7 @@ Public Class AudioPlayer
     End Function
 
     Public Sub FadeVolume(soundName As String, startVol As Integer, endVol As Integer, durationMs As Integer)
-        Dim fadeTask As Task = FadeVolumeAsync(soundName, startVol, endVol, durationMs)
+        Dim r = FadeVolumeAsync(soundName, startVol, endVol, durationMs)
     End Sub
 
     ' ============================================================
@@ -181,9 +157,7 @@ Public Class AudioPlayer
         End SyncLock
 
         Dim info = SoundInfo(soundName)
-        Dim currentVol = info.volume
-
-        FadeVolume(soundName, currentVol, 0, durationMs)
+        FadeVolume(soundName, info.volume, 0, durationMs)
     End Sub
 
     Public Sub FadeOutAndStop(soundName As String, durationMs As Integer)
@@ -195,14 +169,13 @@ Public Class AudioPlayer
                  End Function)
     End Sub
 
-
     ' ============================================================
     ' Core API
     ' ============================================================
     Public Function AddSound(soundName As String, filePath As String) As Boolean
         soundName = Normalize(soundName)
 
-        If String.IsNullOrWhiteSpace(soundName) OrElse Not IO.File.Exists(filePath) Then
+        If String.IsNullOrWhiteSpace(soundName) OrElse Not File.Exists(filePath) Then
             Debug.Print($"{soundName} not added.")
             Return False
         End If
@@ -390,3 +363,6 @@ Public Class AudioPlayer
     End Sub
 
 End Class
+
+
+
