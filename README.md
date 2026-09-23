@@ -136,20 +136,31 @@ Imports System.Runtime.InteropServices
 ```
 Brings in interop services so you can call unmanaged (native) Windows APIs. This is required for the `DllImport` attribute used later to call `mciSendStringW` from `winmm.dll`.  
 
+
+---
+
 ```vbnet
 Imports System.Text
 ```
 Imports text‑related types like `StringBuilder`, which is used to receive strings from the MCI API calls efficiently.  
+
+
+---
+
 
 ```vbnet
 Imports System.Threading.Tasks
 ```
 Enables use of `Task` and `Async`/`Await` for asynchronous operations—here it’s used for non‑blocking volume fades and delayed stop operations.  
 
+---
+
 ```vbnet
 Imports System.IO
 ```
 Provides file and path utilities (e.g., `File.Exists`, `Path.GetExtension`) used to validate sound files and determine device types (`waveaudio`, `mpegvideo`).  
+
+---
 
 ```vbnet
 Imports System.Diagnostics
@@ -158,6 +169,7 @@ Allows logging and debugging via `Debug.Print`, which is used to report MCI erro
 
 
 
+---
 
 
 ```vbnet
@@ -168,6 +180,8 @@ Public Class AudioPlayer
 - **`Public Class AudioPlayer`** declares a reusable audio engine type that other parts of your program can instantiate to manage sounds.  
 - **`Implements IDisposable`** signals that the class owns unmanaged resources (MCI devices) and provides a `Dispose` method so callers can cleanly release them—internally it calls `CloseAll()` to stop and close every open alias.
 
+
+---
 
 
 ## MCI integration
