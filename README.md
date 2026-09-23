@@ -109,7 +109,7 @@ The WinForms interface includes:
 
 # AudioPlayer class walkthrough
 
-This document explains how the `AudioPlayer` class works and how to use it safely in your project.
+This section explains how the `AudioPlayer` class works and how to use it safely in your project.
 
 
 
