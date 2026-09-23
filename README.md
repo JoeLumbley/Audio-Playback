@@ -130,57 +130,6 @@ This section explains how the `AudioPlayer` class works and how to use it safely
 
 ---
 
-
-```vbnet
-Imports System.Runtime.InteropServices
-```
-Brings in interop services so you can call unmanaged (native) Windows APIs. This is required for the `DllImport` attribute used later to call `mciSendStringW` from `winmm.dll`.  
-
-
----
-
-```vbnet
-Imports System.Text
-```
-Imports text‑related types like `StringBuilder`, which is used to receive strings from the MCI API calls efficiently.  
-
-
----
-
-
-```vbnet
-Imports System.Threading.Tasks
-```
-Enables use of `Task` and `Async`/`Await` for asynchronous operations—here it’s used for non‑blocking volume fades and delayed stop operations.  
-
----
-
-```vbnet
-Imports System.IO
-```
-Provides file and path utilities (e.g., `File.Exists`, `Path.GetExtension`) used to validate sound files and determine device types (`waveaudio`, `mpegvideo`).  
-
----
-
-```vbnet
-Imports System.Diagnostics
-```
-Allows logging and debugging via `Debug.Print`, which is used to report MCI errors and failed sound registrations.  
-
-
-
----
-
-
-```vbnet
-Public Class AudioPlayer
-    Implements IDisposable
-```
-  
-- **`Public Class AudioPlayer`** declares a reusable audio engine type that other parts of your program can instantiate to manage sounds.  
-- **`Implements IDisposable`** signals that the class owns unmanaged resources (MCI devices) and provides a `Dispose` method so callers can cleanly release them—internally it calls `CloseAll()` to stop and close every open alias.
-
-
 ---
 
 
@@ -204,125 +153,6 @@ End Function
   - **`Query(command As String)`**: sends a command and returns the trimmed response string.
 
 ---
-
-```vbnet
-
-<DllImport("winmm.dll", EntryPoint:="mciSendStringW")> 
-
-```
-
-
-
-This attribute tells .NET:
-
-- **You are calling a native function** from the Windows multimedia library `winmm.dll`.
-- The specific exported function you want is **`mciSendStringW`**, the Unicode version of the MCI command dispatcher.
-
-This is the bridge between VB.NET and the Windows multimedia subsystem.
-
----
-
-```vbnet
-
-Private Shared Function mciSendStringW(
-
-```
-
-Declares a **shared (static)** function inside your class.  
-It must be shared because imported native functions cannot be instance methods.
-
-This function signature must match the unmanaged function exactly.
-
----
-
-```vbnet
-
-<MarshalAs(UnmanagedType.LPWStr)> command As String,
-
-```
-
-
-This parameter is the **MCI command string** you want Windows to execute.
-
-`MarshalAs(UnmanagedType.LPWStr)` forces .NET to marshal the VB.NET `String` as a **wide (UTF‑16) C‑style string**, which is what `mciSendStringW` expects.
-
-Example command:  
-`"play explosion_a"`  
-`"status music mode"`
-
----
-
-
-```vbnet
-
-<MarshalAs(UnmanagedType.LPWStr)> returnString As StringBuilder,
-
-```
-
-This is the **output buffer** where MCI writes its response.
-
-Examples of responses:
-
-- `"playing"`
-- `"stopped"`
-- `"seeked"`
-- `"0"` (success code)
-
-Using `StringBuilder` is required because:
-
-- MCI writes directly into the buffer.
-- Strings are immutable in .NET, but `StringBuilder` is mutable.
-
----
-
-```vbnet
-
-returnLength As UInteger,
-
-```
-
-This tells MCI **how large the output buffer is**.
-
-You pass `sb.Capacity` from your `StringBuilder`.
-
-If the buffer is too small, MCI truncates the response.
-
----
-
-```vbnet
-
-callback As IntPtr) As Integer
-
-```
-
-This is a pointer to a callback window handle for asynchronous notifications.
-
-You pass `IntPtr.Zero` because:
-
-- You are not using MCI notify callbacks.
-- You are using synchronous commands only.
-
-The function returns an **Integer error code**:
-
-- `0` = success  
-- Non‑zero = failure (e.g., `263` for “device not ready”)
-
----
-
-```vbnet
-
-End Function
-
-```
-
-Closes the declaration of the imported native function.
-
----
-
-
-
-
-
 
 
 
@@ -822,7 +652,219 @@ player.Dispose()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
+---
+---
+
+# Line by line brakedown
+
+
+```vbnet
+Imports System.Runtime.InteropServices
+```
+
+Brings in interop services so you can call unmanaged (native) Windows APIs. This is required for the `DllImport` attribute used later to call `mciSendStringW` from `winmm.dll`.  
+
+
+---
+
+```vbnet
+Imports System.Text
+```
+Imports text‑related types like `StringBuilder`, which is used to receive strings from the MCI API calls efficiently.  
+
+
+---
+
+
+```vbnet
+Imports System.Threading.Tasks
+```
+Enables use of `Task` and `Async`/`Await` for asynchronous operations—here it’s used for non‑blocking volume fades and delayed stop operations.  
+
+---
+
+```vbnet
+Imports System.IO
+```
+Provides file and path utilities (e.g., `File.Exists`, `Path.GetExtension`) used to validate sound files and determine device types (`waveaudio`, `mpegvideo`).  
+
+---
+
+```vbnet
+Imports System.Diagnostics
+```
+Allows logging and debugging via `Debug.Print`, which is used to report MCI errors and failed sound registrations.  
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+---
+
+```vbnet
+Public Class AudioPlayer
+    Implements IDisposable
+```
+  
+- **`Public Class AudioPlayer`** declares a reusable audio engine type that other parts of your program can instantiate to manage sounds.  
+- **`Implements IDisposable`** signals that the class owns unmanaged resources (MCI devices) and provides a `Dispose` method so callers can cleanly release them—internally it calls `CloseAll()` to stop and close every open alias.
+
+---
+
+
+
+```vbnet
+
+<DllImport("winmm.dll", EntryPoint:="mciSendStringW")> 
+
+```
+
+
+
+This attribute tells .NET:
+
+- **You are calling a native function** from the Windows multimedia library `winmm.dll`.
+- The specific exported function you want is **`mciSendStringW`**, the Unicode version of the MCI command dispatcher.
+
+This is the bridge between VB.NET and the Windows multimedia subsystem.
+
+---
+
+```vbnet
+
+Private Shared Function mciSendStringW(
+
+```
+
+Declares a **shared (static)** function inside your class.  
+It must be shared because imported native functions cannot be instance methods.
+
+This function signature must match the unmanaged function exactly.
+
+---
+
+```vbnet
+
+<MarshalAs(UnmanagedType.LPWStr)> command As String,
+
+```
+
+
+This parameter is the **MCI command string** you want Windows to execute.
+
+`MarshalAs(UnmanagedType.LPWStr)` forces .NET to marshal the VB.NET `String` as a **wide (UTF‑16) C‑style string**, which is what `mciSendStringW` expects.
+
+Example command:  
+`"play explosion_a"`  
+`"status music mode"`
+
+---
+
+
+```vbnet
+
+<MarshalAs(UnmanagedType.LPWStr)> returnString As StringBuilder,
+
+```
+
+This is the **output buffer** where MCI writes its response.
+
+Examples of responses:
+
+- `"playing"`
+- `"stopped"`
+- `"seeked"`
+- `"0"` (success code)
+
+Using `StringBuilder` is required because:
+
+- MCI writes directly into the buffer.
+- Strings are immutable in .NET, but `StringBuilder` is mutable.
+
+---
+
+```vbnet
+
+returnLength As UInteger,
+
+```
+
+This tells MCI **how large the output buffer is**.
+
+You pass `sb.Capacity` from your `StringBuilder`.
+
+If the buffer is too small, MCI truncates the response.
+
+---
+
+```vbnet
+
+callback As IntPtr) As Integer
+
+```
+
+This is a pointer to a callback window handle for asynchronous notifications.
+
+You pass `IntPtr.Zero` because:
+
+- You are not using MCI notify callbacks.
+- You are using synchronous commands only.
+
+The function returns an **Integer error code**:
+
+- `0` = success  
+- Non‑zero = failure (e.g., `263` for “device not ready”)
+
+---
+
+```vbnet
+
+End Function
+
+```
+
+Closes the declaration of the imported native function.
+
+---
+
+
+
+
+
+
+
+
+
 
 
 
