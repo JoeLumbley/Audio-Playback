@@ -3,15 +3,18 @@
 A lightweight, fully‑managed audio playback engine for VB.NET WinForms applications.  
 This project demonstrates how to build a **multi‑sound audio system** using the Windows **Multimedia MCI API**, supporting:
 
+
 - Looping background music  
 - Overlapping sound effects  
 - Volume control  
 - Smooth fade‑in / fade‑out transitions  
 - Automatic audio engine restart for long‑running stability  
 
-The app is designed as a clean, approachable example for developers learning VB.NET, WinForms, or game‑style audio playback. 
 
 <img width="1920" height="1080" alt="015" src="https://github.com/user-attachments/assets/8f91869c-abc9-4287-9cee-148bbf17719a" />
+
+The app is designed as a clean, approachable example for developers learning VB.NET, WinForms, or game‑style audio playback. 
+
 
 [Code Walkthrough](#audioplayer---full-code-walkthrough) 
 
