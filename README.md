@@ -206,8 +206,14 @@ Imports System.Diagnostics
 ```
 Allows logging and debugging via `Debug.Print`, which is used to report MCI errors and failed sound registrations.  
 
+[Walkthrough](#audioplayer---full-code-walkthrough)  |  [Top](#audio-playback-engine-vbnet--winforms)
 
 ---
+
+
+
+
+
 
 ## Class Declaration
 
@@ -219,8 +225,23 @@ Public Class AudioPlayer
 - **`Public Class AudioPlayer`** declares a reusable audio engine type that other parts of your program can instantiate to manage sounds.  
 - **`Implements IDisposable`** signals that the class owns unmanaged resources (MCI devices) and provides a `Dispose` method so callers can cleanly release them—internally it calls `CloseAll()` to stop and close every open alias.  
 
+[Walkthrough](#audioplayer---full-code-walkthrough)  |  [Top](#audio-playback-engine-vbnet--winforms)
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## MCI API
 
@@ -297,8 +318,19 @@ End Function
 
 Closes the declaration of the imported native function.  
 
+[Walkthrough](#audioplayer---full-code-walkthrough)  |  [Top](#audio-playback-engine-vbnet--winforms)
 
 ---
+
+
+
+
+
+
+
+
+
+
 
 ## Instance State
 
@@ -374,26 +406,28 @@ Private ReadOnly syncRoot As New Object()
 Used with `SyncLock` to ensure thread‑safe access to shared collections.  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[Walkthrough](#audioplayer---full-code-walkthrough)  |  [Top](#audio-playback-engine-vbnet--winforms)
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Constructor / Destructor
 
@@ -421,6 +455,7 @@ End Sub
 Implements `IDisposable`.  
 Calls `CloseAll()` to stop and close every open alias, ensuring no dangling MCI devices remain.  
 
+[Walkthrough](#audioplayer---full-code-walkthrough) 
 
 ---
 
