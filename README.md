@@ -421,13 +421,6 @@ Calls `CloseAll()` to stop and close every open alias, ensuring no dangling MCI 
 *A complete line‑by‑line walkthrough of every public‑facing method in the AudioPlayer class.*
 
 These are the functions your game or application will call directly:  
-- Adding sounds  
-- Playing  
-- Looping  
-- Stopping  
-- Pausing  
-- Volume control  
-- Status checks
 
 
 - [Adding sounds](#addsound)  
