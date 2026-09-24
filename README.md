@@ -859,6 +859,159 @@ Closes the declaration of the imported native function.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+## Instance State
+
+---
+
+```vbnet
+Private ReadOnly Aliases As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
+```
+
+This creates a **case‑insensitive set of all active MCI aliases**.  
+Every sound you open via MCI gets an alias, and this collection tracks which ones currently exist.  
+Using `HashSet` ensures:
+- Fast lookup (`O(1)`).
+- No duplicates.
+- Case‑insensitive comparisons (`StringComparer.OrdinalIgnoreCase`).
+
+---
+
+```vbnet
+Private ReadOnly SoundInfo As New Dictionary(Of String, (filePath As String, volume As Integer))(StringComparer.OrdinalIgnoreCase)
+```
+
+This dictionary maps each alias to a **tuple** containing:
+- `filePath` → the original audio file location  
+- `volume` → the last known volume level (0–1000)
+
+Example entry:
+```
+"menu_music" → ("Assets\Music\menu.mp3", 500)
+```
+
+This allows the engine to remember per‑sound volume and restore it during fades.
+
+---
+
+```vbnet
+Private ReadOnly Looping As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
+```
+
+Tracks which aliases are currently **set to loop** using the MCI command:
+
+```
+play <alias> repeat
+```
+
+This is purely internal bookkeeping — MCI itself does not expose loop state, so you track it manually.
+
+---
+
+```vbnet
+Private ReadOnly Cooldowns As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
+```
+
+Stores the **last tick count** for each alias to enforce cooldown timing.
+
+Example:
+```
+"hit_a" → 123456789
+```
+
+This prevents rapid‑fire MCI commands (which can cause error 263 spam or audio stutter).
+
+---
+
+```vbnet
+Private ReadOnly OverlapSuffixes As String() =
+    {"a", "b", "c", "d", "e", "f", "g", "h"}
+```
+
+Defines the suffixes used for **overlapping sound variants**.
+
+If your base sound is `"hit"`, the engine will create:
+
+```
+hit_a
+hit_b
+hit_c
+...
+hit_h
+```
+
+This allows multiple instances of the same sound to play simultaneously without interrupting each other — essential for fast action games.
+
+---
+
+```vbnet
+Private ReadOnly syncRoot As New Object()
+```
+
+This object is used with `SyncLock` to ensure **thread‑safe access** to all shared collections.
+
+Example usage:
+
+```vbnet
+SyncLock syncRoot
+    Aliases.Add(soundName)
+End SyncLock
+```
+
+This prevents race conditions when sounds are added, removed, or queried from multiple threads (e.g., game loop + UI thread).
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Creator
 
 This project is developed by **Joseph W. Lumbley**  
