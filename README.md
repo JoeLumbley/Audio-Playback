@@ -429,6 +429,7 @@ These are the functions your game or application will call directly:
 - Volume control  
 - Status checks
 
+- [Public API](#public-api)  
 
 
 
@@ -571,6 +572,8 @@ Return Send($"play {soundName}")
 ```
 
 Sends the MCI play command and returns success/failure.
+
+- [Public API](#public-api)  
 
 ---
 
