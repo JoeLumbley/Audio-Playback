@@ -429,7 +429,6 @@ These are the functions your game or application will call directly:
 - Volume control  
 - Status checks
 
-- [Public API](#public-api)  
 
 
 
@@ -573,9 +572,22 @@ Return Send($"play {soundName}")
 
 Sends the MCI play command and returns success/failure.
 
-- [Public API](#public-api)  
+
+[Public API](#public-api)  
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### LoopSound
 
@@ -638,7 +650,21 @@ Return ok
 
 Return success/failure.
 
+
+[Public API](#public-api)  
+
 ---
+
+
+
+
+
+
+
+
+
+
+
 
 ### StopSound
 
@@ -671,7 +697,21 @@ Return Send($"stop {soundName}")
 
 Send MCI stop command.
 
+[Public API](#public-api)  
+
 ---
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ### PauseSound
@@ -705,7 +745,17 @@ Return Send($"pause {soundName}")
 
 Send MCI pause command.
 
+[Public API](#public-api)  
+
 ---
+
+
+
+
+
+
+
+
 
 
 ### SetVolume
@@ -759,7 +809,25 @@ Return ok
 
 Return success/failure.
 
+[Public API](#public-api)  
+
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### IsPlaying
 
@@ -797,6 +865,9 @@ status <alias> mode
 ```
 
 Returns `"playing"` if active.
+
+
+[Public API](#public-api)  
 
 ---
 
