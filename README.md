@@ -506,7 +506,25 @@ Return False
 
 Logs failure and returns `False`.
 
+[Public API](#public-api)  
+
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ### PlaySound
