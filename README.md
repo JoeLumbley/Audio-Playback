@@ -142,7 +142,6 @@ Imports System.Runtime.InteropServices
 Brings in interop services so you can call unmanaged (native) Windows APIs. This is required for the `DllImport` attribute used later to call `mciSendStringW` from `winmm.dll`.  
 
 
----
 
 ```vbnet
 Imports System.Text
@@ -150,7 +149,6 @@ Imports System.Text
 Imports text‑related types like `StringBuilder`, which is used to receive strings from the MCI API calls efficiently.  
 
 
----
 
 ```vbnet
 Imports System.Threading.Tasks
@@ -158,7 +156,6 @@ Imports System.Threading.Tasks
 Enables use of `Task` and `Async`/`Await` for asynchronous operations—here it’s used for non‑blocking volume fades and delayed stop operations.  
 
 
----
 
 ```vbnet
 Imports System.IO
@@ -166,7 +163,6 @@ Imports System.IO
 Provides file and path utilities (e.g., `File.Exists`, `Path.GetExtension`) used to validate sound files and determine device types (`waveaudio`, `mpegvideo`).  
 
 
----
 
 ```vbnet
 Imports System.Diagnostics
