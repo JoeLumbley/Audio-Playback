@@ -133,6 +133,9 @@ The WinForms interface includes:
 *A detailed line‑by‑line explanation of the AudioPlayer class and its subsystems.*
 
 
+[Walkthrough](#audioplayer---full-code-walkthrough)  
+
+
 - [Public API](#public-api)  
     - [Adding sounds](#addsound)  
     - [Playing](#playsound)  
@@ -448,7 +451,8 @@ These are the functions your game or application will call directly:
 
 Each method includes validation, normalization, thread‑safety, and MCI command dispatching.
 
-[Top](#audio-playback-engine-vbnet--winforms)  
+[Top](#audio-playback-engine-vbnet--winforms)  |  [Walkthrough](#audioplayer---full-code-walkthrough)  
+
 
 ---
 
