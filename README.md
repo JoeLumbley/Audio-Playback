@@ -107,563 +107,6 @@ The WinForms interface includes:
 
 
 
-# AudioPlayer class walkthrough
-
-This section explains how the `AudioPlayer` class works and how to use it safely in your project.
-
-
-
-
-## Overview
-
-**Purpose:**  
-`AudioPlayer` is a lightweight MCI-based sound engine for playing, looping, fading, and overlapping `.wav` and `.mp3` sounds using `winmm.dll`.
-
-**Key features:**
-
-- **Add and register sounds** by alias.
-- **Play, loop, pause, stop** sounds.
-- **Per-sound volume control** with fade-in and fade-out.
-- **Overlapping playback** for rapid-fire sound effects.
-- **Cooldowns** to avoid spamming MCI commands.
-- **Thread-safe** internal state via `SyncLock`.
-
----
-
----
-
-
-## MCI integration
-
-```vbnet
-<DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
-Private Shared Function mciSendStringW(
-    <MarshalAs(UnmanagedType.LPWStr)> command As String,
-    <MarshalAs(UnmanagedType.LPWStr)> returnString As StringBuilder,
-    returnLength As UInteger,
-    callback As IntPtr) As Integer
-End Function
-```
-
-**What this does:**
-
-- **Wraps `mciSendStringW`** from `winmm.dll` to send MCI commands as Unicode strings.
-- `Send` and `Query` are thin helpers around this function:
-  - **`Send(command As String)`**: fire-and-forget command, returns `Boolean` success.
-  - **`Query(command As String)`**: sends a command and returns the trimmed response string.
-
----
-
-
-
-Error handling:
-
-```vbnet
-Private Function ShouldLogError(command As String, code As Integer) As Boolean
-    If code = 263 Then
-        Dim c = command.Trim().ToLowerInvariant()
-        If c.StartsWith("status ") OrElse c.StartsWith("stop ") OrElse c.StartsWith("close ") Then
-            Return False
-        End If
-    End If
-    Return True
-End Function
-```
-
-- **Suppresses noisy error 263** for common status/stop/close calls.
-- Other errors are logged via `Debug.Print("MCI Error ...")`.
-
----
-
-## Internal state and thread safety
-
-```vbnet
-Private ReadOnly Aliases As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
-Private ReadOnly SoundInfo As New Dictionary(Of String, (filePath As String, volume As Integer))(StringComparer.OrdinalIgnoreCase)
-Private ReadOnly Looping As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
-Private ReadOnly Cooldowns As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
-
-Private ReadOnly OverlapSuffixes As String() =
-    {"a", "b", "c", "d", "e", "f", "g", "h"}
-
-Private ReadOnly syncRoot As New Object()
-```
-
-**Collections:**
-
-- **`Aliases`**: all active MCI aliases.
-- **`SoundInfo`**: maps alias → `(filePath, volume)`.
-- **`Looping`**: tracks which aliases are currently set to loop.
-- **`Cooldowns`**: last tick count per alias to throttle rapid calls.
-- **`OverlapSuffixes`**: suffixes used for overlapping variants (e.g. `hit_a`, `hit_b`, ...).
-
-All shared state is guarded by:
-
-```vbnet
-SyncLock syncRoot
-    ' read/write collections here
-End SyncLock
-```
-
----
-
-## Adding and opening sounds
-
-```vbnet
-Public Function AddSound(soundName As String, filePath As String) As Boolean
-    soundName = Normalize(soundName)
-
-    If String.IsNullOrWhiteSpace(soundName) OrElse Not File.Exists(filePath) Then
-        Debug.Print($"{soundName} not added.")
-        Return False
-    End If
-
-    SyncLock syncRoot
-        If Aliases.Contains(soundName) Then Return True
-    End SyncLock
-
-    If OpenSoundInternal(soundName, filePath, 500) Then
-        Return True
-    End If
-
-    Debug.Print($"{soundName} failed to open.")
-    Return False
-End Function
-```
-
-**Flow:**
-
-1. **Normalize** the name (`Trim`, replace spaces with `_`).
-2. **Validate**: non-empty name and existing file.
-3. **Skip if already added**.
-4. **Open via `OpenSoundInternal`** with initial volume `500`.
-
-Device type detection:
-
-```vbnet
-Private Function GetDeviceType(filePath As String) As String
-    Select Case Path.GetExtension(filePath).ToLowerInvariant()
-        Case ".wav" : Return "waveaudio"
-        Case ".mp3" : Return "mpegvideo"
-        Case Else : Return ""
-    End Select
-End Function
-```
-
-Opening:
-
-```vbnet
-Private Function OpenSoundInternal(soundName As String, filePath As String, volume As Integer) As Boolean
-    Dim deviceType = GetDeviceType(filePath)
-    Dim ok As Boolean
-
-    If deviceType = "" Then
-        ok = Send($"open ""{filePath}"" alias {soundName}")
-    Else
-        ok = Send($"open ""{filePath}"" type {deviceType} alias {soundName}")
-    End If
-
-    If ok Then
-        SyncLock syncRoot
-            Aliases.Add(soundName)
-            SoundInfo(soundName) = (filePath, volume)
-        End SyncLock
-    End If
-
-    Return ok
-End Function
-```
-
----
-
-## Playing, looping, pausing, stopping
-
-### Play with fade-in
-
-```vbnet
-Public Function PlaySound(soundName As String) As Boolean
-    soundName = Normalize(soundName)
-    If Not CooldownReady(soundName, 40) Then Return False
-
-    SyncLock syncRoot
-        If Not Aliases.Contains(soundName) Then Return False
-    End SyncLock
-
-    Send($"stop {soundName}")
-    Send($"seek {soundName} to start")
-
-    Dim info = SoundInfo(soundName)
-
-    SetVolume(soundName, 0)
-    FadeVolume(soundName, 0, info.volume, 80)
-
-    Return Send($"play {soundName}")
-End Function
-```
-
-**Key points:**
-
-- **Cooldown**: `CooldownReady(soundName, 40)` enforces a 40 ms minimum gap.
-- **Reset playback**: `stop` then `seek ... to start`.
-- **Fade-in**: volume goes from `0` to stored `info.volume` over `80 ms`.
-- **Finally** sends `play` command.
-
-### Looping
-
-```vbnet
-Public Function LoopSound(soundName As String) As Boolean
-    soundName = Normalize(soundName)
-
-    SyncLock syncRoot
-        If Not Aliases.Contains(soundName) Then Return False
-    End SyncLock
-
-    Send($"stop {soundName}")
-    Send($"seek {soundName} to start")
-
-    Dim ok = Send($"play {soundName} repeat")
-    If ok Then
-        SyncLock syncRoot
-            Looping.Add(soundName)
-        End SyncLock
-    End If
-
-    Return ok
-End Function
-```
-
-- Uses `play ... repeat` to loop.
-- Tracks looping aliases in `Looping`.
-
-### Pause and stop
-
-```vbnet
-Public Function StopSound(soundName As String) As Boolean
-    soundName = Normalize(soundName)
-
-    SyncLock syncRoot
-        If Not Aliases.Contains(soundName) Then Return False
-    End SyncLock
-
-    Return Send($"stop {soundName}")
-End Function
-
-Public Function PauseSound(soundName As String) As Boolean
-    soundName = Normalize(soundName)
-
-    SyncLock syncRoot
-        If Not Aliases.Contains(soundName) Then Return False
-    End SyncLock
-
-    Return Send($"pause {soundName}")
-End Function
-```
-
-### Status check
-
-```vbnet
-Public Function IsPlaying(soundName As String) As Boolean
-    soundName = Normalize(soundName)
-
-    SyncLock syncRoot
-        If Not Aliases.Contains(soundName) Then Return False
-    End SyncLock
-
-    Return Query($"status {soundName} mode").Equals("playing", StringComparison.OrdinalIgnoreCase)
-End Function
-```
-
----
-
-## Volume control and fading
-
-### Direct volume set
-
-```vbnet
-Public Function SetVolume(soundName As String, level As Integer) As Boolean
-    soundName = Normalize(soundName)
-    level = Math.Max(0, Math.Min(1000, level))
-
-    SyncLock syncRoot
-        If Not Aliases.Contains(soundName) Then Return False
-    End SyncLock
-
-    Dim ok = Send($"setaudio {soundName} volume to {level}")
-
-    If ok Then
-        SyncLock syncRoot
-            Dim info = SoundInfo(soundName)
-            SoundInfo(soundName) = (info.filePath, level)
-        End SyncLock
-    End If
-
-    Return ok
-End Function
-```
-
-- Clamps volume to **0–1000**.
-- Updates `SoundInfo` on success.
-
-### Async fade
-
-```vbnet
-Private Async Function FadeVolumeAsync(soundName As String, startVol As Integer, endVol As Integer, durationMs As Integer) As Task
-    Dim steps As Integer = Math.Max(1, durationMs \ 10)
-    Dim delta As Double = (endVol - startVol) / steps
-    Dim current As Double = startVol
-
-    For i = 1 To steps
-        current += delta
-        SetVolume(soundName, CInt(current))
-        Await Task.Delay(10)
-    Next
-
-    SetVolume(soundName, endVol)
-End Function
-
-Public Sub FadeVolume(soundName As String, startVol As Integer, endVol As Integer, durationMs As Integer)
-    Dim r = FadeVolumeAsync(soundName, startVol, endVol, durationMs)
-End Sub
-```
-
-- **Step size:** one volume update every `10 ms`.
-- **Duration:** `durationMs` determines number of steps.
-- `FadeVolume` is a fire-and-forget wrapper around the async method.
-
-### Fade out helpers
-
-```vbnet
-Public Sub FadeOut(soundName As String, durationMs As Integer)
-    soundName = Normalize(soundName)
-
-    SyncLock syncRoot
-        If Not Aliases.Contains(soundName) Then Exit Sub
-    End SyncLock
-
-    Dim info = SoundInfo(soundName)
-    FadeVolume(soundName, info.volume, 0, durationMs)
-End Sub
-
-Public Sub FadeOutAndStop(soundName As String, durationMs As Integer)
-    FadeOut(soundName, durationMs)
-
-    Task.Run(Async Function()
-                 Await Task.Delay(durationMs)
-                 Send($"stop {Normalize(soundName)}")
-             End Function)
-End Sub
-```
-
-- `FadeOut`: fades from current volume to `0`.
-- `FadeOutAndStop`: fades, then stops after the fade duration.
-
----
-
-## Overlapping playback
-
-### Register overlapping variants
-
-```vbnet
-Public Sub AddOverlapping(baseName As String, filePath As String)
-    For Each suffix In OverlapSuffixes
-        AddSound(baseName & suffix, filePath)
-    Next
-End Sub
-```
-
-- Creates multiple aliases like `hit_a`, `hit_b`, ..., all pointing to the same file.
-
-### Play overlapping
-
-```vbnet
-Public Sub PlayOverlapping(baseName As String)
-    Dim list As List(Of String)
-
-    SyncLock syncRoot
-        list = OverlapSuffixes.Select(Function(s) Normalize(baseName & s)).
-                               Where(Function(a) Aliases.Contains(a)).
-                               ToList()
-    End SyncLock
-
-    For Each aliasName In list
-        If Not Query($"status {aliasName} mode").Equals("playing", StringComparison.OrdinalIgnoreCase) Then
-
-            If Not CooldownReady(aliasName, 40) Then Exit Sub
-
-            Send($"stop {aliasName}")
-            Send($"seek {aliasName} to start")
-            Send($"play {aliasName}")
-            Exit Sub
-        End If
-    Next
-End Sub
-```
-
-- Finds the first variant that is **not currently playing**.
-- Applies **per-alias cooldown**.
-- Plays that alias and exits—so only one overlapping instance is started per call.
-
-### Overlapping volume
-
-```vbnet
-Public Sub SetVolumeOverlapping(baseName As String, level As Integer)
-    For Each suffix In OverlapSuffixes
-        SetVolume(baseName & suffix, level)
-    Next
-End Sub
-```
-
----
-
-## Cooldowns
-
-```vbnet
-Private Function CooldownReady(soundName As String, ms As Integer) As Boolean
-    Dim now = Environment.TickCount
-
-    SyncLock syncRoot
-        Dim last As Integer
-        If Cooldowns.TryGetValue(soundName, last) Then
-            If now - last < ms Then Return False
-        End If
-        Cooldowns(soundName) = now
-    End SyncLock
-
-    Return True
-End Function
-```
-
-- Prevents **rapid repeated commands** for the same alias.
-- Uses `Environment.TickCount` to track last call time per alias.
-
----
-
-## Cleanup and disposal
-
-### Close a single alias
-
-```vbnet
-Public Function CloseByAlias(aliasName As String) As Boolean
-    aliasName = Normalize(aliasName)
-
-    SyncLock syncRoot
-        If Not Aliases.Contains(aliasName) Then Return False
-    End SyncLock
-
-    Send($"stop {aliasName}")
-
-    Dim ok = Send($"close {aliasName}")
-
-    If ok Then
-        SyncLock syncRoot
-            Aliases.Remove(aliasName)
-            SoundInfo.Remove(aliasName)
-            Looping.Remove(aliasName)
-        End SyncLock
-    End If
-
-    Return ok
-End Function
-```
-
-### Close all sounds
-
-```vbnet
-Public Sub CloseAll()
-    Dim list As List(Of String)
-
-    SyncLock syncRoot
-        list = Aliases.ToList()
-        Aliases.Clear()
-        SoundInfo.Clear()
-        Looping.Clear()
-    End SyncLock
-
-    For Each aliasName In list
-        Send($"stop {aliasName}")
-    Next
-
-    For Each aliasName In list
-        Send($"close {aliasName}")
-    Next
-End Sub
-```
-
-### IDisposable
-
-```vbnet
-Public Sub Dispose() Implements IDisposable.Dispose
-    CloseAll()
-End Sub
-```
-
-- Ensures all MCI devices are stopped and closed when the player is disposed.
-
----
-
-## Usage examples
-
-### Basic setup
-
-```vbnet
-Dim player As New AudioPlayer()
-
-' Add sounds
-player.AddSound("menu_music", "Assets\Music\menu.mp3")
-player.AddSound("hit", "Assets\Sounds\hit.wav")
-
-' Play once with fade-in
-player.PlaySound("menu_music")
-
-' Loop background music
-player.LoopSound("menu_music")
-```
-
-### Overlapping sound effects
-
-```vbnet
-' Register overlapping variants
-player.AddOverlapping("hit", "Assets\Sounds\hit.wav")
-
-' In your game loop / input handler:
-player.PlayOverlapping("hit")
-```
-
-### Fade out and cleanup
-
-```vbnet
-' Fade out music over 1 second and stop
-player.FadeOutAndStop("menu_music", 1000)
-
-' On game exit
-player.CloseAll()
-player.Dispose()
-```
-
----
-
-## Design notes
-
-- **Normalization:** all sound names are normalized (`Trim`, spaces → `_`) to keep aliases consistent.
-- **Thread safety:** `SyncLock syncRoot` protects shared collections from concurrent access.
-- **Error noise reduction:** error 263 from MCI is selectively ignored for common status/stop/close commands to avoid log spam.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -676,13 +119,26 @@ player.Dispose()
 ---
 ---
 
-# Line by line brakedown
 
+
+
+
+
+
+
+
+---
+
+# AudioPlayer — Full Code Walkthrough  
+*A detailed line‑by‑line explanation of the AudioPlayer class and its subsystems.*
+
+---
+
+## Imports
 
 ```vbnet
 Imports System.Runtime.InteropServices
 ```
-
 Brings in interop services so you can call unmanaged (native) Windows APIs. This is required for the `DllImport` attribute used later to call `mciSendStringW` from `winmm.dll`.  
 
 
@@ -696,11 +152,11 @@ Imports text‑related types like `StringBuilder`, which is used to receive stri
 
 ---
 
-
 ```vbnet
 Imports System.Threading.Tasks
 ```
 Enables use of `Task` and `Async`/`Await` for asynchronous operations—here it’s used for non‑blocking volume fades and delayed stop operations.  
+
 
 ---
 
@@ -709,273 +165,237 @@ Imports System.IO
 ```
 Provides file and path utilities (e.g., `File.Exists`, `Path.GetExtension`) used to validate sound files and determine device types (`waveaudio`, `mpegvideo`).  
 
+
 ---
 
 ```vbnet
 Imports System.Diagnostics
 ```
-
 Allows logging and debugging via `Debug.Print`, which is used to report MCI errors and failed sound registrations.  
 
 
 ---
 
+## Class Declaration
+
 ```vbnet
 Public Class AudioPlayer
     Implements IDisposable
 ```
-  
+
 - **`Public Class AudioPlayer`** declares a reusable audio engine type that other parts of your program can instantiate to manage sounds.  
-- **`Implements IDisposable`** signals that the class owns unmanaged resources (MCI devices) and provides a `Dispose` method so callers can cleanly release them—internally it calls `CloseAll()` to stop and close every open alias.
+- **`Implements IDisposable`** signals that the class owns unmanaged resources (MCI devices) and provides a `Dispose` method so callers can cleanly release them—internally it calls `CloseAll()` to stop and close every open alias.  
+
 
 ---
 
+## MCI API
 
+> From your document:  
+> **"MCI API"**  
+> **`<DllImport("winmm.dll", EntryPoint:="mciSendStringW")>`**  
+
+
+---
 
 ```vbnet
-
-<DllImport("winmm.dll", EntryPoint:="mciSendStringW")> 
-
+<DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
 ```
-
-
 
 This attribute tells .NET:
 
-- **You are calling a native function** from the Windows multimedia library `winmm.dll`.
-- The specific exported function you want is **`mciSendStringW`**, the Unicode version of the MCI command dispatcher.
+- You are calling a native function from the Windows multimedia library `winmm.dll`.
+- The specific exported function you want is `mciSendStringW`, the Unicode version of the MCI command dispatcher.
 
-This is the bridge between VB.NET and the Windows multimedia subsystem.
+This is the bridge between VB.NET and the Windows multimedia subsystem.  
+
 
 ---
 
 ```vbnet
-
 Private Shared Function mciSendStringW(
-
 ```
 
 Declares a **shared (static)** function inside your class.  
-It must be shared because imported native functions cannot be instance methods.
+Imported native functions cannot be instance methods, so `Shared` is required.  
 
-This function signature must match the unmanaged function exactly.
 
 ---
 
 ```vbnet
-
 <MarshalAs(UnmanagedType.LPWStr)> command As String,
-
 ```
-
 
 This parameter is the **MCI command string** you want Windows to execute.
 
-`MarshalAs(UnmanagedType.LPWStr)` forces .NET to marshal the VB.NET `String` as a **wide (UTF‑16) C‑style string**, which is what `mciSendStringW` expects.
+`MarshalAs(UnmanagedType.LPWStr)` forces .NET to marshal the VB.NET `String` as a **wide (UTF‑16) C‑style string**, which is what `mciSendStringW` expects.  
 
-Example command:  
-`"play explosion_a"`  
-`"status music mode"`
 
 ---
 
-
 ```vbnet
-
 <MarshalAs(UnmanagedType.LPWStr)> returnString As StringBuilder,
-
 ```
 
 This is the **output buffer** where MCI writes its response.
 
-Examples of responses:
-
-- `"playing"`
-- `"stopped"`
-- `"seeked"`
-- `"0"` (success code)
-
 Using `StringBuilder` is required because:
 
 - MCI writes directly into the buffer.
-- Strings are immutable in .NET, but `StringBuilder` is mutable.
+- Strings are immutable in .NET, but `StringBuilder` is mutable.  
+
 
 ---
 
 ```vbnet
-
 returnLength As UInteger,
-
 ```
 
-This tells MCI **how large the output buffer is**.
+Specifies the size of the output buffer.  
+If the buffer is too small, MCI truncates the response.  
 
-You pass `sb.Capacity` from your `StringBuilder`.
-
-If the buffer is too small, MCI truncates the response.
 
 ---
 
 ```vbnet
-
 callback As IntPtr) As Integer
-
 ```
 
-This is a pointer to a callback window handle for asynchronous notifications.
+Pointer to a callback window handle for asynchronous notifications.  
+You pass `IntPtr.Zero` because you are not using MCI notify callbacks.  
+Returns an **Integer error code** (`0` = success).  
 
-You pass `IntPtr.Zero` because:
-
-- You are not using MCI notify callbacks.
-- You are using synchronous commands only.
-
-The function returns an **Integer error code**:
-
-- `0` = success  
-- Non‑zero = failure (e.g., `263` for “device not ready”)
 
 ---
 
 ```vbnet
-
 End Function
-
 ```
 
-Closes the declaration of the imported native function.
-
----
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Closes the declaration of the imported native function.  
 
 
 ---
 
 ## Instance State
 
+> From your document:  
+> **`Private ReadOnly Aliases As New HashSet(Of String)`**  
+
+
 ---
+
+### Aliases
 
 ```vbnet
 Private ReadOnly Aliases As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
 ```
 
-This creates a **case‑insensitive set of all active MCI aliases**.  
-Every sound you open via MCI gets an alias, and this collection tracks which ones currently exist.  
-Using `HashSet` ensures:
-- Fast lookup (`O(1)`).
-- No duplicates.
-- Case‑insensitive comparisons (`StringComparer.OrdinalIgnoreCase`).
+Tracks all active MCI aliases.  
+Case‑insensitive, fast lookup, no duplicates.  
+
 
 ---
+
+### SoundInfo
 
 ```vbnet
 Private ReadOnly SoundInfo As New Dictionary(Of String, (filePath As String, volume As Integer))(StringComparer.OrdinalIgnoreCase)
 ```
 
-This dictionary maps each alias to a **tuple** containing:
-- `filePath` → the original audio file location  
-- `volume` → the last known volume level (0–1000)
+Maps each alias to:
 
-Example entry:
-```
-"menu_music" → ("Assets\Music\menu.mp3", 500)
-```
+- its file path  
+- its last known volume  
 
-This allows the engine to remember per‑sound volume and restore it during fades.
+Used for restoring volume during fades.  
+
 
 ---
+
+### Looping
 
 ```vbnet
 Private ReadOnly Looping As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
 ```
 
-Tracks which aliases are currently **set to loop** using the MCI command:
+Tracks which aliases are currently looping via:
 
 ```
 play <alias> repeat
-```
+```  
 
-This is purely internal bookkeeping — MCI itself does not expose loop state, so you track it manually.
 
 ---
+
+### Cooldowns
 
 ```vbnet
 Private ReadOnly Cooldowns As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
 ```
 
-Stores the **last tick count** for each alias to enforce cooldown timing.
+Stores last tick count per alias to prevent rapid‑fire MCI commands.  
 
-Example:
-```
-"hit_a" → 123456789
-```
-
-This prevents rapid‑fire MCI commands (which can cause error 263 spam or audio stutter).
 
 ---
+
+### OverlapSuffixes
 
 ```vbnet
 Private ReadOnly OverlapSuffixes As String() =
     {"a", "b", "c", "d", "e", "f", "g", "h"}
 ```
 
-Defines the suffixes used for **overlapping sound variants**.
+Defines suffixes for overlapping sound variants (`hit_a`, `hit_b`, …).  
 
-If your base sound is `"hit"`, the engine will create:
-
-```
-hit_a
-hit_b
-hit_c
-...
-hit_h
-```
-
-This allows multiple instances of the same sound to play simultaneously without interrupting each other — essential for fast action games.
 
 ---
+
+### syncRoot
 
 ```vbnet
 Private ReadOnly syncRoot As New Object()
 ```
 
-This object is used with `SyncLock` to ensure **thread‑safe access** to all shared collections.
+Used with `SyncLock` to ensure thread‑safe access to shared collections.  
 
-Example usage:
-
-```vbnet
-SyncLock syncRoot
-    Aliases.Add(soundName)
-End SyncLock
-```
-
-This prevents race conditions when sounds are added, removed, or queried from multiple threads (e.g., game loop + UI thread).
 
 ---
 
+## Constructor / Destructor
 
+> From your document:  
+> **`Public Sub New()`**  
+> **`Public Sub Dispose() Implements IDisposable.Dispose`**  
+
+
+---
+
+### Constructor
+
+```vbnet
+Public Sub New()
+End Sub
+```
+
+Empty constructor - all fields are already initialized inline.  
+
+
+---
+
+### Destructor / Dispose
+
+```vbnet
+Public Sub Dispose() Implements IDisposable.Dispose
+    CloseAll()
+End Sub
+```
+
+Implements `IDisposable`.  
+Calls `CloseAll()` to stop and close every open alias, ensuring no dangling MCI devices remain.  
+
+
+---
 
 
 
