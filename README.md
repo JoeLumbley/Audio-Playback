@@ -417,6 +417,441 @@ Calls `CloseAll()` to stop and close every open alias, ensuring no dangling MCI 
 
 
 
+## Public API  
+*A complete line‑by‑line walkthrough of every public‑facing method in the AudioPlayer class.*
+
+These are the functions your game or application will call directly:  
+- Adding sounds  
+- Playing  
+- Looping  
+- Stopping  
+- Pausing  
+- Volume control  
+- Status checks  
+
+Each method includes validation, normalization, thread‑safety, and MCI command dispatching.
+
+---
+
+### AddSound
+
+```vbnet
+Public Function AddSound(soundName As String, filePath As String) As Boolean
+```
+
+Declares a public method that attempts to register a new sound with MCI.
+
+
+```vbnet
+soundName = Normalize(soundName)
+```
+
+Normalizes the alias name by trimming whitespace and replacing spaces with underscores.  
+This ensures consistent alias formatting across the entire engine.
+
+
+```vbnet
+If String.IsNullOrWhiteSpace(soundName) OrElse Not File.Exists(filePath) Then
+    Debug.Print($"{soundName} not added.")
+    Return False
+End If
+```
+
+Validates input:
+
+- Rejects empty or whitespace names.  
+- Rejects missing files.  
+- Logs a debug message if invalid.
+
+
+```vbnet
+SyncLock syncRoot
+    If Aliases.Contains(soundName) Then Return True
+End SyncLock
+```
+
+Thread‑safe check:  
+If the alias already exists, the function returns `True` because the sound is already loaded.
+
+
+```vbnet
+If OpenSoundInternal(soundName, filePath, 500) Then
+    Return True
+End If
+```
+
+Attempts to open the sound using MCI.  
+Initial volume is set to **500** (mid‑range).  
+If successful, return `True`.
+
+
+```vbnet
+Debug.Print($"{soundName} failed to open.")
+Return False
+```
+
+Logs failure and returns `False`.
+
+---
+
+
+### PlaySound
+
+```vbnet
+Public Function PlaySound(soundName As String) As Boolean
+```
+
+Plays a sound once, with a fade‑in effect.
+
+
+```vbnet
+soundName = Normalize(soundName)
+If Not CooldownReady(soundName, 40) Then Return False
+```
+
+Normalizes the name and enforces a **40 ms cooldown** to prevent rapid MCI spam.
+
+
+```vbnet
+SyncLock syncRoot
+    If Not Aliases.Contains(soundName) Then Return False
+End SyncLock
+```
+
+Ensures the alias exists before attempting playback.
+
+
+```vbnet
+Send($"stop {soundName}")
+Send($"seek {soundName} to start")
+```
+
+Resets playback position:
+
+1. Stop the sound  
+2. Seek to the beginning  
+
+This ensures consistent behavior even if the sound was partially played earlier.
+
+
+```vbnet
+Dim info = SoundInfo(soundName)
+```
+
+Retrieves stored volume and file path.
+
+
+```vbnet
+SetVolume(soundName, 0)
+FadeVolume(soundName, 0, info.volume, 80)
+```
+
+Implements a **fade‑in**:
+
+- Start at volume `0`
+- Fade to the stored volume over **80 ms**
+
+
+```vbnet
+Return Send($"play {soundName}")
+```
+
+Sends the MCI play command and returns success/failure.
+
+---
+
+### LoopSound
+
+```vbnet
+Public Function LoopSound(soundName As String) As Boolean
+```
+
+Loops a sound continuously.
+
+
+```vbnet
+soundName = Normalize(soundName)
+```
+
+Normalize alias.
+
+
+```vbnet
+SyncLock syncRoot
+    If Not Aliases.Contains(soundName) Then Return False
+End SyncLock
+```
+
+Ensure alias exists.
+
+
+```vbnet
+Send($"stop {soundName}")
+Send($"seek {soundName} to start")
+```
+
+Reset playback position.
+
+
+```vbnet
+Dim ok = Send($"play {soundName} repeat")
+```
+
+Uses MCI’s built‑in looping:
+
+```
+play <alias> repeat
+```
+
+
+```vbnet
+If ok Then
+    SyncLock syncRoot
+        Looping.Add(soundName)
+    End SyncLock
+End If
+```
+
+Tracks loop state internally.
+
+
+```vbnet
+Return ok
+```
+
+Return success/failure.
+
+---
+
+### StopSound
+
+```vbnet
+Public Function StopSound(soundName As String) As Boolean
+```
+
+Stops playback immediately.
+
+
+```vbnet
+soundName = Normalize(soundName)
+```
+
+Normalize alias.
+
+
+```vbnet
+SyncLock syncRoot
+    If Not Aliases.Contains(soundName) Then Return False
+End SyncLock
+```
+
+Ensure alias exists.
+
+
+```vbnet
+Return Send($"stop {soundName}")
+```
+
+Send MCI stop command.
+
+---
+
+
+### PauseSound
+
+```vbnet
+Public Function PauseSound(soundName As String) As Boolean
+```
+
+Pauses playback.
+
+
+```vbnet
+soundName = Normalize(soundName)
+```
+
+Normalize alias.
+
+
+```vbnet
+SyncLock syncRoot
+    If Not Aliases.Contains(soundName) Then Return False
+End SyncLock
+```
+
+Ensure alias exists.
+
+
+```vbnet
+Return Send($"pause {soundName}")
+```
+
+Send MCI pause command.
+
+---
+
+
+### SetVolume
+
+```vbnet
+Public Function SetVolume(soundName As String, level As Integer) As Boolean
+```
+
+Sets volume for a specific alias.
+
+
+```vbnet
+soundName = Normalize(soundName)
+level = Math.Max(0, Math.Min(1000, level))
+```
+
+Normalize alias and clamp volume to **0–1000**.
+
+
+```vbnet
+SyncLock syncRoot
+    If Not Aliases.Contains(soundName) Then Return False
+End SyncLock
+```
+
+Ensure alias exists.
+
+
+```vbnet
+Dim ok = Send($"setaudio {soundName} volume to {level}")
+```
+
+Send MCI volume command.
+
+
+```vbnet
+If ok Then
+    SyncLock syncRoot
+        Dim info = SoundInfo(soundName)
+        SoundInfo(soundName) = (info.filePath, level)
+    End SyncLock
+End If
+```
+
+Update stored volume on success.
+
+
+```vbnet
+Return ok
+```
+
+Return success/failure.
+
+---
+
+### IsPlaying
+
+```vbnet
+Public Function IsPlaying(soundName As String) As Boolean
+```
+
+Checks whether a sound is currently playing.
+
+
+```vbnet
+soundName = Normalize(soundName)
+```
+
+Normalize alias.
+
+
+```vbnet
+SyncLock syncRoot
+    If Not Aliases.Contains(soundName) Then Return False
+End SyncLock
+```
+
+Ensure alias exists.
+
+
+```vbnet
+Return Query($"status {soundName} mode").Equals("playing", StringComparison.OrdinalIgnoreCase)
+```
+
+Queries MCI:
+
+```
+status <alias> mode
+```
+
+Returns `"playing"` if active.
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
