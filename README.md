@@ -193,7 +193,6 @@ Public Class AudioPlayer
 
 
 
----
 
 ```vbnet
 <DllImport("winmm.dll", EntryPoint:="mciSendStringW")>
@@ -207,7 +206,6 @@ This attribute tells .NET:
 This is the bridge between VB.NET and the Windows multimedia subsystem.  
 
 
----
 
 ```vbnet
 Private Shared Function mciSendStringW(
@@ -217,7 +215,6 @@ Declares a **shared (static)** function inside your class.
 Imported native functions cannot be instance methods, so `Shared` is required.  
 
 
----
 
 ```vbnet
 <MarshalAs(UnmanagedType.LPWStr)> command As String,
@@ -228,7 +225,6 @@ This parameter is the **MCI command string** you want Windows to execute.
 `MarshalAs(UnmanagedType.LPWStr)` forces .NET to marshal the VB.NET `String` as a **wide (UTF‑16) C‑style string**, which is what `mciSendStringW` expects.  
 
 
----
 
 ```vbnet
 <MarshalAs(UnmanagedType.LPWStr)> returnString As StringBuilder,
@@ -242,7 +238,6 @@ Using `StringBuilder` is required because:
 - Strings are immutable in .NET, but `StringBuilder` is mutable.  
 
 
----
 
 ```vbnet
 returnLength As UInteger,
@@ -252,7 +247,6 @@ Specifies the size of the output buffer.
 If the buffer is too small, MCI truncates the response.  
 
 
----
 
 ```vbnet
 callback As IntPtr) As Integer
@@ -263,7 +257,6 @@ You pass `IntPtr.Zero` because you are not using MCI notify callbacks.
 Returns an **Integer error code** (`0` = success).  
 
 
----
 
 ```vbnet
 End Function
@@ -277,7 +270,6 @@ Closes the declaration of the imported native function.
 ## Instance State
 
 
----
 
 ### Aliases
 
@@ -289,7 +281,6 @@ Tracks all active MCI aliases.
 Case‑insensitive, fast lookup, no duplicates.  
 
 
----
 
 ### SoundInfo
 
@@ -305,7 +296,6 @@ Maps each alias to:
 Used for restoring volume during fades.  
 
 
----
 
 ### Looping
 
@@ -320,7 +310,6 @@ play <alias> repeat
 ```  
 
 
----
 
 ### Cooldowns
 
@@ -331,7 +320,6 @@ Private ReadOnly Cooldowns As New Dictionary(Of String, Integer)(StringComparer.
 Stores last tick count per alias to prevent rapid‑fire MCI commands.  
 
 
----
 
 ### OverlapSuffixes
 
@@ -343,7 +331,6 @@ Private ReadOnly OverlapSuffixes As String() =
 Defines suffixes for overlapping sound variants (`hit_a`, `hit_b`, …).  
 
 
----
 
 ### syncRoot
 
@@ -354,12 +341,30 @@ Private ReadOnly syncRoot As New Object()
 Used with `SyncLock` to ensure thread‑safe access to shared collections.  
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 ## Constructor / Destructor
 
 
----
 
 ### Constructor
 
@@ -371,7 +376,6 @@ End Sub
 Empty constructor - all fields are already initialized inline.  
 
 
----
 
 ### Destructor / Dispose
 
