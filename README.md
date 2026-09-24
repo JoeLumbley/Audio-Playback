@@ -451,7 +451,9 @@ These are the functions your game or application will call directly:
 
 Each method includes validation, normalization, thread‑safety, and MCI command dispatching.
 
-[Top](#audio-playback-engine-vbnet--winforms)  |  [Walkthrough](#audioplayer---full-code-walkthrough)  
+
+[Walkthrough](#audioplayer---full-code-walkthrough)  |  [Top](#audio-playback-engine-vbnet--winforms)
+
 
 
 ---
