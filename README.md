@@ -133,7 +133,6 @@ The WinForms interface includes:
 *A detailed line‑by‑line explanation of the AudioPlayer class and its subsystems.*
 
 
-[Walkthrough](#audioplayer---full-code-walkthrough)  
 
 
 - [Public API](#public-api)  
