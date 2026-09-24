@@ -141,7 +141,14 @@ The WinForms interface includes:
 
 - [Class Declaration](#class-declaration)  
 
-- [MCI API](#mci-api)  
+- [MCI API](#mci-api)
+
+- [Instance State](#instance-state)
+
+- [Constructor / Destructor](#constructor--destructor)
+
+
+Constructor / Destructor
 
 - [Public API](#public-api)
   
