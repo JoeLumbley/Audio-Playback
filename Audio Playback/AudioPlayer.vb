@@ -1,6 +1,9 @@
-﻿' Audio Player Class
+﻿' AudioPlayer Class
 
-' Uses Windows MCI API (winmm.dll) for playback of multiple audio files simultaneously.
+' AudioPlayer Is a custom sound engine that wraps Windows MCI commands (winmm.dll).
+' It lets you load sounds, play them, Loop them, fade them, And even overlap them.
+' Internally it tracks aliases, volumes, cooldowns, And looping state.
+' It 's thread-safe, lightweight, and ideal for WinForms games.
 
 ' MIT License
 ' Copyright(c) 2022 Joseph W. Lumbley
@@ -22,6 +25,7 @@
 ' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ' SOFTWARE.
+
 
 Imports System.Runtime.InteropServices
 Imports System.Text
@@ -66,9 +70,8 @@ Public Class AudioPlayer
         CloseAll()
     End Sub
 
-
     ' ============================================================
-    ' Core API
+    ' Public API
     ' ============================================================
     Public Function AddSound(soundName As String, filePath As String) As Boolean
         soundName = Normalize(soundName)
@@ -215,7 +218,6 @@ Public Class AudioPlayer
             SetVolume(baseName & suffix, level)
         Next
     End Sub
-
 
     ' ============================================================
     ' Helpers
@@ -390,6 +392,7 @@ Public Class AudioPlayer
     End Sub
 
 End Class
+
 
 
 ' Copilot is our AI assistant.
