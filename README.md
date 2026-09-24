@@ -430,9 +430,6 @@ These are the functions your game or application will call directly:
 - Status checks
 
 
-
-
-
 - [Adding sounds](#addsound)  
 - [Playing](#playsound)  
 - [Looping](#loopsound)  
@@ -444,6 +441,8 @@ These are the functions your game or application will call directly:
 
 
 Each method includes validation, normalization, thread‑safety, and MCI command dispatching.
+
+[Top](#audio-playback-engine-vbnet--winforms)  
 
 ---
 
