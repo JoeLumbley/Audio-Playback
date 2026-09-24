@@ -13,6 +13,8 @@ The app is designed as a clean, approachable example for developers learning VB.
 
 <img width="1920" height="1080" alt="015" src="https://github.com/user-attachments/assets/8f91869c-abc9-4287-9cee-148bbf17719a" />
 
+[Code Walkthrough](#audioplayer---full-code-walkthrough) 
+
 ---
 
 ## Features
