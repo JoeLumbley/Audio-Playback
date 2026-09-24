@@ -191,9 +191,6 @@ Public Class AudioPlayer
 
 ## MCI API
 
-> From your document:  
-> **"MCI API"**  
-> **`<DllImport("winmm.dll", EntryPoint:="mciSendStringW")>`**  
 
 
 ---
@@ -279,9 +276,6 @@ Closes the declaration of the imported native function.
 
 ## Instance State
 
-> From your document:  
-> **`Private ReadOnly Aliases As New HashSet(Of String)`**  
-
 
 ---
 
@@ -363,10 +357,6 @@ Used with `SyncLock` to ensure thread‑safe access to shared collections.
 ---
 
 ## Constructor / Destructor
-
-> From your document:  
-> **`Public Sub New()`**  
-> **`Public Sub Dispose() Implements IDisposable.Dispose`**  
 
 
 ---
