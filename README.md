@@ -137,16 +137,26 @@ The WinForms interface includes:
 # AudioPlayer - Full Code Walkthrough  
 *A detailed line‑by‑line explanation of the AudioPlayer class and its subsystems.*
 
+- [Imports](#imports)  
 
+- [Class Declaration](#class-declaration)  
 
+- [MCI API](#mci-api)  
 
-- [Public API](#public-api)  
-    - [Adding sounds](#addsound)  
-    - [Playing](#playsound)  
-    - [Looping](#loopsound)  
-    - [Stopping](#stopsound)  
-    - [Pausing](#pausesound)  
-    - [Volume control](#setvolume)  
+- [Public API](#public-api)
+  
+    - [Adding sounds](#addsound)
+     
+    - [Playing](#playsound)
+     
+    - [Looping](#loopsound)
+     
+    - [Stopping](#stopsound)
+     
+    - [Pausing](#pausesound)
+     
+    - [Volume control](#setvolume)
+     
     - [Status checks](#isplaying)
 
 
