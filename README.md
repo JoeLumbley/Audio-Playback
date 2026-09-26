@@ -148,7 +148,6 @@ The WinForms interface includes:
 - [Constructor / Destructor](#constructor--destructor)
 
 
-Constructor / Destructor
 
 - [Public API](#public-api)
   
